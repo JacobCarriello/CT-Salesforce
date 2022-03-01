@@ -47,3 +47,4 @@ objects/**/listViews/
 
 # Other
 .vscode/settings.json
+Salesforce/.sfdx/tools/apex.db
