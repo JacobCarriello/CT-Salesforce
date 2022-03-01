@@ -1,10 +1,10 @@
 # Salesforce cache
-.sf/
-.sfdx/
+# .sf/
+# .sfdx/
 .localdevserver/
 deploy-options.json
-.sfdx
-.forceignore
+# .sfdx
+# .forceignore
 
 # LWC configuration files
 **/jsconfig.json
