@@ -1,0 +1,749 @@
+<apex:page id="idMyPage" standardStyleSheets="false" showHeader="false" sidebar="false" action="{!redirectUnAuthenticatedUser}" controller="RC_MyAccount_v1">
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+       <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1"/>
+            <apex:stylesheet value="{!URLFOR($Resource.SLDS092, 'assets/styles/salesforce-lightning-design-system-vf.css')}" /> 
+            <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
+            <apex:includeScript value="{!URLFOR($Resource.TB_JS, '/jQuery-1.11.3.min.js')}" />
+            <apex:includeScript value="{!URLFOR($Resource.TB_JS, '/jquery-ui-1.11.3.js')}" />  
+            
+            <script>
+                function closeBanner() 
+                {
+                   document.getElementById('messageBanner').style.display = 'none'; 
+                   document.getElementById('uploadMessageSuccessBanner').style.display = 'none'; 
+                }
+            </script>
+            <style>
+                .errorMsg{
+                    color:red;
+                }
+               
+                #outPopUp{
+                 position:absolute;
+                 z-index:9999999;
+                 top:50%;
+                 left:47%;
+                }
+                
+                .closeButton{
+                    font-size: 18px;
+                    FONT-WEIGHT: 600;
+                }
+                
+                .msgStyle{
+                    color:white;
+                }
+                
+                .slds-table--bordered{
+                    border-left: 1px solid #d8dde6;
+                    border-right: 1px solid #d8dde6;
+                }
+                
+                .widthClass{
+                    min-width : 198px;
+                    text-align : center;
+                }
+                
+                .multiSelectPicklistTable td{
+                    width:45%;
+                }
+                
+                .multiSelectPicklistCell{
+                    width:10% !important;
+                    padding:3% !important;
+                }
+                
+                .multiSelectPicklistTable .slds-input{
+                    width: 100% !important;
+                }
+                .multiSelectPicklistCell img{
+                    border-left: 0px !important;
+                }
+                
+            </style>
+            
+       </head>
+    
+    <apex:composition template="RC_CommunityTemplate">
+        
+        <apex:define name="body">
+            <style>
+                .errorMsg{
+                    color:red;
+                }
+                
+                .contactTextarea {
+                    padding-left: 20px; 
+                    padding-right: 20px;
+                    padding-top: 9px;
+                    padding-bottom: 9px;
+                    font: 12px Arial; 
+                    color: #666666; 
+                    margin-bottom: 0; 
+                    height: 45px; 
+                }
+                .floatClass{
+                    float:right;
+                }
+            </style> 
+            <script>
+                function checkError()
+                {
+                    //alert(document.getElementsByClassName('errorMsg').innerHTML);
+                    //$(document).scrollTo('.errorMsg');
+                    
+                    var jq=jQuery.noConflict();
+                    
+                    if(jq(document).find('.errorMsg').length > 0)
+                    {
+                        var container = jq('div'),
+                            scrollTo = jq('.errorMsg');
+                        
+                        document.getElementById('idSuccess').style.display = 'none';
+                        
+                        container.animate({
+                            scrollTop: scrollTo.offset().top - container.offset().top + container.scrollTop()
+                        });
+                    }
+                    else
+                    {
+                        var container = jq('div'),
+                            scrollTo = jq('#idSuccess');
+                        
+                        document.getElementById('idSuccess').style.display = '';
+                        
+                        
+                            container.animate({
+                                scrollTop: scrollTo.offset().top - container.offset().top + container.scrollTop()
+                            });
+                        
+                    }       
+                    
+                }
+            </script>
+            
+            <apex:actionstatus id="processingImg">
+                 <apex:facet name="start">
+                    <div id="preloader" style="background-color: #dcdcdc; opacity: 0.7;">
+                        <div id="status">
+                            <p class="center-text">
+                                Updating the contact...                             
+                            </p>
+                        </div>
+                    </div>
+                </apex:facet>
+            </apex:actionstatus>
+            <div style="height:60px;">&nbsp;</div>
+            
+            <div class="slds-all-elements">
+                <div id="content" class="slds-snap-content" style="z-index:100">
+                    <div class="slds-content" style="min-height:500px;">   
+                        <apex:form id="idForm" styleClass="slds">
+                            <div id="outPopUp" style="display:none;"> 
+                                <div class="slds-spinner--medium" >
+                                    <img src="{!URLFOR($Resource.SLDS092, 'assets/images/spinners/slds_spinner_inverse.gif')}">  
+                                        <span class="slds-m-right--medium" style="color: #081BDE; font-weight:bolder;">Uploading...</span>
+                                    </img>
+                                </div>
+                            </div> 
+                            <div class="slds-modal-backdrop slds-modal-backdrop--close"  id="idBackDrop"></div>
+                               
+                            
+                            <apex:actionFunction name="getUploadDetails" action="{!getUploadDetails}" reRender="Document, uploadErrorMsg, uploadSuccessMsg, scriptReRun" status="myStatus" onComplete="showUploadMessage('{!strUploadMessage}', '{!isUploadSuccess}');">
+                                <apex:param name="strMessage" assignTo="{!strUploadMessage}" value="" /> 
+                                <apex:param name="isUploadSuccess" assignTo="{!isUploadSuccess}" value="" /> 
+                             </apex:actionFunction> 
+                             <apex:actionFunction name="editContact" action="{!editContactInfo}" reRender="idContactInfo, idHeader, scriptReRun" status="myStatus" onComplete="onCompleteEdit();"/>
+                             
+                            
+                            <apex:outputPanel id="idFormPanel" layout="block" styleClass="">
+                                <div class="slds-notify slds-notify--alert slds-theme--{!IF(isSuccess, 'success','error')} slds-theme--alert-texture" role="alert" id="messageBanner" style="display:{!IF(strMessage != '', '','none')}">
+                                        <div class="slds-notify__close" id="idClose"  onClick="closeBanner();" style="cursor:pointer; display:{!IF(isSuccess, '','none')}"> 
+                                            <span class="closeButton">x</span> 
+                                        </div> 
+                                        <div class="notify__content slds-grid">                         
+                                            <apex:outputPanel styleClass="slds-col slds-align-middle" id="idMsg">
+                                                 <h2 class="slds-text-heading--small msgStyle">  
+                                                     <span>{!strMessage}</span>     
+                                                 </h2>
+                                            </apex:outputPanel>
+                                        </div>
+                                </div>
+                                <apex:outputPanel id="idHeader" layout="block" styleClass="">
+                                    <!-- New Header -->
+                                    
+                                        <div class="slds-page-header" role="banner">
+                                            <div class="slds-grid slds-wrap slds-grid--align-spread">
+                                                <div class="slds-col">
+                                                    <div class="slds-media">
+                                                        <div class="slds-media__figure">
+                                                            <span class="slds-avatar slds-avatar--medium">
+                                                                <img src="{!smallPhotoUrl}" alt="company name" />
+                                                            </span>
+                                                        </div>
+                                                        <div class="slds-media__body">
+                                                            <p class="slds-text-heading--label">{!$User.FirstName} {!$User.LastName}</p>
+                                                            <div class="slds-grid">
+                                                                <h1 class="slds-text-heading--medium slds-m-right--small slds-truncate slds-align-middle" title="My Profile">My Profile</h1>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="slds-col slds-no-flex slds-align-bottom">
+                                                  <div class="slds-button-group" role="group">
+                                                    <apex:outputLink value="{!$Site.prefix}/MyAccount_v1" styleClass="slds-button slds-button--neutral" rendered="{!isEditable}">Cancel</apex:outputLink>
+                                                    <apex:commandButton styleClass="slds-button slds-button--brand" value="Save Profile" action="{!updateContactInfo}" rendered="{!isEditable}" reRender="idContactInfo, idMsg, idHeader, idForm, scriptReRun" onComplete="updatePanelCss('{!isSuccess}', '{!strMessage}');" /> 
+                                                    
+                                                <!--    <apex:outputPanel rendered="{!!isEditable}" layout="none">
+                                                        <apex:outputLink styleClass="slds-button slds-button--neutral" 
+                                                                style="{!IF(objContact.Consol_URL__c =='','pointer-events:none;','')}"
+                                                                value="{!objContact.Consol_URL__c}" target="_blank">Take Assessments</apex:outputLink>
+                                                      
+                                                        <div class="slds-dropdown-trigger">
+                                                            <button disabled="true" class="slds-button slds-button--icon-border-filled" aria-haspopup="true" style="border-left: 0;border-radius: 0 4px 4px 0;">
+                                                                <img src="{!URLFOR($Resource.SLDS092, '/assets/icons/utility/settings_60.png')}" width ="15"/>
+                                                              </button>
+                                                            <div class="slds-dropdown slds-dropdown--right slds-nubbin--top-right slds-dropdown--menu">
+                                                                <ul class="slds-dropdown__list" role="menu">
+                                                                    <li id="menu-8-0" class="slds-dropdown__item">
+                                                                        <a class="slds-truncate" href="{!$Site.Prefix}/MyQualificationsList" role="menuitem">
+                                                                            My Qualifications
+                                                                        </a>
+                                                                    </li>
+                                                                    <li id="menu-9-1" class="slds-dropdown__item">
+                                                                        <a class="slds-truncate" href="{!$Site.Prefix}/ChangeYourPassword" role="menuitem">
+                                                                            Change Password
+                                                                        </a>
+                                                                    </li>
+                                                                    <li id="menu-9-1" class="slds-dropdown__item">
+                                                                        <a class="slds-truncate" href="javascript:void(0)" onclick="editContact();closeBanner();" role="menuitem">
+                                                                           Edit Profile
+                                                                        </a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    
+                                                    </apex:outputPanel>  -->
+                                                  </div>
+                                                  
+                                                  
+                                                </div>
+                                              </div>
+                                              <div class="slds-grid slds-wrap slds-grid--align-spread slds-page-header__detail-row">
+                                                <apex:repeat value="{!$ObjectType.Contact.Fieldsets.RC_My_Profile_Header}" var="field">
+                                                    <div class="slds-col--padded slds-size--2-of-6 slds-medium-size--2-of-6 slds-large-size--1-of-6">
+                                                      <dl>
+                                                        <dt>
+                                                          <p class="slds-text-heading--label slds-truncate" title="{!field.label}">{!field.label}</p>
+                                                        </dt>
+                                                        <dd>
+                                                          <p class="slds-text-body--regular slds-truncate" title="{!objContact[field]}">
+                                                              <apex:outputField value="{!objContact[field]}" /></p>
+                                                        </dd>
+                                                      </dl>
+                                                    </div>
+                                                </apex:repeat>
+                                              </div>
+                                            </div>
+                                    
+                                    <!-- End New Header -->
+                                    
+                                   
+                                </apex:outputPanel>
+                                
+                                
+                                <div class="slds-grid slds-col--padded-large slds-wrap slds-grid--align-spread slds-m-top--medium">
+                                    <div class="slds-col slds-large-size--1-of-1">
+                                        <p>Your current details are listed below. Edit to keep current. You may also view/edit your resume,
+                                        view/edit your references, and view or supply updated credentialing documentation.</p>
+                                    </div>
+                                </div>
+                                <apex:outputPanel id="idContactInfo" layout="block" styleClass="slds-m-top--medium">
+                                    <div class="slds-grid slds-wrap slds-grid--align-spread">
+                                        <apex:repeat value="{!$ObjectType.Contact.Fieldsets.MyAccount}" var="field">
+                                            <div class="slds-col  slds-col--padded-large slds-size--1-of-1 slds-medium-size--3-of-6 slds-large-size--6-of-12">                                            
+                                                <apex:outputPanel rendered="{!field.Type != 'boolean'}" layout="none">
+                                                    <label class="slds-form-element__static slds-m-top--medium" style="font-weight: bolder;" for="input{!field}">
+                                                    {!field.label}  
+                                                    </label>
+                                                
+                                                    <apex:inputField styleClass="slds-input " value="{!objContact[field]}" required="{!OR(field.Required,field.dbrequired)}" rendered="{!AND(field.Type != 'date',field.Type != 'boolean',isEditable)}" style="{!IF(field.type == 'textarea', 'height:100px;resize:none;', '')}   border-left:{!IF(OR(field.Required,field.dbrequired), '3px solid red', '' )}" />
+                                                    <apex:inputField styleClass="slds-input clsdateTime" value="{!objContact[field]}" showDatePicker="false" style="border-left:{!IF(OR(field.Required,field.dbrequired), '3px solid red', '' )}" rendered="{!AND(field.Type == 'date',isEditable)}" />
+                                                    <apex:outputPanel styleClass="slds-form-element__control" rendered="{!!isEditable}" layout="block" style="{!IF(field.Type != 'boolean','border: 1px solid rgba(129, 129, 129, 0.19','')}">
+                                                        <span class="slds-form-element__static slds-m-left--small">
+                                                            <apex:outputField value="{!objContact[field]}"></apex:outputField>
+                                                        </span>
+                                                    </apex:outputPanel>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel rendered="{!AND(field.Type == 'boolean')}" layout="none">
+                                                    <label class="slds-checkbox slds-m-top--medium">
+                                                        <span class="slds-form-element__label" style="font-weight: bolder;">{!field.label}
+                                                        <div >
+                                                            <apex:inputField styleClass="slds-checkbox "  rendered="{!isEditable}" value="{!objContact[field]}" required="{!OR(field.Required,field.dbrequired)}" style=" border-left:{!IF(OR(field.Required,field.dbrequired), '3px solid red', '' )}" >
+                                                                <span class="slds-checkbox--faux"></span>
+                                                            </apex:inputField>
+                                                            <apex:outputField value="{!objContact[field]}"  rendered="{!!isEditable}"/>
+                                                        </div>
+                                                        </span>
+                                                    </label>
+                                                </apex:outputPanel>  
+                                            </div>
+                                        </apex:repeat>
+                                    
+                                </div>
+                            </apex:outputPanel>
+                            <br/><br/><br/>
+                             
+                            <apex:outputPanel id="idRelatedList" style="display:{!IF(isEditable, 'none', '')}">
+                                
+                                <div class="slds-tabs--scoped slds-col--padded-large">
+                                    <ul class="slds-tabs--scoped__nav" role="tablist">
+                                     <!--   <li class="slds-tabs__item slds-text-heading--label slds-active" title="Education History" role="presentation" style="list-style: none;">
+                                            <a href="#" role="tab" tabindex="0" aria-selected="true" aria-controls="tab-scoped-1">
+                                                <div class="slds-xx-small-show-only">Edu</div>
+                                                <div class="slds-x-small-show-only">Edu</div>
+                                                <div class="slds-small-show-only">Edu</div>
+                                                <div class="slds-medium-show">Education History</div>
+                                            </a>
+                                        </li>
+                                        <li class="slds-tabs__item slds-text-heading--label" title="Employment History" role="presentation">
+                                            <a href="#" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-scoped-2">
+                                                <div class="slds-xx-small-show-only">Emp</div>
+                                                <div class="slds-x-small-show-only">Emp</div>
+                                                <div class="slds-small-show-only">Emp</div>
+                                                <div class="slds-medium-show">Employment History</div>
+                                            </a>
+                                        </li>  -->
+                                        <li class="slds-tabs__item slds-text-heading--label slds-active" title="Documents" id="documentTab" role="presentation">
+                                            <a href="#" role="tab" tabindex="-1" aria-selected="true" aria-controls="tab-scoped-3">
+                                                <div class="slds-xx-small-show-only">Doc</div>
+                                                <div class="slds-x-small-show-only">Doc</div>
+                                                <div class="slds-small-show-only">Doc</div>
+                                                <div class="slds-medium-show">Documents</div>
+                                            </a>
+                                        </li>
+                                       <li class="slds-tabs__item slds-text-heading--label" title="Upload Document" role="presentation">
+                                            <a href="#" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-scoped-4">
+                                                <div class="slds-xx-small-show-only">Upload</div>
+                                                <div class="slds-x-small-show-only">Upload</div>
+                                                <div class="slds-small-show-only">Upload</div>
+                                                <div class="slds-medium-show">Upload Document</div>
+                                            </a>
+                                        </li>  
+                                        
+                                        
+                                    </ul>  
+                                    
+                               <!--     <div id="tab-scoped-1" class="slds-tabs__content slds-show" role="tabpanel">
+                                        <apex:outputPanel rendered="{!lstEduHistory.size == 0}" layout="block" styleClass="slds-m-bottom--medium">
+                                         <div class="slds-notify slds-notify--alert slds-theme--alert-texture" role="alert" id="messageEducationBanner">
+                                            <div class="notify__content slds-grid">                         
+                                                <apex:outputPanel styleClass="slds-col slds-align-middle">
+                                                    <h2 class="slds-text-heading--small msgStyle">  
+                                                         <span>There are no Education History records. Please add your Education details by using click on Add.</span>     
+                                                    </h2>
+                                                </apex:outputPanel>
+                                            </div>
+                                        </div>
+                                     </apex:outputPanel>
+                                        <div class="slds-grid slds-wrap slds-grid--align-spread">
+                                            <div class="slds-col  slds-size--1-of-1 slds-medium-size--6-of-6 slds-large-size--11-of-12">
+                                                <div class="slds-small-show-only slds-float--right " >
+                                                     <apex:outputLink value="{!$Page.RelatedListHistoryDetails}" styleClass="slds-button slds-button--brand slds-m-bottom--small"> 
+                                                        Add
+                                                        <apex:param name="RelatedList" value="Education" />
+                                                    </apex:outputLink>
+                                                </div>
+                                                <div class="slds-x-small-show-only slds-float--right " >
+                                                    <apex:outputLink value="{!$Page.RelatedListHistoryDetails}" styleClass="slds-button slds-button--brand slds-m-bottom--small"> 
+                                                    Add
+                                                    <apex:param name="RelatedList" value="Education" />
+                                                    </apex:outputLink>
+                                                </div> 
+                                                <div class="slds-medium-show-only floatClass" >
+                                                    <apex:outputLink value="{!$Page.RelatedListHistoryDetails}" styleClass="slds-button slds-button--brand slds-m-bottom--small"> 
+                                                    Add
+                                                    <apex:param name="RelatedList" value="Education" />
+                                                    </apex:outputLink>
+                                                </div> 
+                                                <apex:outputPanel rendered="{!lstEduHistory.size > 0}" >
+                                                    <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal"  >
+                                                        <thead>
+                                                            
+                                                            <tr class="slds-text-heading--label">
+                                                                <apex:variable value="{!0}" var="cntEduFields" />
+                                                                <apex:repeat value="{!$ObjectType.TR1__EducationHistory__c.fieldsets['RC_EducationInfo']}" var="field">
+                                                                <apex:variable var="cntEduFields" value="{!cntEduFields+1}"/>
+                                                                    <th scope="col">
+                                                                        <span class="slds-truncate">{!field.Label}</span>
+                                                                    </th>
+                                                                </apex:repeat>
+                                                                <th scope="col">
+                                                                </th>
+                                                                <apex:variable var="cntEduFields" value="{!cntEduFields+1}"/>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <apex:repeat value="{!lstEduHistory}" var="varEdu">
+                                                                 <tr class="slds-hint-parent">
+                                                                     <apex:repeat value="{!$ObjectType.TR1__EducationHistory__c.fieldsets['RC_EducationInfo']}" var="field">
+                                                                       <td  data-label="{!field.Label}" class="slds-size--1-of-{!cntEduFields}">
+                                                                            <apex:outputField value="{!varEdu[field.FieldPath]}"/>
+                                                                       </td>
+                                                                   </apex:repeat> 
+                                                                    <td  data-label="" class="slds-size--1-of-{!cntEduFields}">
+                                                                        <apex:outputLink value="{!$Page.RelatedListHistoryDetails}" styleClass="slds-button slds-button--neutral"> 
+                                                                            Edit
+                                                                            <apex:param name="Id" value="{!varEdu.Id}" />
+                                                                            <apex:param name="RelatedList" value="Education" />
+                                                                        </apex:outputLink>
+                                                                    </td>
+                                                                </tr>
+                                                            </apex:repeat> 
+                                                        </tbody>
+                                                    </table>
+                                                </apex:outputPanel>
+                                            </div>
+                                            <div class="slds-col slds-large-show slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-6 slds-large-size--1-of-12">
+                                                <apex:outputLink value="{!$Page.RelatedListHistoryDetails}" styleClass="slds-button slds-button--brand"> 
+                                                    Add
+                                                    <apex:param name="RelatedList" value="Education" />
+                                                </apex:outputLink>
+                                                
+                                            </div>                                
+                                        </div>
+                                    </div> -->
+                                    
+                            
+                                 <!--   <div id="tab-scoped-2" class="slds-tabs__content slds-hide" role="tabpanel">                        
+                                         <apex:outputPanel rendered="{!lstEmploymentHistory.size == 0}" layout="block" styleClass="slds-m-bottom--medium">
+                                         <div class="slds-notify slds-notify--alert slds-theme--alert-texture" role="alert" id="messageEmployeerBanner">
+                                            <div class="notify__content slds-grid">                         
+                                                <apex:outputPanel styleClass="slds-col slds-align-middle">
+                                                    <h2 class="slds-text-heading--small msgStyle">  
+                                                         <span>There are no Employment History records. Please add your Employment details by using click on Add.</span>     
+                                                    </h2>
+                                                </apex:outputPanel> 
+                                            </div>
+                                        </div>
+                                     </apex:outputPanel>
+                                         <div class="slds-grid slds-wrap slds-grid--align-spread">
+                                            <div class="slds-col  slds-size--1-of-1 slds-medium-size--6-of-6 slds-large-size--11-of-12">
+                                                <div class="slds-small-show-only slds-float--right" >
+                                                     <apex:outputLink value="{!$Page.RelatedListHistoryDetails}" styleClass="slds-button slds-button--brand slds-m-bottom--small"> 
+                                                        Add
+                                                        <apex:param name="RelatedList" value="Employment" />
+                                                    </apex:outputLink>
+                                                 </div>
+                                                 <div class="slds-x-small-show-only slds-float--right" >
+                                                     <apex:outputLink value="{!$Page.RelatedListHistoryDetails}" styleClass="slds-button slds-button--brand slds-m-bottom--small"> 
+                                                        Add
+                                                        <apex:param name="RelatedList" value="Employment" />
+                                                     </apex:outputLink>
+                                                 </div> 
+                                                 <div class="slds-medium-show-only slds-float--right" >
+                                                     <apex:outputLink value="{!$Page.RelatedListHistoryDetails}" styleClass="slds-button slds-button--brand slds-m-bottom--small"> 
+                                                        Add
+                                                        <apex:param name="RelatedList" value="Employment" />
+                                                     </apex:outputLink>
+                                                 </div> 
+                                                <apex:outputPanel rendered="{!lstEmploymentHistory.size > 0}">
+                                                    
+                                                     <table class="slds-table slds-table--bordered slds-max-medium-table--stacked">
+                                                        <thead>
+                                                            <tr class="slds-text-heading--label">
+                                                               <apex:variable value="{!0}" var="cntEmpFields" />
+                                                                <apex:repeat value="{!$ObjectType.TR1__EmploymentHistory__c.fieldsets['RC_EmploymentInfo']}" var="field">
+                                                                <apex:variable var="cntEmpFields" value="{!cntEmpFields+1}"/>
+                                                                    <th scope="col">
+                                                                        <span class="slds-truncate">{!field.Label}</span>
+                                                                    </th>
+                                                                </apex:repeat>
+                                                                 <th scope="col">
+                                                                        <span class="slds-truncate"></span>
+                                                                </th>
+                                                                <apex:variable var="cntEmpFields" value="{!cntEmpFields+1}"/>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <apex:repeat value="{!lstEmploymentHistory}" var="varEmp">
+                                                                 <tr class="slds-hint-parent">
+                                                                   <apex:repeat value="{!$ObjectType.TR1__EmploymentHistory__c.fieldsets['RC_EmploymentInfo']}" var="field">
+                                                                       <td  data-label="{!field.Label}" class="slds-size--1-of-{!cntEmpFields}">
+                                                                             <p class="slds-truncate"><apex:outputField value="{!varEmp[field.FieldPath]}"/></p>
+                                                                           
+                                                                       </td>
+                                                                   </apex:repeat>
+                                                                   <td  data-label="" class="slds-size--1-of-{!cntEmpFields}">
+                                                                        <apex:outputLink styleClass="slds-button slds-button--neutral" value="{!$Page.RelatedListHistoryDetails}"> 
+                                                                                Edit
+                                                                               <apex:param name="Id" value="{!varEmp.Id}" />
+                                                                               <apex:param name="RelatedList" value="Employment" />
+                                                                        </apex:outputLink>
+                                                                   </td>
+                                                               </tr>
+                                                            </apex:repeat>
+                                                        </tbody>
+                                                    </table>
+                                                </apex:outputPanel>
+                                            </div>
+                                            <div class="slds-col slds-large-show slds-col--padded slds-size--1-of-1 slds-medium-size--1-of-6 slds-large-size--1-of-12">
+                                                <apex:outputLink value="{!$Page.RelatedListHistoryDetails}" styleClass="slds-button slds-button--brand"> 
+                                                    Add
+                                                    <apex:param name="RelatedList" value="Employment" />
+                                                </apex:outputLink>
+                                            </div>   
+                                        </div>  
+                                    </div>  
+                                       <apex:commandLink action="{!$Page.RelatedListHistoryDetails}" value="{!varEmp[field.FieldPath]}" id="theEmployerLink" rendered="{!IF(field.FieldPath == 'Name', true, false)}" reRender="idPopup, modelHeader" onComplete="openPopupWindow();"> 
+                                                                           
+                                                                            </apex:commandLink> -->
+                                    
+                                    
+                                    <div id="tab-scoped-3" class="slds-tabs__content slds-show" role="tabpanel">
+                                         <apex:outputPanel id="uploadSuccessMsg" layout="block">
+                                           <apex:outputPanel rendered="{!lstDocument.size == 0}" layout="block">
+                                                 <div class="slds-notify slds-notify--alert slds-theme--alert-texture" role="alert" id="messageUploadBannerEmpty">
+                                                    <div class="notify__content slds-grid">                         
+                                                        <apex:outputPanel styleClass="slds-col slds-align-middle">
+                                                            <h2 class="slds-text-heading--small msgStyle">  
+                                                                 <span>There are no Documents. Please attach your Documents through Upload Document Tab.</span>     
+                                                            </h2>
+                                                        </apex:outputPanel> 
+                                                    </div>
+                                                </div>
+                                            </apex:outputPanel>
+                                           
+                                            <div class="slds-notify slds-notify--alert slds-theme--success slds-theme--alert-texture" role="alert" id="uploadMessageSuccessBanner"  style="display:{!IF(isUploadSuccess,'','none')}">
+                                                
+                                                <div class="slds-notify__close" id="idClose"  onClick="closeBanner();" style="cursor:pointer;"> 
+                                                    <span class="closeButton">x</span> 
+                                                </div> 
+                                                <div class="notify__content slds-grid">                         
+                                                    <apex:outputPanel styleClass="slds-col slds-align-middle" id="idUploadSuccessMsg">
+                                                         <h2 class="slds-text-heading--small msgStyle ">  
+                                                             <span>{!strUploadMessage}</span>     
+                                                         </h2>
+                                                    </apex:outputPanel>
+                                                </div>
+                                            </div>  
+                                        </apex:outputPanel>    
+                                        <apex:outputPanel id="Document">
+                                            <apex:outputPanel rendered="{!lstDocument.size > 0}">
+                                                 <table class="slds-table slds-table--bordered slds-max-medium-table--stacked">
+                                                    <thead>
+                                                        <tr class="slds-text-heading--label">
+                                                            <apex:variable value="{!0}" var="cntDocFields" />
+                                                            <apex:repeat value="{!$ObjectType.TR1__ContactDocument__c.fieldsets['TR1__Documents']}" var="field">
+                                                            <apex:variable var="cntDocFields" value="{!cntDocFields+1}"/>
+                                                                <th scope="col">
+                                                                    <span class="slds-truncate">{!field.Label}</span>
+                                                                </th>
+                                                            </apex:repeat>
+                                                            <th scope="col">
+                                                                    <span class="slds-truncate"></span>
+                                                            </th>
+                                                            <apex:variable var="cntDocFields" value="{!cntDocFields+1}"/>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <apex:repeat value="{!lstDocument}" var="varDoc">
+                                                             <tr class="slds-hint-parent">
+                                                                <apex:repeat value="{!$ObjectType.TR1__ContactDocument__c.fieldsets['TR1__Documents']}" var="field">
+                                                                       <td  data-label="{!field.Label}" class="slds-size--1-of-{!cntDocFields}">
+                                                                           <apex:outputField value="{!varDoc[field.FieldPath]}" />
+                                                                       </td>
+                                                               </apex:repeat>
+                                                                <td  data-label="" class="slds-size--1-of-{!cntDocFields}">
+                                                                    <apex:outputPanel rendered="{!varDoc.TR1__ContentVersionId__c != ''}">
+                                                                        <a class="slds-button slds-button--neutral" href="{!varDoc.TR1__Internal_View_URL__c}" target="_blank">View Resume</a>
+                                                                    </apex:outputPanel>
+                                                                    <apex:outputPanel rendered="{!IF(varDoc.TR1__ContentVersionId__c == '' && varDoc.TR1__Type__c == 'Resume', True, False)}">
+                                                                        <a class="slds-button slds-button--neutral" href="#" style="cursor:not-allowed">View Resume</a>
+                                                                    </apex:outputPanel>
+                                                                </td>
+                                                           </tr>
+                                                        </apex:repeat>
+                                                    </tbody>
+                                                </table>
+                                            </apex:outputPanel>
+                                        </apex:outputPanel>
+                                    </div>
+                                    <div id="tab-scoped-4" class="slds-tabs__content slds-hide" role="tabpanel">
+                                        <apex:outputPanel id="uploadErrorMsg">
+                                            <div class="slds-notify slds-notify--alert slds-theme--error slds-theme--alert-texture" role="alert" id="uploadMessageErrorBanner" style="display:{!IF(strUploadMessage != '', IF(isUploadSuccess,'none',''),'none')}">
+                                                <div class="notify__content slds-grid">                         
+                                                    <apex:outputPanel styleClass="slds-col slds-align-middle">
+                                                         <h2 class="slds-text-heading--small msgStyle">  
+                                                             <span>{!strUploadMessage}</span>     
+                                                         </h2>
+                                                    </apex:outputPanel>
+                                                </div>
+                                            </div>
+                                        </apex:outputPanel>
+                                        
+                                        <div class="slds-grid slds-wrap slds-grid--align-spread">
+                                              <div class="slds-col">
+                                                  
+                                                <label class="slds-form-element__label" for="">Type</label>  
+                                                <apex:inputField value="{!objContactDocument.TR1__Type__c}" styleClass="slds-input slds-m-bottom-medium" id="idDocumentType" />
+                                                <span id="idRequiredType" style="color:red;"> </span>
+                                                <label class="slds-form-element__label slds-m-top--medium" style="display:block;" for="">Upload Document</label>
+                                                <iframe src="UploadContactDocument?documentType" id="uploadFileIframe" name="targetframe"  allowtransparency="true" scrolling="no" frameborder="0" height="25" ></iframe>
+                                                <input type="button" class="slds-button slds-button--brand slds-m-top--medium" value="Upload" onClick="uploadResume();"/><br/>
+                                                <span id="idUploadDoc" style="color:red;"> </span>
+                                              </div>
+                                        </div> 
+                                    </div> 
+                                </div>
+                               
+                                <script>
+                                     $('.slds-tabs__item').on('click', function(){
+                                         $(this).addClass('slds-active');
+                                         $(this).find('a').attr('aria-selected', true);
+                                         var $contentToShow = $('#'+$(this).find('a').attr('aria-controls'));
+                                         $contentToShow.removeClass('slds-hide');
+                                         $contentToShow.addClass('slds-show');
+                                        
+                                         $(this).siblings().removeClass('slds-active');
+                                         $(this).siblings().find('a').attr('aria-selected', false);
+                                         $contentToShow.siblings('.slds-tabs__content').removeClass('slds-show');
+                                         $contentToShow.siblings('.slds-tabs__content').addClass('slds-hide');
+                                    });
+                                </script>  
+                            </apex:outputPanel>
+                        </apex:outputPanel>
+                    </apex:form>
+                    </div>     
+                    <br/><br/>
+                    <!-- Page Footer--> 
+                    <span class="nonslds">
+                        <div class="footer">
+                            <div class="footer-socials half-bottom">
+                                <a href="#" class="footer-share show-share-bottom"><i class="fa fa-share-alt"></i></a>
+                                <a href="#" class="footer-up"><i class="fa fa-angle-up"></i></a>
+                            </div>
+                            <p class="center-text">&copy; 2015 Talent Rover. All rights reserved.</p>
+                        </div>   
+                    </span>
+                </div>
+            </div>
+            <apex:outputPanel id="scriptReRun">
+               <script>
+                    $('.multiSelectPicklistCell img').each(function(){
+                        $(this).removeClass('slds-input');
+                    });
+                    
+                    $( ".clsdateTime" ).datepicker();
+                </script>
+           </apex:outputPanel> 
+            
+            <script>
+                
+                
+             /*    $('.slds-tabs__item').on('click', function(){
+                     $(this).addClass('slds-active');
+                     $(this).find('a').attr('aria-selected', true);
+                     var $contentToShow = $('#'+$(this).find('a').attr('aria-controls'));
+                     $contentToShow.removeClass('slds-hide');
+                     $contentToShow.addClass('slds-show');
+                    
+                     $(this).siblings().removeClass('slds-active');
+                     $(this).siblings().find('a').attr('aria-selected', false);
+                     $contentToShow.siblings('.slds-tabs__content').removeClass('slds-show');
+                     $contentToShow.siblings('.slds-tabs__content').addClass('slds-hide');
+                }); */
+                
+                function uploadResume()
+                {
+                    var isFileUpload = false;
+                    
+                    document.getElementById('idRequiredType').innerHTML = '';
+                    document.getElementById('idUploadDoc').innerHTML = '';
+                    
+                    if(document.getElementById('{!$Component.idForm.idDocumentType}').value == '')
+                        document.getElementById('idRequiredType').innerHTML = 'Please select a Type to upload your document';
+                    else if($('#uploadFileIframe').contents().find('[id$=inputUpload]').val() != undefined && $('#uploadFileIframe').contents().find('[id$=inputUpload]').val() != '')
+                    {
+                        isFileUpload = true;
+                        showLoading();
+                        var documentType = document.getElementById('{!$Component.idForm.idDocumentType}').value;
+                        document.getElementById('uploadFileIframe').contentWindow.upload(documentType);  
+                    }
+                    else
+                    {
+                        document.getElementById('idUploadDoc').innerHTML = 'Please choose a document to upload';
+                    }
+                }
+                
+                function showUploadMessage(Message, isUploadSuccess)
+                {
+                   
+                   if(isUploadSuccess == 'true')
+                   {
+                        $('#documentTab').addClass('slds-active');
+                        $('#documentTab').find('a').attr('aria-selected', true);
+                        var $contentToShow = $('#'+$('#documentTab').find('a').attr('aria-controls'));
+                        $contentToShow.removeClass('slds-hide');
+                        $contentToShow.addClass('slds-show');
+                        
+                        $('#documentTab').siblings().removeClass('slds-active');
+                        $('#documentTab').siblings().find('a').attr('aria-selected', false);
+                        $contentToShow.siblings('.slds-tabs__content').removeClass('slds-show');
+                        $contentToShow.siblings('.slds-tabs__content').addClass('slds-hide');
+                         
+                     
+                   }
+                   
+                   closeLoading();
+                }
+                
+              
+                
+                function updatePanelCss(SuccessAlert, Message)
+                {
+                    if(Message != '')
+                    {
+                        document.getElementById("idBan").style.display = 'none';
+                        document.getElementById("idNotification").style.display = 'none';
+                        document.getElementById('messageBanner').style.display = ''; 
+                        if(SuccessAlert == 'false')
+                        {
+                            document.getElementById("messageBanner").className = document.getElementById("messageBanner").className.replace( /(?:^|\s)slds-theme--success(?!\S)/g , ' slds-theme--error' );
+                            document.getElementById("idBan").style.display = '';
+                            document.getElementById('{!$Component.idForm.idRelatedList}').style.display = 'none';
+                            
+                        }
+                        else
+                        {
+                            document.getElementById("messageBanner").className = document.getElementById("messageBanner").className.replace( /(?:^|\s)slds-theme--error(?!\S)/g , ' slds-theme--success' );
+                            document.getElementById("idNotification").style.display = '';
+                            document.getElementById('{!$Component.idForm.idRelatedList}').style.display = '';
+                        }
+                    }
+                }
+                
+                function onCompleteEdit()
+                {
+                    document.getElementById('{!$Component.idForm.idRelatedList}').style.display = 'none';
+                }
+                
+                function showLoading()
+                {
+                    $("#idBackDrop").css("height", $('.slds').height()+'px'); 
+                    document.getElementById("idBackDrop").className = document.getElementById("idBackDrop").className.replace( /(?:^|\s)slds-modal-backdrop--close(?!\S)/g , ' slds-modal-backdrop--open');
+                    document.getElementById("outPopUp").style.display = '';
+                }
+                
+                function closeLoading()
+                {
+                    document.getElementById("outPopUp").style.display = 'none';
+                    document.getElementById("idBackDrop").className = document.getElementById("idBackDrop").className.replace( /(?:^|\s)slds-modal-backdrop--open(?!\S)/g , ' slds-modal-backdrop--close');
+                }
+           </script>
+        </apex:define> 
+    </apex:composition>
+  </html>    
+</apex:page>

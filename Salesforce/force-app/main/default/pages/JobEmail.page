@@ -1,0 +1,88 @@
+<apex:page controller="JobSearchController" showHeader="false" 
+   standardStyleSheets="true" >
+   <apex:composition template="{!pageTemplate}">
+      <apex:define name="body" >
+         <apex:form id="emailform">
+            <apex:outputpanel layout="block" styleclass="atsError">
+               <apex:pageMessages />
+            </apex:outputpanel>
+            <table border="0" cellpadding="10" cellspacing="0" width="100%">
+               <tbody>
+                  <tr>
+                     <td>
+                        <span id="jobBoardTag">
+                           <div class="atsMaster">
+                              <span id="jobEmailTag">
+                                 <div id="atsSearchTitle">Email Job    </div>
+                                 <table class="atsEmailTable">
+                                    <tbody>
+                                       <tr>
+                                          <td class="atsFormTdError" colspan="2">
+                                          </td>
+                                       </tr>
+                                       <tr>
+                                          <td class="atsEmailTdLeft">
+                                             <label for="inputfromName">
+                                             From Name:</label>
+                                          </td>
+                                          <td class="atsEmailTdRight">
+                                             <apex:inputtext id="inputfromName"  style="width:250px" 
+                                                value="{!fromName}" />
+                                          </td>
+                                       </tr>
+                                       <tr>
+                                          <td class="atsEmailTdLeft"><label for="inputfromEmail">From Email:</label><span class="atsRequired">*</span>
+                                          </td>
+                                          <td class="atsEmailTdRight">
+                                             <apex:inputtext id="inputfromEmail"   style="width:250px" 
+                                                value="{!fromEmail}" />
+                                          </td>
+                                       </tr>
+                                       <tr>
+                                          <td class="atsEmailTdLeft"><label for="inputtoName">To Name:</label>
+                                          </td>
+                                          <td class="atsEmailTdRight">
+                                             <apex:inputtext id="inputtoName"  style="width:250px"  
+                                                value="{!toName}" />
+                                          </td>
+                                       </tr>
+                                       <tr>
+                                          <td class="atsEmailTdLeft"><label for="inputtoEmail">To Email:</label><span class="atsRequired">*</span>
+                                          </td>
+                                          <td class="atsEmailTdRight">
+                                             <apex:inputtext style="width:250px" 
+                                                id="inputtoEmail"  value="{!toEmail}" />
+                                          </td>
+                                       </tr>
+                                       <tr>
+                                          <td class="atsEmailTdLeft"><label for="message">Message:</label>
+                                          </td>
+                                          <td class="atsEmailTdRight">
+                                             <apex:inputtextarea id="message" style="width:250px" 
+                                                value="{!mesg}" rows="6" />
+                                          </td>
+                                       </tr>
+                                       <tr>
+                                          <td colspan="2">&nbsp;</td>
+                                       </tr>
+                                       <tr>
+                                          <td class="atsEmailTdLeft">&nbsp;</td>
+                                          <td class="atsEmailTdRight">
+                                             <apex:commandButton id="sendemailButton"  reRender="emailform"
+                                                value="Send" styleclass="atsButton" 
+                                                action="{!sndEmail}" />
+                                          </td>
+                                       </tr>
+                                    </tbody>
+                                 </table>
+                              </span>
+                           </div>
+                        </span>
+                     </td>
+                  </tr>
+               </tbody>
+            </table>
+         </apex:form>
+      </apex:define>
+   </apex:composition>
+</apex:page>

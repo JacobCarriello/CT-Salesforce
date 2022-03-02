@@ -1,0 +1,152 @@
+<apex:page id="pageId"  controller="RC_ApproveOrRejectTimesheet" action="{!approveTimesheetFromAction}" showHeader="false" standardStylesheets="false" sidebar="false" >
+    
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+       <head>
+            <apex:stylesheet value="{!URLFOR($Resource.SLDS092, 'assets/styles/salesforce-lightning-design-system-vf.css')}" /> 
+            <apex:includeScript value="{!URLFOR($Resource.TB_JS, '/jQuery-1.11.3.min.js')}" />
+			<apex:includeScript value="{!URLFOR($Resource.TB_JS, '/jquery-ui-1.11.3.js')}" />  
+			<script>
+                /*
+                changed
+                function closeBanner() 
+                {
+                   document.getElementById('messageBanner').style.display = 'none';   
+                }*/
+			</script>
+       </head>
+    
+    <apex:composition template="RC_CommunityTemplate">
+        
+        <apex:define name="body">
+            
+            <style>
+                .errorMsg{
+                    color:red;
+                }
+                
+                .contactTextarea {
+                    padding-left: 20px; 
+                    padding-right: 20px;
+                    padding-top: 9px;
+                    padding-bottom: 9px;
+                    font: 12px Arial; 
+                    color: #666666; 
+                    margin-bottom: 0; 
+                    height: 45px; 
+                }
+            </style> 
+            <script>
+                function checkError()
+                {
+                    //alert(document.getElementsByClassName('errorMsg').innerHTML);
+                    //$(document).scrollTo('.errorMsg');
+                    
+                    var jq=jQuery.noConflict();
+                    
+                    if(jq(document).find('.errorMsg').length > 0)
+                    {
+                        var container = jq('div'),
+                            scrollTo = jq('.errorMsg');
+                        
+                        document.getElementById('idSuccess').style.display = 'none';
+                        
+                        container.animate({
+                            scrollTop: scrollTo.offset().top - container.offset().top + container.scrollTop()
+                        });
+                    }
+                    else
+                    {
+                        var container = jq('div'),
+                            scrollTo = jq('#idSuccess');
+                        
+                        document.getElementById('idSuccess').style.display = '';
+                        
+                        
+                            container.animate({
+                                scrollTop: scrollTo.offset().top - container.offset().top + container.scrollTop()
+                            });
+                        
+                    }       
+                    
+                }
+            </script>
+            
+            <div style="height:60px;">&nbsp;</div>
+                <div class="slds-all-elements">
+                    <div id="content" class="slds-snap-content" style="z-index:100">
+                        <div class="slds-content">   
+                            <apex:form styleClass="slds" id="formId">
+                                
+                                <div id="ContainerDiv" class="slds-container--center slds-container--small"><!-- {!IF(blnErrorAlert, 'error','success')} -->
+                                    <apex:outputPanel id="pageMessageId">
+                                         <div id="idBanner" class="slds-m-top--small slds-notify slds-notify--alert slds-theme--{!IF(AND(blnErrorAlert,blnTimesheetAlreadyApprRej),'inverse',IF(AND(blnErrorAlert,NOT(blnTimesheetAlreadyApprRej)),'error','success'))} slds-theme--alert-texture" role="alert">
+                                            
+                                             <apex:outputPanel layout="none" rendered="{!strMessage != 'Timesheet not found'}">    
+	                                            <!-- //changed 
+	                                            <div class="slds-notify__close" id="idClose" onClick="closeBanner();"> 
+	                                                 <svg aria-hidden="true" class="slds-button__icon slds-button__icon--inverse">
+	                                                     <use xlink:href="{!URLFOR($Resource.SLDS092, '/assets/icons/action-sprite/svg/symbols.svg#close')}"></use> 
+	                                                 </svg>
+	                                                 <span class="slds-assistive-text">Close</span> 
+	                                             </div> -->
+                                             </apex:outputPanel>
+                                             <div class="notify__content slds-grid">                         
+                                             	<span id="idBan" style="display:{!IF(blnErrorAlert, '','none')}">                   	
+                                                 	<svg aria-hidden="true" class="slds-icon icon-text-email slds-icon--small slds-m-right--x-small">
+                    									<use xlink:href="{!URLFOR($Resource.SLDS092, '/assets/icons/utility-sprite/svg/symbols.svg#ban')}"></use>
+                    								</svg>
+                                               	</span>                                    
+                    							<span id="idNotification" style="display:{!IF(blnErrorAlert, 'none','')}">
+                    								<svg aria-hidden="true" class="slds-icon icon-text-email slds-icon--small slds-m-right--x-small">
+                                                     	<use xlink:href="{!URLFOR($Resource.SLDS092, '/assets/icons/utility-sprite/svg/symbols.svg#notification')}"></use>
+                                                     </svg>
+                                                 </span>                            
+                                                 <apex:outputPanel styleClass="slds-col slds-align-middle" id="idMsg">
+                                                     <h2 class="slds-text-heading--small" style="color:white!important">  
+                                                         <span>{!strMessage}</span>     
+                                                     </h2>
+                                                 </apex:outputPanel>
+                                             </div>
+                                         </div>
+                    				</apex:outputPanel> <!-- slds-p-top--xx-large -->
+                                    <apex:outputPanel id="mainSldsId" styleclass="slds-p-top--medium" layout="block" rendered="{!!blnHideForm}">                      
+                                     	<div class="slds-form-element slds-has-error slds-is-required" id="sldsFormId">
+                                               <div class="slds-form-element">
+                                                    <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal">
+                                                        <apex:repeat value="{!$ObjectType.TR1__Timesheet__c.fieldsets['RC_TimeSheetApprove']}" var="field">
+                                                            <tr height="40px">
+                                                                <td  class="slds-size--1-of-2"><label class="slds-form-element__label" for="totHours2">{!field.Label}</label></td>
+                                                                <td  class="slds-size--1-of-2">
+                                                               	<apex:outputPanel rendered="{!IF(blnDisabledButton, true, IF(field != 'TR1__Approvers_Notes__c', true, false))}">
+                                                               		<apex:outputField value="{!objTimesheet[field]}" />
+                                                               	</apex:outputPanel>
+                                                               	<apex:outputPanel rendered="{!!IF(blnDisabledButton, true, IF(field != 'TR1__Approvers_Notes__c', true, false))}">
+                                                               		<apex:inputField value="{!objTimesheet[field]}" styleClass="slds-textarea" />
+                                                               	</apex:outputPanel>
+                                                               	
+                                                               </td>
+                                                           </tr>
+                    									</apex:repeat>		                                            
+                                                            <tr>
+                                                                <td colspan="2">
+                                                                    <div style="text-align:center;"><!-- onComplete="updatePanelCss('{!blnErrorAlert}','{!blnTimesheetAlreadyApprRej}');" -->
+                                                              	        <apex:commandButton id="saveButtonId" value="{!IF(UPPER($CurrentPage.parameters.action )=='REJECTED' ,'Reject','Save')}"  action="{!updateNotes}"  styleClass="slds-button slds-button--brand slds-m-top--medium"  disabled="{!blnDisabledButton}" reRender="mainSldsId,idMsg" /> 
+                                                                    </div>  
+                                                                   
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                               </div>
+                                     </div>
+                                	</apex:outputPanel>
+                                </div> 
+                        </apex:form>
+                        
+                    </div>     
+                </div>
+            </div>
+        
+        </apex:define> 
+    </apex:composition>
+  </html>    
+</apex:page>

@@ -1,0 +1,229 @@
+<apex:page controller="RC_JobListingDetail" showHeader="false" standardStylesheets="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false" action="{!redirectUnAuthenticatedUser}">
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        
+        <head>
+            <title>Candidate Job Listing</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1"/>
+            <apex:stylesheet value="{!URLFOR($Resource.SLDS092, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />  
+            <apex:includeScript value="{!URLFOR($Resource.TB_JS, '/jQuery-1.11.3.min.js')}" />
+            <apex:includeScript value="{!URLFOR($Resource.TB_JS, '/jquery-ui-1.11.3.js')}" />
+            <style>
+                .iframeBox{
+                    border: 1px solid gray;
+                    padding: 16px;
+                    text-align: center;
+                }
+                
+                .closeButton{
+                    font-size: 18px;
+                    FONT-WEIGHT: 600;
+                }
+                
+                 #outPopUp{
+                 position:absolute;
+                 z-index:9999999;
+                 top:50%;
+                 left:47%;
+                }
+            </style>
+        </head>
+        
+        <apex:composition template="RC_CommunityTemplate">
+            <apex:define name="body">
+                <div style="height:60px;">&nbsp;</div>
+                <div class="slds-all-elements">
+                    <div id="content" class="slds-snap-content" style="z-index:100">
+                        <div class="slds-content" style="min-height:500px;">
+                            <apex:form >
+                                
+                                <div class="slds">
+                                    <div id="outPopUp" style="display:none;">  
+                                        <div class="slds-spinner--medium" >
+                                            <img src="{!URLFOR($Resource.SLDS092, 'assets/images/spinners/slds_spinner_inverse.gif')}">  
+                                                <span class="slds-m-right--medium" style="color: #081BDE; font-weight:bolder;">Uploading...</span>
+                                            </img>
+                                        </div>
+                                    </div> 
+                                    <div  class="slds-modal-backdrop slds-modal-backdrop--close"  id="idBackDrop"></div>
+                                    
+                                    <apex:outputPanel id="msgPanel">
+                                        <div id = "successPanel" class="slds-notify slds-notify--alert slds-theme--{!msgClass} slds-theme--alert-texture" role="alert" style="display:{!IF(strMessage != '', '','none')}">
+                                            <div class="slds-notify__close" id="idClose" onClick="closeBanner('successPanel');" style="cursor:pointer; display:{!IF(isSuccess, '','none')}"> 
+                                                <span class="closeButton">x</span> 
+                                            </div>
+                                            <div class="notify__content slds-grid">
+                                                <apex:outputPanel styleClass="slds-col slds-align-middle" id="idMsg">
+                                                    <h2 class="slds-text-heading--small ">  
+                                                        <span>{!strMessage}</span>
+                                                    </h2>
+                                                </apex:outputPanel>
+                                            </div> 
+                                        </div>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel rendered="{!isPageLoad}"  layout="block" id="mainPanel"> 
+                                        <div class="slds-page-header" role="banner">
+                                            <div class="slds-grid slds-wrap slds-grid--align-spread">
+                                                <div class="slds-col">
+                                                    <div class="slds-media">
+                                                        <div class="slds-media__figure">
+                                                            <span class="slds-avatar slds-avatar--medium">
+                                                            <img src="{!URLFOR($Resource.SLDS092, '/assets/icons/standard/case_60.png')}" style="background-color: #43b4e7;" /> 
+                                                            </span>
+                                                        </div>
+                                                        <div class="slds-media__body">
+                                                            <p class="slds-text-heading--label">Open Job</p>
+                                                            <div class="slds-grid">
+                                                                <h1 class="slds-text-heading--medium slds-m-right--small slds-truncate slds-align-middle">{!objJob.TR1__External_Job_Title__c}</h1>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="slds-col"> 
+                                                    <div class="slds-button-group slds-m-top--medium" role="group">
+                                                        <apex:commandButton styleclass="slds-button slds-button--neutral"  action="/JobListing" value="Back"  status="processingImg"  rerender="dummy"/>
+                                                        
+                                                        <apex:commandButton status="loading" styleclass="slds-button slds-button--brand" action="{!applyToJob}" value="Apply"  rerender="msgPanel, mainPanel"  rendered="{!isDisplayApply}">
+                                                            <!--<apex:param name="jobId" value="{!objJob.id}" assignTo="{!idJobToBeApplied}"/>-->
+                                                        </apex:commandButton>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="slds-grid slds-wrap slds-grid--align-spread slds-page-header__detail-row">
+                                                <apex:repeat value="{!$ObjectType.TR1__Job__c.Fieldsets.RC_CandidateJobHeader}" var="field">
+                                                    <div class="slds-col--padded slds-size--2-of-6 slds-medium-size--2-of-6 slds-large-size--1-of-6">
+                                                        <dl>
+                                                            <dt>
+                                                                <p class="slds-text-heading--label slds-truncate" title="{!field.label}">{!field.label}</p>
+                                                            </dt>
+                                                            <dd>
+                                                                <p class="slds-text-body--regular slds-truncate" title="{!objJob[field]}">
+                                                                    <apex:outputField value="{!objJob[field]}" />
+                                                                </p>
+                                                            </dd>
+                                                        </dl>
+                                                    </div>
+                                                </apex:repeat>
+                                            </div>
+                                        </div>
+                                        
+                                        <apex:outputPanel id="idJobInfo" layout="block" styleClass="slds-m-top--medium">
+                                            <!--<apex:outputPanel rendered="{!objContact.TR1__Candidate_Status__c != 'Active'}" layout="block" styleClass="">
+                                                <div class="slds-col--padded-large">
+                                                    <div class="iframeBox">
+                                                        <label style="font-weight: bolder;" >Please Upload your resume to apply on Job</label>
+                                                        
+                                                        <iframe src="UploadContactDocument" id="uploadFileIframe" name="targetframe"  allowtransparency="true" scrolling="no" frameborder="0" height="25" ></iframe>
+                                                        <input type="button" class="slds-button slds-button--brand" onclick="uploadResume();" value="Upload"/>
+                                                        <div id="idUploadDoc" style="color:red;"></div>
+                                                    </div>
+                                                </div>
+                                            </apex:outputPanel>-->
+                                            
+                                            <div class="slds-grid slds-wrap slds-grid--align-spread">
+                                                <apex:repeat value="{!$ObjectType.TR1__Job__c.Fieldsets.RC_JobListingDetail}" var="field">
+                                                    <div class="slds-col  slds-col--padded-large slds-size--1-of-1 ">                                            
+                                                        <label class="slds-form-element__static slds-m-top--medium" style="font-weight: bolder;" >
+                                                            {!field.label}  
+                                                        </label>
+                                                        <apex:outputPanel styleClass="slds-form-element__control " rendered="{!field.type == 'textarea'}" layout="block">
+                                                            <apex:outputField value="{!objJob[field]}" styleClass="slds-form-element__static slds-p-left--medium" />
+                                                        </apex:outputPanel>
+                                                    </div>
+                                                </apex:repeat>
+                                            </div>
+                                        </apex:outputPanel>
+                                    </apex:outputPanel>
+                                </div>
+                                <apex:actionstatus id="loading" startText="Requesting...">
+                                    <apex:facet name="start">
+                                        <div id="salesforceSource_blurybackground" style="position:absolute;left:1px; top:1px; width:100%; height:100%; text-align:center; vertical-align: middle; background-color: #dcdcdc; opacity:0.7;filter:alpha(opacity=60)"></div>
+                                        <div id="ManageMembersViewport_loading" class="waitingSearchDiv slds-m-around--medium" style="top:50%; left:0px; position:absolute; z-index:1000; width:100%; height:45%; text-align:center; vertical-align: middle; overflow:hidden!important;color:white;">
+                                            <div class="waitingHolder" >
+                                                <div class="slds-spinner--medium" >
+                                                    <img src="{!URLFOR($Resource.SLDS092, 'assets/images/spinners/slds_spinner_inverse.gif')}" height="50px" width="50px">  
+                                                        <span class="slds-m-right--medium" style="color: #081BDE; font-weight:bolder;">Loading...</span>
+                                                    </img>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="ManageMembersViewport_loading" class="waitingSearchDiv" style="width: 100%; height: 100%; display:''; color:white;"></div>
+                                        <script>document.getElementById('ManageMembersViewport_loading').height = window.innerHeight * (3/4);</script>
+                                    </apex:facet>
+                                    <apex:facet name="stop"></apex:facet>
+                                </apex:actionstatus>
+                                
+                                <apex:actionFunction name="updateCandidateNApply" action="{!updateCandidateStatusNJobApply}" rerender="msgPanel, mainPanel" />
+                                
+                             <script>
+                                function closeBanner(closedId)
+                                {
+                                    document.getElementById(closedId).style.display = 'none';
+                                }
+                                
+                                function uploadResume(){
+                            
+                                    document.getElementById('idUploadDoc').innerHTML = '';
+                                    if($('#uploadFileIframe').contents().find('[id$=inputUpload]').val() != undefined && $('#uploadFileIframe').contents().find('[id$=inputUpload]').val() != '')
+                                    {
+                                        
+                                        document.getElementById('uploadFileIframe').contentWindow.uploadDocument();
+                                        showLoading();
+                                    }
+                                    else
+                                    {
+                                        $('#idUploadDoc').html('Please select a resume for upload');
+                                    }
+                                
+                                }
+            
+                                function getUploadDetails(strMsg, status)
+                                {
+                                    console.log(':::strMsg::',strMsg);
+                                    console.log(':::status::',status);
+                                    
+                                    if(status == 'false')
+                                        document.getElementById('idUploadDoc').innerHTML = strMsg;
+                                    else
+                                        updateCandidateNApply();
+                                    closeLoading();
+                                        
+                                        
+                                }
+                                function showLoading()
+                                {
+                                    console.log('-----came in--'+ document.getElementById("idBackDrop").className.replace( /(?:^|\s)slds-modal-backdrop--close(?!\S)/g , ' slds-modal-backdrop--open'));
+                                    $("#idBackDrop").css("height", $('.slds').height()+'px'); 
+                                    document.getElementById("idBackDrop").className = document.getElementById("idBackDrop").className.replace( /(?:^|\s)slds-modal-backdrop--close(?!\S)/g , ' slds-modal-backdrop--open');
+                                    document.getElementById("outPopUp").style.display = '';
+                                }
+                                
+                                function closeLoading()
+                                {
+                                    document.getElementById("outPopUp").style.display = 'none';
+                                    document.getElementById("idBackDrop").className = document.getElementById("idBackDrop").className.replace( /(?:^|\s)slds-modal-backdrop--open(?!\S)/g , ' slds-modal-backdrop--close');
+                                }
+                                
+                             </script>  
+                            </apex:form>
+                        </div>
+                        <br/><br/>
+                        <!-- Page Footer-->
+                        <span class="nonslds">
+                            <div class="footer">
+                                <div class="footer-socials half-bottom">
+                                    <a href="#" class="footer-share show-share-bottom"><i class="fa fa-share-alt"></i></a>
+                                    <a href="#" class="footer-up"><i class="fa fa-angle-up"></i></a>
+                                </div>
+                                <p class="center-text">&copy; 2015 Talent Rover. All rights reserved.</p>
+                            </div>
+                        </span>
+                    </div>
+                </div>
+            </apex:define>
+        </apex:composition>
+        <script>
+            
+           
+        </script>
+    </html>
+</apex:page>

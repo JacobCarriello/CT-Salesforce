@@ -1,0 +1,466 @@
+<apex:page standardStyleSheets="true" showHeader="false" sidebar="false" cache="false">
+<title> FidelisPartners </title>
+<link rel="icon" type="image/png"/>
+<head><script async="" src="http://connect.facebook.net/en_US/sdk.js?_=1517295671090"></script>
+    <meta charset="UTF-8"/>
+
+    <link rel="profile" href="http://gmpg.org/xfn/11"/>
+    <link rel="pingback" href="http://fidelismp.com/xmlrpc.php"/>
+
+    <meta name="viewport" content="initial-scale=1"/>
+    <meta name="viewport" content="width=device-width"/>
+
+    <title>Fidelis Partners - Physician Recruiting</title>
+
+<!-- This site is optimized with the Yoast SEO plugin v6.1.1 - https://yoa.st/1yg?utm_content=6.1.1 -->
+<meta name="description" content="With unmatched business principles and an innovative approach to physician recruiting, Fidelis Partners is a trusted resource for healthcare facilities and systems nationwide."/>
+<link rel="canonical" href="http://fidelismp.com/"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:type" content="website"/>
+<meta property="og:title" content="Fidelis Partners - Physician Recruiting"/>
+<meta property="og:description" content="With unmatched business principles and an innovative approach to physician recruiting, Fidelis Partners is a trusted resource for healthcare facilities and systems nationwide."/>
+<meta property="og:url" content="http://fidelismp.com/"/>
+<meta property="og:site_name" content="Fidelis Partners"/>
+<script type="text/javascript" async="" src="http://stats.g.doubleclick.net/dc.js"></script><script async="" src="//www.medtargetsystem.com/javascript/beacon.js?v2.5.12"></script><script type="application/ld+json">{"@context":"http:\/\/schema.org","@type":"WebSite","@id":"#website","url":"http:\/\/fidelismp.com\/","name":"Fidelis Partners","potentialAction":{"@type":"SearchAction","target":"http:\/\/fidelismp.com\/?s={search_term_string}","query-input":"required name=search_term_string"}}</script>
+<!-- / Yoast SEO plugin. -->
+
+<link rel="dns-prefetch" href="//s0.wp.com"/>
+<link rel="dns-prefetch" href="//s.gravatar.com"/>
+<link rel="dns-prefetch" href="//maps.googleapis.com"/>
+<link rel="dns-prefetch" href="//fonts.googleapis.com"/>
+<link rel="dns-prefetch" href="//s.w.org"/>
+<link rel="alternate" type="application/rss+xml" title="Fidelis Partners » Feed" href="http://fidelismp.com/feed/"/>
+<link rel="alternate" type="application/rss+xml" title="Fidelis Partners » Comments Feed" href="http://fidelismp.com/comments/feed/"/>
+<link rel="alternate" type="application/rss+xml" title="Fidelis Partners » Fidelis Partners – Physician and Advanced Practice Recruiting Comments Feed" href="http://fidelismp.com/home/feed/"/>
+        <script type="text/javascript">
+            window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.3\/svg\/","svgExt":".svg","source":{"concatemoji":"http:\/\/fidelismp.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.9.2"}};
+            !function(a,b,c){function d(a,b){var c=String.fromCharCode;l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,a),0,0);var d=k.toDataURL();l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,b),0,0);var e=k.toDataURL();return d===e}function e(a){var b;if(!l||!l.fillText)return!1;switch(l.textBaseline="top",l.font="600 32px Arial",a){case"flag":return!(b=d([55356,56826,55356,56819],[55356,56826,8203,55356,56819]))&&(b=d([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]),!b);case"emoji":return b=d([55358,56794,8205,9794,65039],[55358,56794,8203,9794,65039]),!b}return!1}function f(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var g,h,i,j,k=b.createElement("canvas"),l=k.getContext&&k.getContext("2d");for(j=Array("flag","emoji"),c.supports={everything:!0,everythingExceptFlag:!0},i=0;i<j.length;i++)c.supports[j[i]]=e(j[i]),c.supports.everything=c.supports.everything&&c.supports[j[i]],"flag"!==j[i]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[j[i]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(h=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",h,!1),a.addEventListener("load",h,!1)):(a.attachEvent("onload",h),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),g=c.source||{},g.concatemoji?f(g.concatemoji):g.wpemoji&&g.twemoji&&(f(g.twemoji),f(g.wpemoji)))}(window,document,window._wpemojiSettings);
+        </script><script src="http://fidelismp.com/wp-includes/js/wp-emoji-release.min.js?ver=4.9.2" type="text/javascript" defer=""></script>
+        <style type="text/css">
+img.wp-smiley,
+img.emoji {
+    display: inline !important;
+    border: none !important;
+    box-shadow: none !important;
+    height: 1em !important;
+    width: 1em !important;
+    margin: 0 .07em !important;
+    vertical-align: -0.1em !important;
+    background: none !important;
+    padding: 0 !important;
+}
+</style>
+<link rel="stylesheet" id="woocommerce-layout-css" href="http://fidelismp.com/wp-content/plugins/woocommerce/assets/css/woocommerce-layout.css?ver=3.2.6" type="text/css" media="all"/>
+<link rel="stylesheet" id="woocommerce-smallscreen-css" href="http://fidelismp.com/wp-content/plugins/woocommerce/assets/css/woocommerce-smallscreen.css?ver=3.2.6" type="text/css" media="only screen and (max-width: 768px)"/>
+<link rel="stylesheet" id="job-manager-indeed-css" href="http://fidelismp.com/wp-content/plugins/wp-job-manager-indeed-integration/assets/css/frontend.css?ver=4.9.2" type="text/css" media="all"/>
+<link rel="stylesheet" id="gforms_reset_css-css" href="http://fidelismp.com/wp-content/plugins/gravityforms/css/formreset.min.css?ver=2.2.5" type="text/css" media="all"/>
+<link rel="stylesheet" id="gforms_formsmain_css-css" href="http://fidelismp.com/wp-content/plugins/gravityforms/css/formsmain.min.css?ver=2.2.5" type="text/css" media="all"/>
+<link rel="stylesheet" id="gforms_ready_class_css-css" href="http://fidelismp.com/wp-content/plugins/gravityforms/css/readyclass.min.css?ver=2.2.5" type="text/css" media="all"/>
+<link rel="stylesheet" id="gforms_browsers_css-css" href="http://fidelismp.com/wp-content/plugins/gravityforms/css/browsers.min.css?ver=2.2.5" type="text/css" media="all"/>
+<link rel="stylesheet" id="jobify-fonts-css" href="//fonts.googleapis.com/css?family=Open+Sans%3Aregular%2Citalic%2C700&amp;subset=greek,latin,cyrillic,cyrillic-ext,vietnamese,greek-ext,latin-ext" type="text/css" media="all"/>
+<!--link rel="stylesheet" id="jobify-parent-css" href="http://fidelismp.com/wp-content/themes/jobify/style.css?ver=20170108" type="text/css" media="all"/-->
+<style id="jobify-parent-inline-css" type="text/css">
+html{background-color:##ffffff;}body,input,textarea,select,body .chosen-container-single .chosen-single span,body .chosen-container-single .chosen-single div:before{color:#797979;}a,.job_listing-clickbox:hover{color:#797979;}a:active,a:hover{color:#606060;}.site-header,.nav-menu--primary .sub-menu{background:#ffffff;}.site-title{color:blank;}.nav-menu--primary ul li.highlight > a,.nav-menu--primary ul li.login > a{border-color:#797979;}.nav-menu--primary ul li.highlight > a:hover,.nav-menu--primary ul li.login > a:hover{color:#ffffff;background-color:#797979;border-color:#797979;}.search_jobs,.search_resumes,.cluster div,.job-type,.price-option__title,.entry-header__featured-image:hover .overlay,.widget_price_filter .ui-slider-horizontal .ui-slider-range{background-color:#a4bd39;}.job_filters .search_jobs .filter_by_tag a.active{color:#a4bd39;}.cluster div:after,input:focus,.widget_price_filter .ui-slider .ui-slider-handle{border-color:#a4bd39;}ul.job_listings .job_listing:hover,.job_position_featured,li.type-resume:hover{box-shadow:inset 5px 0 0 #a4bd39;}.button,input[type=button],button,#submitcomment,#commentform input[type=submit],.widget--footer input[type=submit],.mfp-close-btn-in .mfp-close,input[name=wp_job_manager_send_application],input[name=wp_job_manager_edit_application],input[name=submit_bookmark],.add-favorite,.update-favorite,#rcp_submit,input[name=wp_job_manager_resumes_apply_with_resume],input[name=wp_job_manager_resumes_apply_with_resume_create],.wpcf7-submit,input[type=submit].ninja-forms-field,input[name=submit-job-alert],.hero-search .search_jobs>div input[type=submit],.hero-search .search_resumes>div input[type=submit]{background-color:#a4bd39;border-color:transparent;color:#fff;}.button:hover,input[type=button]:hover,button:hover,.job-manager-pagination a:hover,.job-manager-pagination span:hover,.page-numbers:hover,#searchform button:hover,#searchform input[type=submit]:hover,#submitcomment:hover,#commentform input[type=submit]:hover,.page-numbers.current,.widget--footer input[type=submit]:hover,.mfp-close-btn-in .mfp-close:hover,input[name=wp_job_manager_send_application]:hover,input[name=wp_job_manager_edit_application]:hover,input[name=submit_bookmark]:hover,.add-favorite:hover,.update-favorite:hover,#rcp_submit:hover,input[name=wp_job_manager_resumes_apply_with_resume]:hover,input[name=wp_job_manager_resumes_apply_with_resume_create]:hover,.wpcf7-submit:hover,input[type=submit].ninja-forms-field:hover,input[name=submit-job-alert]:hover,.tp-caption .button:hover{background-color:transparent;color:#a4bd39;border-color:#a4bd39;}.button--type-inverted,.widget--home-video .button,.load_more_jobs strong,.load_more_resumes strong,.job-manager-form.wp-job-manager-bookmarks-form a.bookmark-notice,.job-manager-form.wp-job-manager-favorites-form a.favorite-notice{color:#a4bd39;border-color:#a4bd39;}.button--type-inverted:hover,.widget--home-video .button:hover,.load_more_jobs strong:hover,.load_more_resumes strong:hover,.job-manager-form.wp-job-manager-bookmarks-form a.bookmark-notice:hover,.job-manager-form.wp-job-manager-favorites-form a.favorite-notice:hover{background-color:#a4bd39;color:#fff;}.button--type-action,.button--type-secondary:hover,.single-product #content .single_add_to_cart_button,.checkout-button,#place_order,input[type=button].application_button,input[type=button].resume_contact_button{color:#6e9929;background-color:transparent;border-color:#6e9929;}.button--type-action:hover,.button--type-secondary,.single-product #content .single_add_to_cart_button:hover,.checkout-button:hover,#place_order:hover,input[type=button].application_button:hover,input[type=button].resume_contact_button:hover{background-color:#6e9929;color:#ffffff;border-color:#6e9929;}.button--color-white,.button--color-white.button--type-inverted:hover,.button--type-hover-white:hover{color:#797979;background-color:#ffffff;border-color:#ffffff;}.button--color-white:hover,.button--color-white.button--type-inverted,.button--type-hover-inverted-white:hover{background-color:transparent;color:#ffffff;border-color:#ffffff;}body{font-family:"Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;font-weight:normal;line-height:1.5;}.footer-cta,.footer-cta a,.footer-cta tel{color:#ffffff;}.footer-cta a.button:hover{color:#a4bd39 !important;}.footer-cta{background-color:#a4bd39;}.widget-title--footer{color:#d1d1d1;}.widget--footer a{color:#d1d1d1;}.widget--footer{color:#d1d1d1;}.footer-widgets{background-color:#666666;}.copyright a{color:#ffffff;}.copyright{color:#ffffff;}.site-footer{background-color:#a4bd39;}.button,input[type=button],button,#submitcomment,#commentform input[type=submit],.widget--footer input[type=submit],input[name=wp_job_manager_send_application],input[name=wp_job_manager_edit_application],input[name=submit_bookmark],#rcp_submit,input[name=wp_job_manager_resumes_apply_with_resume],input[name=wp_job_manager_resumes_apply_with_resume_create],.wpcf7-submit,input[type=submit].ninja-forms-field,input[name=submit-job-alert],.hero-search .search_jobs>div input[type=submit],.hero-search .search_resumes>div input[type=submit]{font-family:"Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;font-weight:bold;line-height:1.3;font-size:14px;}.entry-title{font-family:"Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;font-weight:normal;line-height:1.3;}.widget-description.widget-description--home,.callout-feature-content p,.hero-search__content p{font-family:"Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;font-weight:normal;line-height:1.5;}.widget-title.widget-title--home,.callout-feature-title,.hero-search__title{font-family:"Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;font-weight:normal;line-height:1.3;}.entry-content .rcp_form input[type=email],.entry-content .rcp_form input[type=password],.entry-content .rcp_form input[type=text],.jobify-input,input[type=email],input[type=number],input[type=password],input[type=search],input[type=tel],input[type=text],select,textarea,body .chosen-container-single .chosen-single span,body .chosen-container .chosen-results li.active-result{font-family:"Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;font-weight:normal;line-height:1;font-size:16px;}.widget-title{font-family:"Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;font-weight:normal;line-height:1.3;}.logged-in .modal .post-20292 .entry-content{padding:30px;}.woocommerce ul.products li.product .onsale, .woocommerce-page ul.products li.product .onsale{background-color:#6e9929;}.woocommerce .price ins,.woocommerce ul.product_list_widget ins{background-color:#a4bd39;}.single-product #content .woocommerce-tabs .tabs li.active a,.woocommerce-MyAccount-navigation-link.is-active a{color:#a4bd39;border-bottom:2px solid #a4bd39;}
+@media screen and (min-width: 992px){.nav-menu--primary ul li a,.nav-menu--primary li a,.nav-menu--primary ul li a:hover,.nav-menu--primary li a:hover,.primary-menu-toggle,.searchform--header__submit,.searchform--header__input{color:#797979;}}
+@media screen and (min-width: 1200px){body{font-size:16px;}.entry-title{font-size:38px;}.widget-description.widget-description--home{font-size:16px;}.widget-title.widget-title--home{font-size:36px;}.page-header{font-family:"Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;font-weight:normal;font-size:34px;line-height:1.3;}.widget-title{font-size:22px;}}
+</style>
+<!-- Inline jetpack_facebook_likebox -->
+<style id="jetpack_facebook_likebox-inline-css" type="text/css">
+.widget_facebook_likebox {
+    overflow: hidden;
+}
+
+</style>
+<link rel="stylesheet" id="jobify-child-css" href="http://fidelismp.com/wp-content/themes/jobify-child/style.css?ver=4.9.2" type="text/css" media="all"/>
+<link rel="stylesheet" id="social-logos-css" href="http://fidelismp.com/wp-content/plugins/jetpack/_inc/social-logos/social-logos.min.css?ver=1" type="text/css" media="all"/>
+<link rel="stylesheet" id="jetpack_css-css" href="http://fidelismp.com/wp-content/plugins/jetpack/css/jetpack.css?ver=5.7.1" type="text/css" media="all"/>
+<script type="text/javascript" src="http://fidelismp.com/wp-includes/js/jquery/jquery.js?ver=1.12.4"></script>
+<script type="text/javascript" src="http://fidelismp.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.4.1"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&amp;libraries=geometry%2Cplaces&amp;language=en&amp;key=AIzaSyD6mqm6wznlhEW4S4rv50agcjmam2dITT8&amp;ver=4.9.2"></script>
+<script type="text/javascript" src="http://fidelismp.com/wp-content/plugins/gravityforms/js/jquery.json.min.js?ver=2.2.5"></script>
+<script type="text/javascript" src="http://fidelismp.com/wp-content/plugins/gravityforms/js/gravityforms.min.js?ver=2.2.5"></script>
+<link rel="https://api.w.org/" href="http://fidelismp.com/wp-json/"/>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://fidelismp.com/xmlrpc.php?rsd"/>
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://fidelismp.com/wp-includes/wlwmanifest.xml"/> 
+<meta name="generator" content="WordPress 4.9.2"/>
+<meta name="generator" content="WooCommerce 3.2.6"/>
+<link rel="shortlink" href="https://wp.me/P2sH0H-M"/>
+<link rel="alternate" type="application/json+oembed" href="http://fidelismp.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Ffidelismp.com%2F"/>
+<link rel="alternate" type="text/xml+oembed" href="http://fidelismp.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Ffidelismp.com%2F&amp;format=xml"/>
+<script>
+    (function(w,d,s,m,n,t){
+        w[m]=w[m]||{init:function(){(w[m].q=w[m].q||[]).push(arguments);},ready:function(c){if('function'!=typeof c){return;}n.onload=n.onreadystatechange=function(){
+        if(!n.readyState||/loaded|complete/.test(n.readyState)){n.onload=n.onreadystatechange=null;if(t.parentNode&&n.parentNode){t.parentNode.removeChild(n);}if(c){c();}}};}},
+        w[m].d=1*new Date();n=d.createElement(s);t=d.getElementsByTagName(s)[0];n.async=1;n.src='//www.medtargetsystem.com/javascript/beacon.js?v2.5.12';
+        t.parentNode.insertBefore(n,t);
+    })(window,document,'script','AIM');
+
+    AIM.init('49-277-3CBFCE43');
+</script>
+<!-- Simple Google Analytics Begin -->
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount','UA-31567960-1']);
+_gaq.push(['_trackPageLoadTime']);
+_gaq.push(['_trackPageview']);
+(function() {
+var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+                <script type="text/javascript">
+
+                    (function($) {
+                        
+                        // Type de fichiers télechargeable                      
+                        var filetypes = /\.(zip|exe|dmg|pdf|doc.*|xls.*|ppt.*|mp3|txt|rar|wma|mov|avi|wmv|flv|wav)$/i ;
+                        var baseHref = '' ;
+
+                        if ($('base').attr('href') != undefined) baseHref = $('base').attr('href') ;
+                 
+                        // On ajoute un event sur toutes les balises 'a' de la page
+                        $('a').on('click', function(event) {
+
+                            var el = $(this) ;
+                            var track = true ;
+                            var href = (typeof(el.attr('href')) != 'undefined' ) ? el.attr('href') :"" ;
+                            var isThisDomain = href.match(document.domain.split('.').reverse()[1] + '.' + document.domain.split('.').reverse()[0]) ;
+
+                            if (!href.match(/^javascript:/i)) {
+                                var elEv = []; elEv.value=0, elEv.non_i=false ;
+                                if (href.match(/^mailto\:/i)) {
+                                    elEv.category = "email" ;
+                                    elEv.action = "click" ;
+                                    elEv.label = href.replace(/^mailto\:/i, '') ;
+                                    elEv.loc = href ;
+                                }
+                                else if (href.match(filetypes)) {
+                                    var extension = (/[.]/.exec(href)) ? /[^.]+$/.exec(href) : undefined ;
+                                    elEv.category = "download" ;
+                                    elEv.action = "click-" + extension[0] ;
+                                    elEv.label = href.replace(/ /g,"-") ;
+                                    elEv.loc = baseHref + href ;
+                                }
+                                else if (href.match(/^https?\:/i) && !isThisDomain) {
+                                    elEv.category = "external" ;
+                                    elEv.action = "click" ;
+                                    elEv.label = href.replace(/^https?\:\/\//i, '') ;
+                                    elEv.non_i = true;  
+                                    elEv.loc = href ;
+                                }
+                                else if (href.match(/^tel\:/i)) {
+                                    elEv.category = "telephone" ;
+                                    elEv.action = "click" ;
+                                    elEv.label = href.replace(/^tel\:/i, '') ;
+                                    elEv.loc = href ;
+                                }
+                                else track = false ;
+
+                                if (track) {
+                                    _gaq.push(['_trackEvent', elEv.category.toLowerCase(), elEv.action.toLowerCase(), elEv.label.toLowerCase(), elEv.value, elEv.non_i]) ;
+                                    if (el.attr('target') == undefined || el.attr('target').toLowerCase() != '_blank') {
+                                        setTimeout(function() { location.href = elEv.loc; }, 400) ;
+                                        return false ;
+                                    }
+                                }
+                            }
+
+                        }) ;
+
+                    })(jQuery) ;
+
+                </script>
+
+            
+<!-- Simple Google Analytics End -->
+
+<link rel="dns-prefetch" href="//v0.wordpress.com"/>
+    <noscript><style>.woocommerce-product-gallery{ opacity: 1 !important; }</style></noscript>
+    <style id="job_manager_colors">
+.job-type.term-414, .job-type.full-time { background-color: #a4bd39; } 
+.job-type.term-415, .job-type.part-time { background-color: #898989; } 
+</style>
+        <style type="text/css">
+                .site-title span {
+            position: absolute;
+            clip: rect(1px, 1px, 1px, 1px);
+        }
+                .site-branding,
+        .site-description,
+        .site-branding:hover {
+            color: #fff;
+            text-decoration: none;
+        }
+        table {
+    border: 1px solid #ededed;
+    border-collapse: collapse;
+    border-spacing: 0;
+    font-size: 14px;
+    line-height: 2;
+    margin: 0 0 20px;
+    width: 97%!important;
+}
+        </style>
+        <link rel="icon" href="http://fidelismp.com/wp-content/uploads/2015/09/cropped-Cross-Icon-PNG-32x32.png" sizes="32x32"/>
+<link rel="icon" href="http://fidelismp.com/wp-content/uploads/2015/09/cropped-Cross-Icon-PNG-192x192.png" sizes="192x192"/>
+<link rel="apple-touch-icon-precomposed" href="http://fidelismp.com/wp-content/uploads/2015/09/cropped-Cross-Icon-PNG-180x180.png"/>
+<meta name="msapplication-TileImage" content="http://fidelismp.com/wp-content/uploads/2015/09/cropped-Cross-Icon-PNG-270x270.png"/>
+            <style type="text/css" id="wp-custom-css">
+                /*
+You can add your own CSS here.
+
+Click the help icon above to learn more.
+*/
+
+.homepage-widget { 
+  margin: 50px 0;
+} 
+.atsForm
+Left {
+     width: 0px!important; 
+} 
+
+.btn.btn-default.continue {
+    background-color: #a4bd39;
+    background-image: none;
+    background-position: 0px 0px;
+    background-repeat: no-repeat;
+    border: 2px solid #a4bd39;
+    border-radius: 0;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 300;
+    padding: 8px 24px 8px 24px;
+    text-shadow: none;
+    width: 200px;
+}  
+.btn.btn-default.atsButton {
+    background-color: #a4bd39;
+    background-image: url(http://cdn2.hubspot.net/hub/436003/file-2581685209-png/cos-assets/job-board-assets/search-icon.png);
+    background-position: 14px 3px;
+    background-repeat: no-repeat;
+    border: 2px solid #a4bd39;
+    border-radius: 0;
+    color: #fff;
+    float: right;
+    font-size: 14px;
+    font-weight: 300;
+    padding: 8px 24px 8px 45px;
+    text-shadow: none;
+}  
+
+
+
+.entry-content .rcp_form input[type=email], .entry-content .rcp_form input[type=password], .entry-content .rcp_form input[type=text], .jobify-input, input[type=email], input[type=number], input[type=password], input[type=search], input[type=tel], input[type=text], select, textarea {
+    font-size: 16px;
+    padding: 10px 14px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    width: 94%;
+}     </style>
+        <style>[data-columns]::before{display:block;visibility:hidden;position:absolute;font-size:1px;}</style><link rel="stylesheet" type="text/css" id="gravatar-card-css" href="http://s.gravatar.com/css/hovercard.css?ver=2018Janaa"/><link rel="stylesheet" type="text/css" id="gravatar-card-services-css" href="http://s.gravatar.com/css/services.css?ver=2018Janaa"/><style type="text/css">._ibani_6555{-webkit-animation-name:_ibani_6555;-webkit-animation-duration:0.5s;-webkit-animation-iteration-count:1;}@-webkit-keyframes _ibani_6555 {from {-webkit-transform: scale(0)}50% {-webkit-transform: scale(1.2)}90% {-webkit-transform: scale(0.95)}to {-webkit-transform: scale(1)}}</style><script type="text/javascript" charset="UTF-8" src="https://maps.googleapis.com/maps-api-v3/api/js/30/13/common.js"></script><script type="text/javascript" charset="UTF-8" src="https://maps.googleapis.com/maps-api-v3/api/js/30/13/util.js"></script><script type="text/javascript" charset="UTF-8" src="https://maps.googleapis.com/maps-api-v3/api/js/30/13/stats.js"></script></head>
+
+<!--link rel="icon" type="image/png" href="{!$Resource.JobBoardFavicon}" /-->
+<link rel="stylesheet"  type="text/css" href="http://thmedstaffing.com/wp-content/themes/scroller/styles/font-awesome-ie7.css?ver=4.7.2"/>
+  <!--apex:stylesheet value="{!URLFOR($Resource.JobBoardTemplate, 'css/bootstrap-theme.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.JobBoardTemplate, 'css/bootstrap-theme.min.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.JobBoardTemplate, 'css/bootstrap.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.JobBoardTemplate, 'css/bootstrap.min.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.JobBoardTemplate, 'css/selectone-job-board.css')}" />
+        <apex:includeScript value="{!URLFOR($Resource.JobBoardTemplate, 'js/bootstrap.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.JobBoardTemplate, 'js/bootstrap.min.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.JobBoardTemplate, 'js/npm.js')}" /-->
+        
+        <!-- Brandon R, provided files-->
+        <apex:stylesheet value="" />
+        <!--apex:stylesheet value="{!$Resource.JobBoard_CSS}" /-->
+        <apex:stylesheet value="{!$Resource.JobBoard_CSSFidelisPartners}" />
+        <!--apex:stylesheet value="{!$Resource.Fidelisstyle}" /-->
+        <apex:stylesheet value="{!$Resource.style_fidelisPartners}"/>
+        
+        <!--apex:stylesheet value="{!URLFOR($Resource.JobBoardTemplate, 'css/job-board-cos-styles.css')}" /-->
+        <!--apex:includeScript value="{!URLFOR($Resource.JobBoardTemplate, 'js/jquery.min.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.JobBoardTemplate, 'js/responsive-nav.min.js')}" /-->        
+
+<script>
+
+$( document ).ready(function() {
+  var nav = responsiveNav("#navWrap",{label: "&nbsp;",customToggle: "customToggle"});
+});
+
+</script>  
+
+<style>
+.atsFormTdLeft {
+    width: 15%;
+}
+button, input[type="button"], input[type="reset"], input[type="submit"] {
+    display: inline-block;
+    color: #eef0ea;
+    text-decoration: none;
+    background: green;
+}
+
+.site-header {
+    position: fixed !important;
+    z-index: 33333;
+    box-shadow: inset rgba(0,0,0,.1) 0 -1px 0;
+    -webkit-transition: all .3s;
+    -moz-transition: all .3s;
+    transition: all .3s;
+    width: 100%;
+}
+.site-primary-navigation {
+    margin-top: 2em !important;
+    display:;
+}
+button.searchform__submit:before {
+    content: "";
+    font-size: 22px;
+    color: #fff;
+}
+body button, body .x-btn, body .btn, body .btnDisabled, body .btnCancel, body .menuButton .menuButtonButton {
+    color: #333;
+    margin: 1px;
+    padding: 2px 3px;
+    /* border: 1px solid #b5b5b5; */
+    /* border-bottom-color: #7f7f7f; */
+    background: #e8e8e9 url(/img/alohaSkin/btn_sprite.png) repeat-x right top;
+    font-weight: bold;
+    font-size: .9em;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+}
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+           <header id="masthead" class="site-header" role="banner" style="top: 0px;">
+            <div class="container">
+
+                <div class="site-header__wrap">
+
+                    <a href="http://fidelismp.com/" title="Fidelis Partners" rel="home" class="site-branding">
+                                                <h1 class="site-title">
+                                                            <img src="http://fidelismp.com/wp-content/uploads/2016/08/logo.png" alt="" scale="0" height="88" width="376"/>
+                            
+                            <span>Fidelis Partners</span>
+                        </h1>
+                        <h2 class="site-description">Physician and Advanced Practice Recruiting</h2>
+                    </a>
+
+                    <nav id="site-navigation" class="site-primary-navigation">
+                        <a href="#site-navigation" class="js-primary-menu-toggle primary-menu-toggle primary-menu-toggle--close">Close</a>
+
+                        <form role="search" method="get" id="searchform" class="searchform searchform--header" action="http://fidelismp.com/">
+    <label class="screen-reader-text" for="s">Search for:</label>
+    <input value="" name="s" id="s" class="searchform__input searchform--header__input" placeholder="Keywords..." type="text"/>
+    <button type="submit" id="searchsubmit" class="searchform__submit searchform--header__submit"><span class="screen-reader-text">Search</span></button>
+</form>
+<div class="nav-menu nav-menu--primary"><ul id="menu-primary" class="nav-menu nav-menu--primary"><li id="menu-item-32" class="menu-item menu-item-type-post_type menu-item-object-page  menu-item-32"><a href="http://fidelismp.com/about-us/">About Us<i class="fa fa-angle-down"></i></a>
+<ul class="sub-menu">
+    <li id="menu-item-5089" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5089"><a href="http://fidelismp.com/about-us/careers/">Careers</a></li>
+    <li id="menu-item-70" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-70"><a href="http://fidelismp.com/about-us/press/">Press</a></li>
+</ul>
+</li>
+<li id="menu-item-33" class="menu-item menu-item-type-post_type menu-item-object-page  menu-item-33 "><a href="http://fidelismp.com/clients/" >Clients<i class="fa fa-angle-down"></i></a>
+<ul class="sub-menu">
+    <li id="menu-item-6016" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-6016"><a href="http://fidelismp.com/clients/pacer-presentations/">PACER Presentations</a></li>
+    <li id="menu-item-6017" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-6017"><a href="http://fidelismp.com/clients/demand-indicator-map/">Demand Indicator Map</a></li>
+    <li id="menu-item-34" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-34"><a href="http://fidelismp.com/clients/sourcing-methods/">Sourcing Methods</a></li>
+    <li id="menu-item-53" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-53"><a href="http://fidelismp.com/clients/search-process/">Search Process</a></li>
+</ul>
+</li>
+<li id="menu-item-55" class="menu-item menu-item-type-post_type menu-item-object-page  menu-item-55"><a href="http://fidelismp.com/candidates/">Candidates<i class="fa fa-angle-down"></i></a>
+<ul class="sub-menu">
+    <li id="menu-item-16829" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16829"><a href="http://fidelismp.com/search-jobs/">Search Jobs</a></li>
+    <li id="menu-item-288" class="menu-item menu-item-type-post_type menu-item-object-page  menu-item-288"><a href="http://fidelismp.com/candidates/resources/">Candidate Resources<i class="fa fa-angle-down"></i></a>
+    <ul class="sub-menu">
+        <li id="menu-item-11995" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-11995"><a href="http://fidelismp.com/candidates/resources/job-search-tips/">Job Search Tips</a></li>
+        <li id="menu-item-11994" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-11994"><a href="http://fidelismp.com/candidates/resources/cv-writing-tips/">CV Writing Tips</a></li>
+        <li id="menu-item-11993" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-11993"><a href="http://fidelismp.com/candidates/resources/physician-interview-tips/">Physician Interview Tips</a></li>
+        <li id="menu-item-20416" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-20416"><a href="http://fidelismp.com/candidates/resources/physician-job-offer-negotiating-tips/">Job Offer Negotiating Tips</a></li>
+    </ul>
+</li>
+</ul>
+</li>
+<li id="menu-item-54" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-54"><a href="http://fidelismp.com/blog/">Blog</a></li>
+<li id="menu-item-17178" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-17178"><a href="http://fidelismp.com/industry-insight/">Industry Insight</a></li>
+<li id="menu-item-56" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-56"><a href="http://fidelismp.com/contact-us/">Contact Us</a></li>
+</ul></div>                 </nav>
+                </div>
+
+                <a href="#site-navigation" class="js-primary-menu-toggle primary-menu-toggle primary-menu-toggle--open"><span class="screen-reader-text">Menu</span></a>
+            </div>
+        <div></div></header>
+        <br/><br/><br/><br/><br/>
+        
+        <div id="BodyWrapper" class="row" style="margin-left: 4%;">
+        <apex:insert name="body"/>
+        </div>
+        <br/>
+        
+        <footer id="colophon" class="site-footer" role="contentinfo">
+                        <div class="footer-widgets">
+                <div class="container">
+                    <div class="row">
+                         
+                        <div class="col-xs-12 col-md-6 col-lg-3">
+                            <aside id="text-13" class="widget widget--footer widget_text"><h3 class="widget-title widget-title--footer">Fidelis Partners</h3>           <div class="textwidget">Permanent placement services - matching top healthcare talent with hospitals and medical groups nationwide.</div>
+        </aside>       </div>
+                         
+                        <div class="col-xs-12 col-md-6 col-lg-3">
+                            <aside id="search-3" class="widget widget--footer widget_search">
+                            <form role="search" method="get" id="searchform" class="searchform" action="http://fidelismp.com/">
+    <label class="screen-reader-text" for="s">Search for:</label>
+    <input type="text" value="" name="s" id="s" class="searchform__input" placeholder="Keywords..."/>
+    <button  id="searchsubmit" class="searchform__submit"><i class="fa fa-search" style="margin-top:-23px;color:#797979;"></i></button>
+</form></aside> </div>
+                         
+                        <div class="col-xs-12 col-md-6 col-lg-3">
+                                    <aside id="recent-posts-5" class="widget widget--footer widget_recent_entries">     <h3 class="widget-title widget-title--footer">Recent Posts</h3>     <ul>
+                    <li>
+                <a href="http://fidelismp.com/recruiting-tips-mobile-age/">Recruiting Tips for the Mobile Age</a>
+                        </li>
+                    <li>
+                <a href="http://fidelismp.com/guide-to-writing-thank-you-notes-after-an-interview/">Guide to Writing Thank You Notes After an Interview</a>
+                        </li>
+                    <li>
+                <a href="http://fidelismp.com/happy-nurse-practitioner-week-fidelis-partners/">Happy Nurse Practitioner Week from Fidelis Partners</a>
+                        </li>
+                </ul>
+        </aside>                                </div>
+                         
+                        <div class="col-xs-12 col-md-6 col-lg-3">
+                            <aside id="text-3" class="widget widget--footer widget_text"><h3 class="widget-title widget-title--footer">Contact Information</h3>         <div class="textwidget">
+<br>1603 Lyndon B. Johnson Freeway, Suite 700
+Dallas, Texas 75234 USA</br>
+
+<br>Toll Free: 866-995-6077
+Fax: 949-325-7011</br>
+
+General Inquiries: <a href="mailto:info@fidelismp.com">Email Us</a> 
+
+<p><a href="/privacy-policy">Privacy Policy</a> </p></div>
+        </aside>                        </div>
+                                            </div>
+                </div>
+            </div>
+           
+          <!--  <div class="copyright">
+                <div class="container">
+                    <div class="site-info">
+                        © 2017 Fidelis Partners — All Rights Reserved                   </div><!-- .site-info
+
+                    <div class="footer-social"><a href="http://linkedin.com/company/fidelis-partners-llc"><span class="screen-reader-text">LinkedIn</span></a>
+<a href="http://facebook.com/fidelismp"><span class="screen-reader-text">Facebook</span></a>
+<a href="http://twitter.com/fidelismp"><span class="screen-reader-text">Twitter</span></a>
+</div>
+                    <a href="#top" class="btt "><span class="screen-reader-text">Back to Top</span></a>
+                </div>
+            </div>-->
+        </footer>  
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+</apex:page>

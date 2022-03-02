@@ -1,0 +1,216 @@
+<apex:page id="idMyPage" standardStyleSheets="false" sidebar="true" controller="SplitsManagerController"  >
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+       <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1"/>
+            <apex:stylesheet value="{!URLFOR($Resource.SLDS092, 'assets/styles/salesforce-lightning-design-system-vf.css')}" /> 
+            <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
+            <apex:includeScript value="{!URLFOR($Resource.TB_JS, '/jQuery-1.11.3.min.js')}" />
+            <apex:includeScript value="{!URLFOR($Resource.TB_JS, '/jquery-ui-1.11.3.js')}" />  
+            
+            <style>
+                .errorMsg{
+                    color:red; 
+                } 
+               
+                .msgStyle{
+                    color:white;
+                }
+                
+                .commentStyle{
+                    min-height: 50px; 
+                    max-height:50px
+                }
+                
+                .slds-table--bordered{
+                    border-left: 1px solid #d8dde6;
+                    border-right: 1px solid #d8dde6;
+                }
+                
+                .slds .slds-button-group {
+                    display: -webkit-box;
+                    }
+                    
+                 .lookupInput a { 
+                       width: 25px !important;
+                       margin-left: -5%;
+                       padding: 18px 1px 7px 1px !important;
+
+                    }
+                    
+                    li {
+                        margin-bottom:1%;
+                    }
+        </style>
+       </head>
+<!--        <apex:composition template="RC_CommunityTemplate"> -->
+<!--            <apex:define name="body"> -->
+            <div class="slds-all-elements" style="position:inherit; overflow-x:inherit">
+                <div id="content" style="z-index:100">
+                    <div class="slds-content"> 
+                           <div class="slds">
+                            <!-- Start Loading Status -->
+                           <apex:actionstatus id="processingImg">
+                                 <apex:facet name="start">
+                                    <div id="outPopUpAction"> 
+                                        <div class="slds-spinner--medium" >
+                                            <img src="{!URLFOR($Resource.SLDS092, 'assets/images/spinners/slds_spinner_inverse.gif')}">  
+                                                <span class="slds-m-right--medium" style="color: #081BDE; font-weight:bolder;">Loading...</span>
+                                            </img>
+                                        </div>
+                                    </div> 
+                                    <div class="slds-modal-backdrop slds-modal-backdrop--open"  id="idBackDropAction"></div>
+                                </apex:facet>
+                            </apex:actionstatus>  
+                            <!-- End Loading Status -->
+                            
+                            <!-- Start apex form -->
+                            <apex:form id="formid">  
+                                <apex:pageMessages id="test" />
+                                <apex:actionFunction name="deleteItem" action="{!removeSplitRow}" rerender="idLineItem, editLineItem, btnGroup, test" status="processingImg" immediate="true">
+                                    <apex:param name="param1" value="" assignTo="{!selectedIndex}"/>
+                                </apex:actionFunction>
+                                <apex:outputPanel >
+                                <div class="slds-page-header" role="banner" style="    margin-left: 24px;margin-right: 24px;margin-bottom: -22px;">
+                                        <div class="slds-grid slds-wrap slds-grid--align-spread">
+                                            <div class="slds-col">
+                                                <div class="slds-media">
+<!--                                                     <div class="slds-media__figure"> -->
+<!--                                                         <span class="slds-avatar slds-avatar--medium"> -->
+<!-- <!--                                                            <img src="{!URLFOR($Resource.SLDS092, '/assets/icons/standard/report_60.png')}" style="background-color: #8291C3;" /> --> 
+<!--                                                         </span> -->
+<!--                                                     </div>  -->
+                                                     <div class="slds-media__body">
+<!--                                                       <p class="slds-text-heading--label">{!$User.FirstName} {!$User.LastName}</p> -->
+                                                        <div class="slds-grid">
+                                                            <apex:outputPanel >
+                                                                <h1 class="slds-text-heading--medium slds-m-right--small slds-truncate slds-align-middle" 
+                                                                        title="Manage Split Information">Manage Split Information</h1>
+                                                            </apex:outputPanel>
+                                                        </div>
+                                                     </div>
+                                                </div>
+                                            </div>
+                                            <apex:outputPanel id="btnGroup" layout="block" styleClass="slds-col"> 
+                                                <div class="slds-button-group slds-m-top--medium " role="group">
+                                                    <apex:commandButton styleclass="slds-button slds-button--neutral" action="{!cancelAction}"  value="Cancel" immediate="true"/>
+                                                    <apex:commandButton styleClass="slds-button slds-button--brand" value="Save"  action="{!saveSplitsInformation}" status="processingImg" 
+                                                                        rerender="test, expRep, idShowErrorMessage, editLineItem"
+                                                                        rendered="{!listExistingSplits.size != 0}"/> 
+                                                </div>
+                                            </apex:outputPanel>
+                                        </div>
+                                    </div>
+                                   <br/>
+                                    <apex:variable value="3" var="columnCount" />
+                                    <!-- Start to show the tabs when the page in detail mode -->
+                                    <apex:outputPanel layout="block" id="tabs" styleClass="slds-col--padded-large">
+                                        <div class="slds-tabs--scoped">
+                                            <!-- Expense Line Item tabs -->
+                                            <div id="tab-scoped-1" class="slds-tabs__content slds-show" role="tabpanel">
+                                                <apex:outputPanel id="editLineItem" layout="block">
+                                                
+                                                <!-- Start Expense Line Item Details -->
+                                                    <apex:outputPanel id="idExpenseDetails" layout="block">
+                                                        
+                                                        <!-- Expense Line Item panel to show the empty message -->
+                                                        <apex:outputPanel rendered="{!listExistingSplits.size == 0}" layout="block" >
+                                                             <div class="slds-notify slds-notify--alert slds-theme--alert-texture" role="alert" id="messageExpenseEmpty">
+                                                                <div class="slds-notify__close" id="idClose"> 
+                                                                    <span class="slds-assistive-text">Close</span> 
+                                                                </div> 
+                                                                <div class="notify__content slds-grid">                         
+                                                                    <apex:outputPanel styleClass="slds-col slds-align-middle">
+                                                                        <h2 class="slds-text-heading--small ">  
+                                                                             <span>No Users !!</span>      
+                                                                        </h2>
+                                                                    </apex:outputPanel> 
+                                                                </div>
+                                                            </div>
+                                                        </apex:outputPanel> 
+                                                        <!-- End Expense Line Item panel to show the empty message -->
+                                                        
+                                                        <div class="slds-grid slds-wrap slds-grid--align-spread">
+                                                             <div class="slds-col  slds-size--1-of-1 slds-medium-size--6-of-6 slds-large-size--10-of-12">     
+                                                                <apex:outputPanel rendered="{!listExistingSplits.size != 0}" styleClass="slds-m-top--medium" layout="block">
+                                                                    <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal">
+                                                                        <thead>
+                                                                            <tr class="slds-text-heading--label">
+                                                                                <th data-label="User" class="slds-text-heading--label slds-size--1-of-{!columnCount}" scope="col"><b>User</b></th>
+                                                                                <th data-label="Role" class="slds-text-heading--label slds-size--1-of-{!columnCount}" scope="col"><b>Role</b></th>
+                                                                                <th data-label="Split Percentage" class="slds-text-heading--label slds-size--1-of-{!columnCount}" scope="col"><b>Split Percentage</b></th>
+                                                                                <th data-label="" class="slds-text-heading--label slds-size--1-of-{!columnCount}" scope="col"></th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <apex:variable var="varLineEditDate" value="{!0}" /> 
+                                                                            <apex:variable var="varPopover" value="{!0}" />
+                                                                            <apex:repeat value="{!listExistingSplits}" var="objExpItem" id="expRec"> 
+                                                                                <tr class="slds-hint-parent" id = "newExpItem{!varLineEditDate}">
+                                                                                     <td data-label="User" class="slds-size--1-of-{!columnCount}" >
+                                                                                             <apex:inputField styleClass="slds-input requiredField userClass" 
+                                                                                                                value="{!objExpItem.User__c}" 
+                                                                                                                style="border-left:4px solid red;"
+                                                                                                                required="true"/>
+                                                                                     </td> 
+                                                                                     <td data-label="User" class="slds-size--1-of-{!columnCount}" >
+                                                                                             <apex:inputField styleClass="slds-input requiredField" 
+                                                                                             value="{!objExpItem.Role__c}" 
+                                                                                             style="border-left:4px solid red;"
+                                                                                             required="true" />
+                                                                                     </td>
+                                                                                     <td data-label="User" class="slds-size--1-of-{!columnCount}" >
+                                                                                             <apex:inputField styleClass="slds-input requiredField" 
+                                                                                             value="{!objExpItem.Split_Percentage__c}" 
+                                                                                             style="border-left:4px solid red;"
+                                                                                             required="true" />
+                                                                                     </td>
+                                                                                    <td data-label="" class="slds-size--1-of-{!columnCount}">
+                                                                                        <button class="slds-button slds-button--icon-border slds-toggle-visibility" id="{!varLineEditDate}" style="text-align: center; cursor:pointer;"  onclick="deleteRow('{!varLineEditDate}')">
+                                                                                              <img src="{!URLFOR($Resource.SLDS092, '/assets/icons/utility/delete_60.png')}" height="24" width="24" ></img>
+                                                                                            <span class="slds-assistive-text">delete</span>
+                                                                                        </button>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <apex:variable var="varLineEditDate" value="{!varLineEditDate+1}" />
+                                                                            </apex:repeat>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </apex:outputPanel>
+                                                            </div>
+                                                            <div class="slds-col slds-m-top--medium slds-large-show slds-col--padded slds-size--1-of-1 slds-medium-size--3-of-6 slds-large-size--2-of-12">
+                                                                <apex:outputPanel layout="block">
+                                                                    <apex:commandButton styleClass="slds-button slds-button--brand slds-large-show" 
+                                                                                        value="Add User" 
+                                                                                        action="{!addSplitRow}" 
+                                                                                        reRender="idExpenseDetails, btnGroup, test" 
+                                                                                        status="processingImg" />
+                                                                </apex:outputPanel>
+                                                            </div> 
+                                                       </div>
+                                                    </apex:outputPanel>
+                                                </apex:outputPanel>
+                                            </div>
+                                            <!-- End with Expense Line Item Details -->
+                                        </div>
+                                    </apex:outputPanel>
+                                </apex:outputPanel>
+                            </apex:form>
+                        </div>
+                    </div>     
+                </div>
+            </div>
+            <script>
+                
+                //Delete Table row once click on Delete Icon 
+                function deleteRow(rowNum){
+                    $('.clsAddDetails'+rowNum+' input,.clsComment'+rowNum+' textarea').each(function(){
+                         this.value = '';
+                    }); 
+                    $('#newExpItem'+rowNum).remove();
+                    deleteItem(rowNum);
+                }
+            </script>
+<!--             </apex:define> -->
+<!--     </apex:composition> -->
+  </html>    
+</apex:page>

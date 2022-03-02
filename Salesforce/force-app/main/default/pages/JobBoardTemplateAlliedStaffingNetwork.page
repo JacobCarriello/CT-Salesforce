@@ -1,0 +1,200 @@
+<apex:page standardStyleSheets="true" showHeader="false" sidebar="false" cache="false">
+<title> AlliedStaffingNetwork </title>
+<link rel="icon" type="image/png"/>
+<!--link rel="icon" type="image/png" href="{!$Resource.JobBoardFavicon}" /-->
+<link rel="stylesheet"  type="text/css" href="http://thmedstaffing.com/wp-content/themes/scroller/styles/font-awesome-ie7.css?ver=4.7.2"/>
+  <apex:stylesheet value="{!URLFOR($Resource.JobBoardTemplate, 'css/bootstrap-theme.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.JobBoardTemplate, 'css/bootstrap-theme.min.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.JobBoardTemplate, 'css/bootstrap.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.JobBoardTemplate, 'css/bootstrap.min.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.JobBoardTemplate, 'css/selectone-job-board.css')}" />
+        <!--apex:includeScript value="{!URLFOR($Resource.JobBoardTemplate, 'js/bootstrap.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.JobBoardTemplate, 'js/bootstrap.min.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.JobBoardTemplate, 'js/npm.js')}" /-->
+        
+        <!-- Brandon R, provided files-->
+        <apex:stylesheet value="" />
+        <apex:stylesheet value="{!$Resource.JobBoard_CSS}" />
+        <apex:stylesheet value="{!$Resource.AlliedStaffingNetwork}" />
+        <apex:stylesheet value="{!$Resource.style_Allied}" />
+        <!--apex:stylesheet value="{!URLFOR($Resource.AlliedStaffingNetwork, 'css/style_Allied.css')}" /-->
+        <apex:stylesheet value="{!URLFOR($Resource.AlliedStaffingNetwork, 'image/facebook.png')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.AlliedStaffingNetwork, 'image/twitter.png')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.AlliedStaffingNetwork, 'image/linkedin.png')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.JobBoardTemplate, 'css/job-board-cos-styles.css')}" />
+        <apex:includeScript value="{!URLFOR($Resource.JobBoardTemplate, 'js/jquery.min.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.JobBoardTemplate, 'js/responsive-nav.min.js')}" />        
+        <br/>
+        
+        <style>
+        .met_bgcolor {
+    background-color: #d11f32;
+}
+        .met_bgcolor7 {
+    background-color: #fff;
+}
+.met_bgcolor3 {
+    background-color: #656870;
+    
+}
+<!-- -->
+.menu {
+
+margin:0px auto;
+
+}
+.menu li {
+margin:0px;
+list-style:none;
+font-family:'Ek Mukta';
+
+}
+.menu a {
+transition:all linear 0.15s;
+color:#fff;
+
+}
+.menu li:hover > a, .menu .current-item > a {
+text-decoration:none;
+color:#fff;
+background-color:#8C9099 !important;
+}
+.menu .arrow {
+font-size:11px;
+line-height:0%;
+}
+/*----- Top Level -----*/
+.menu > ul > li {
+float:left;
+display:inline-block;
+position:relative;
+font-size:14px;
+font-family: 'Open Sans', sans-serif;
+}
+.menu > ul > li > a {
+padding:3px 20px;
+display:inline-block;
+text-shadow:0px 1px 0px rgba(0,0,0,0.4);
+}
+.menu > ul > li:hover > a, .menu > ul > .current-item > a {
+background:#1461a2;
+}
+/*----- Bottom Level -----*/
+.menu li:hover .sub-menu {
+z-index:1;
+opacity:1;
+}
+.sub-menu {
+width:160%;
+padding:5px 0px;
+position:absolute;
+top:100%;
+left:0px;
+z-index:-1;
+opacity:0;
+transition:opacity linear 0.15s;
+box-shadow:0px 2px 3px rgba(0,0,0,0.2);
+background:#fff;
+color:#000;
+}
+.sub-menu li {
+display:block;
+font-size:16px;
+color:#000;
+}
+.sub-menu li a {
+padding:10px 30px;
+display:block;
+color:#000;
+}
+.sub-menu li a:hover, .sub-menu .current-item a {
+background:#46484E;
+color:#1461a2;
+}
+.met_main_nav > ul li ul {
+    top: 100%;
+    left: 0;
+    min-width: 200px;
+    background-color: #46484E;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border-radius: 0 0 5px 5px;
+    /* display: none; */
+}
+        </style>
+<script>
+
+$( document ).ready(function() {
+  var nav = responsiveNav("#navWrap",{label: "&nbsp;",customToggle: "customToggle"});
+});
+
+</script> 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+
+<div class="met_page_wrapper">
+<header class="met_content">
+    <div class="row-fluid">
+        <div class="span12">
+            <a href="https://alliedstaffingnetwork.com/" class="met_logo"><img src="https://alliedstaffingnetwork.com/wp-content/uploads/2013/09/ASN-Logo-Final.png" data-retina="https://alliedstaffingnetwork.com/wp-content/uploads/2013/09/ASN-Logo-Final.png" height="125" style="height: 125px; margin-top: 12px;" alt="Allied Staffing Network"/></a>
+            <aside class="clearfix">
+                <a href="https://www.facebook.com/alliedstaffingnetwork"><i style="font-size:24px" class="fa">&#xf082;</i></a>
+<a href="http://www.linkedin.com/company/allied-staffing-network"><i style="font-size:24px" class="fa">&#xf08c;</i></a>
+<a href="https://twitter.com/alliedstaffnet"><i style="font-size:24px" class="fa">&#xf081;</i></a>
+                                <nav >
+                    <ul style="margin-left: -71px;" >
+                                                <li><a href="https://alliedstaffingnetwork.com/search-jobs/" target="" class="met_color_transition ">Search Jobs</a></li>
+                                                <li><a href="https://alliedstaffingnetwork.com/jobseekers/sign-up/" target="" class="met_color_transition ">Sign Up</a></li>
+                                                <li><a href="http://alliedstaffingnetwork.com/wp-login.php" target="" class="met_color_transition ">Login</a></li>
+                                            </ul>
+                </nav>
+                            </aside>
+            <div id="dl-menu" class="dl-menuwrapper">
+                
+            </div><!-- /dl-menuwrapper -->
+        </div>
+    </div>
+</header>
+  <nav class="menu met_content met_main_nav met_bgcolor3 clearfix" data-fixed="1" data-fixed-width="1170px" data-fixed-left="55px" style="left: 0px; width: 1170px; display: block;">
+    <ul class="clearfix">
+        <li style="margin-left: -39px;"><a href="https://alliedstaffingnetwork.com/" class="met_menu_home"><i class="fa fa-home" style="font-size: 45px;
+ margin-bottom: 20px;"></i></a></li>
+
+        <li class=""><a href="https://alliedstaffingnetwork.com/search-jobs/" target="">Search Jobs</a></li><li class=""><a href="https://alliedstaffingnetwork.com/about-us/" target="" class="sf-with-ul">About Us <i style="font-size:20px;color:#848d98" class="fa">&#xf0d7;</i></a><ul  class="sub-menu met_main_nav"><li><a href="https://alliedstaffingnetwork.com/who-we-are/" target="">Who We Are</a></li></ul></li><li class=""><a href="https://alliedstaffingnetwork.com/employers/" target="">Employers</a></li><li class=""><a href="https://alliedstaffingnetwork.com/jobseekers/" target="" class="sf-with-ul">Jobseekers <i style="font-size:20px;color:#848d98" class="fa">&#xf0d7;</i></a><ul class="sub-menu"><li class=" "><a href="https://alliedstaffingnetwork.com/search-jobs/" target="">Search Jobs</a></li><li class=" "><a href="https://alliedstaffingnetwork.com/jobseekers/travelers-forms/" target="">Traveler Forms</a></li><li class=" "><a href="https://alliedstaffingnetwork.com/jobseekers/skills-checklist/" target="">Skills Checklist</a></li><li class=" "><a href="https://alliedstaffingnetwork.com/jobseekers/sign-up/" target="">Sign Up</a></li><li class=" "><a href="http://alliedstaffingnetwork.com/wp-login.php" target="">Login</a></li></ul></li><li class=""><a href="https://alliedstaffingnetwork.com/blog/" target="">Blog</a></li><li class=""><a href="https://alliedstaffingnetwork.com/contact/" target="">Contact</a></li> </ul>
+
+        <div class="pull-right met_bgcolor met_menu_search_wrapper">
+        <form class="met_menu_search" method="get" action="https://alliedstaffingnetwork.com/">
+            <input type="text" name="s" class="met_menu_search_text" required="" placeholder="Search"/>
+            <div class="met_menu_search_submit"><i class="fa fa-search" style="margin-top: 19px;"></i></div>
+        </form>
+    </div>
+    
+</nav>
+ 
+  <div id="BodyWrapper" class="row" style="margin-top:1%;padding:0px;">
+        <apex:insert name="body"/>
+        </div>
+        <br/>
+  
+<footer class="met_bgcolor3 clearfix" >
+    <div class="met_content">
+        <div class="row-fluid">
+            <div class="span4">
+                            </div>
+            <div class="span8">
+                <ul class="met_footer_menu clearfix">
+                    <li><a class="met_color2" href="https://alliedstaffingnetwork.com/" target="">Home</a></li><li><a class="met_color2" href="https://alliedstaffingnetwork.com/about-us/" target="">About Us</a></li><li><a class="met_color2" href="https://alliedstaffingnetwork.com/employers/" target="">Employers</a></li><li><a class="met_color2" href="https://alliedstaffingnetwork.com/jobseekers/" target="">Jobseekers</a></li><li><a class="met_color2" href="https://alliedstaffingnetwork.com/blog/" target="">Blog</a></li><li><a class="met_color2" href="https://alliedstaffingnetwork.com/contact/" target="">Contact</a></li><li><a class="met_color2" href="https://alliedstaffingnetwork.com/privacy-policy/" target="">Privacy Policy</a></li>             </ul>
+
+                                <select class="met_responsive_nav">
+                    <option value="https://alliedstaffingnetwork.com/">Home</option><option value="https://alliedstaffingnetwork.com/about-us/">About Us</option><option value="https://alliedstaffingnetwork.com/employers/">Employers</option><option value="https://alliedstaffingnetwork.com/jobseekers/">Jobseekers</option><option value="https://alliedstaffingnetwork.com/blog/">Blog</option><option value="https://alliedstaffingnetwork.com/contact/">Contact</option><option value="https://alliedstaffingnetwork.com/privacy-policy/">Privacy Policy</option>              </select>
+                            </div>
+        </div>
+    </div></footer>
+        <div class="met_footer_copyright clearfix">
+        <div class="met_content">
+            <p class="met_color2">Allied Staffing Network | 
+1603 Lyndon B. Johnson Fwy, Suite 700, Dallas, TX 75234 | 95 Argonaut, Suite 160, Aliso Viejo, CA 92656  | Toll Free: 866.995.6077</p>
+        </div>
+    </div>
+    
+</div>
+</apex:page>

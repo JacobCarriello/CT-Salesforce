@@ -1,0 +1,155 @@
+<apex:page showHeader="false" standardStylesheets="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false" docType="html-5.0" controller="TimesheetApprovalController">
+  <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" lang="en">
+    <head>
+      <meta charset="utf-8" />
+        <meta http-equiv="x-ua-compatible" content="ie=edge" />
+        <title>Timesheet Approval</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <!-- Import the Design System style sheet -->
+      <apex:slds />
+    </head>     
+    <body>
+      <!-- REQUIRED SLDS WRAPPER -->
+      <div class="slds-scope">
+         <!-- PRIMARY CONTENT WRAPPER -->
+         <!-- PRIMARY CONTENT WRAPPER -->
+<div class="myapp">
+  <!-- Verify Token -->
+  <div aria-labelledby="timeDetail">
+    <!-- Verify Token Form -->
+    <form class="slds-form_stacked" id="verify-token-form">
+      <!-- BOXED AREA -->
+      <fieldset class="slds-box slds-theme_default slds-container_large slds-container_center">
+        <div class="slds-form-element slds-form-element_stacked">
+            <div class="slds-form-element__control">
+                 <apex:outputField value="{!timesheet.Work_Location_Name__c}" styleClass="slds-truncate"/>
+                 <span> - </span>
+                 <apex:outputField value="{!timesheet.Employee_Name__c}" styleClass="slds-truncate"/>
+            </div>
+        </div>        
+        <legend id="timeDetial" class="slds-text-heading_medium slds-p-vertical_medium">Time Detail Entries</legend>
+          
+          <!-- Table -->
+          <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+              <thead>
+                  <tr class="slds-line-height_reset">
+                      <th class="" scope="col">
+                          <div class="slds-truncate" title="Day">Day</div>
+                      </th>
+                      <th class="" scope="col">
+                        <div class="slds-truncate" title="In">In</div>
+                      </th>
+                      <th class="" scope="col">
+                        <div class="slds-truncate" title="Out">Out</div>
+                      </th>
+                      <th class="" scope="col">
+                        <div class="slds-truncate" title="Unpaid Break Hours">Unpaid Break Hours</div>
+                      </th>
+                      <th class="" scope="col">
+                          <div class="slds-truncate" title="Total Hours">Total Hours</div>
+                      </th>
+                      <th class="" scope="col">
+                        <div class="slds-truncate" title="On-Call">On-Call</div>
+                      </th>
+                      <th class="" scope="col">
+                          <div class="slds-truncate" title="Total Callback Hours">Total Callback Hours</div>
+                      </th>
+                      <th class="" scope="col">
+                        <div class="slds-truncate" title="Out">Provider Comments/Mileage</div>
+                      </th>
+                  </tr>
+              </thead>
+              <tbody>
+                   <apex:repeat var="entry" value="{!entryList}">
+                       <tr class="slds-hint-parent">
+                           <td data-label="Name">
+                               <div class="slds-truncate" >{!entry.Name}</div>
+                           </td>
+                           <td style="text-align: right;" data-label="In">
+                                <div style="{!IF(entry.Default_Slot__r.Is_Multi_Day__c, 'display:block', 'display:none')}" class="slds-truncate">{!entry.Default_Slot__r.In_Date__c}</div>
+                                <div class="slds-truncate">{!entry.Default_Slot__r.In_Time__c}</div>
+                           </td>
+                           <td style="text-align: right;" data-label="Out">
+                                <div style="{!IF(entry.Default_Slot__r.Is_Multi_Day__c, 'display:block', 'display:none')}" class="slds-truncate">{!entry.Default_Slot__r.Out_Date__c}</div>
+                                <div class="slds-truncate">{!entry.Default_Slot__r.Out_Time__c}</div>
+                           </td>
+                           <td style="text-align: right;" data-label="Unpaid Break Hours">
+                              <div class="slds-truncate">{!entry.Default_Slot__r.Unpaid_Break_Time__c}</div>
+                           </td>
+                           <td style="text-align: right;" data-label="Total Hours">
+                               <div class="slds-truncate">{!entry.Total_Hours__c}</div>
+                           </td>
+                           <td style="text-align: center;" data-label="On-Call">
+                                <div class="slds-truncate">{!entry.Default_Slot__r.Custom_On_Call_Beeper__c}</div>
+                           </td>
+                           <td style="text-align: right;" data-label="Total Callback Hours">
+                               <div class="slds-truncate">{!entry.Total_Callback_Hours__c}</div>
+                           </td>
+                           <td data-label="Notes/Mileage">
+                               <div class="slds-truncate">{!entry.Default_Slot__r.Note__c}</div>
+                           </td>
+                       </tr>
+                  </apex:repeat>
+              </tbody>
+          </table>
+          <!-- Table -->
+         <!--form-->
+          <div class="slds-box slds-m-top_large slds-theme_default slds-container_large slds-container_center slds-border_top">
+          <apex:form id="timesheetApprovalForm">
+          <div class="slds-form">
+              <div class="slds-form-element slds-form-element_stacked">
+                  <label class="slds-form-element__label" for="status">Status</label>
+                  <div class="slds-form-element__control">
+                      <div class="slds-select_container">
+                          <apex:selectList id="status" value="{!timesheet.Status__c}" size="1" styleClass="slds-select">
+                              <apex:selectOption itemValue="Approved" itemLabel="Approved"/>
+                              <apex:selectOption itemValue="Rejected" itemLabel="Rejected   "/>
+                          </apex:selectList> 
+                          <!--<apex:inputField value="{!timesheet.Status__c}" styleClass="slds-input" label="Status"/>-->
+                      </div>
+                  </div>
+              </div>
+              <div class="slds-form-element slds-form-element_stacked">
+                  <label class="slds-form-element__label" for="stacked-input-id-01">Reject Reason</label>
+                  <div class="slds-form-element__control">
+                       <apex:inputField value="{!timesheet.Rejection_Reason__c}" ignoreEditPermissionForRendering="true" styleClass="slds-textarea" label="Reject Reason"/>
+                  </div>
+              </div>
+              <div class="slds-form-element slds-align_absolute-center">
+                  <div class="slds-form-element__control">
+                       <apex:commandButton action="{!save}" value="Save" styleClass="slds-button slds-button_brand slds-m-top_medium slds-container_center"/>
+                       
+                  </div>
+                  <!--message-->
+                  <div class="slds-form-element slds-form-element_stacked slds-m-top_medium">
+                  <apex:pageBlock rendered="{!message!=''}">
+                      <div class="slds-text-color_success slds-text-title_bold"><apex:outputText value="{!message}"></apex:outputText></div>
+                  </apex:pageBlock>
+                  </div>
+                  <!--message-->
+              </div>
+          </div>
+          </apex:form>
+          </div>
+          <!-- form -->
+          
+       
+      </fieldset>
+          
+      <!-- / BOXED AREA -->
+    </form>
+    <!-- CREATE NEW ACCOUNT FORM -->
+  </div>
+  <!-- / CREATE NEW ACCOUNT -->
+</div>
+<!-- / PRIMARY CONTENT WRAPPER -->
+
+         <!-- / PRIMARY CONTENT WRAPPER -->
+      </div>
+      <!-- / REQUIRED SLDS WRAPPER -->
+      <!-- JAVASCRIPT -->
+        
+      <!-- / JAVASCRIPT -->
+    </body>
+  </html>
+</apex:page>

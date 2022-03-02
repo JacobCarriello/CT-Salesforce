@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>This allows a non-operations user to change the timesheet status on a timesheet.</description>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>TR1__Timesheet__c.TR1__Consultants_Notes__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>TR1__Timesheet__c.TR1__Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Timesheet Approvals</label>
+    <license>Salesforce Platform</license>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>TR1__Job__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>TR1__Timesheet__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+</PermissionSet>

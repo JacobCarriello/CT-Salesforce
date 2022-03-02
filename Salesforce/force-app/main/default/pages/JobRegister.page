@@ -1,0 +1,256 @@
+<apex:page controller="JobSearchController" showHeader="false" 
+   standardStyleSheets="true" >
+   <style>
+       .atsFormTdLeft{
+           width:10px;
+       }
+   </style>
+   
+  
+    <script>
+        function disableOnSubmit(input1,input2,input3) {
+            //console.log(input);
+            var toDisable = document.getElementById(input1.id);
+            var toDisable2 = document.getElementById(input2); 
+            var toDisable3 = document.getElementById(input3); 
+            setTimeout('disableAfterTimeout(\'' + toDisable.id + '\');', 500);
+            setTimeout('disableAfterTimeout(\'' + toDisable2.id + '\');', 500);
+            setTimeout('disableAfterTimeout(\'' + toDisable3.id + '\');', 500);
+        }
+        function disableAfterTimeout(id) {
+            var toDisable = document.getElementById(id);
+            toDisable.disabled = true;
+            toDisable.value = "Processing...";         
+        }
+    </script> 
+    
+   <apex:composition template="{!pageTemplate}"  >
+      <apex:define name="body" >
+     
+                                          
+         <div id="overlay"></div>
+         <p>
+         <div id="loadingtime"></div>
+         </p>
+         <TR1:Overlay style="processing" />
+         <apex:actionStatus id="overlayStatus" onStart="showOverlay();" onstop="hideOverlay();"></apex:actionstatus>
+         <br/><br/>
+         <apex:outputpanel id="jobBoardTag">
+            <apex:outputpanel id="jobdescp" rendered="{!successmesg}"  >
+               <table width="100%" cellspacing="0" cellpadding="0" border="0" >
+                  <tbody>
+                     <tr>
+                        <td><span id="jobDetailsPage:j_id0:j_id4"></span></td>
+                        <td align="right" style="text-align:right !important;">
+                           <span id="jobDetailsPage:j_id0:j_id9">
+                              <div id="js-menu-container">
+                                 <ul id="js-menu">
+                                    <li id="js-menu-search" style="list-style: none;">
+                                       <a href="/{!$site.name}/Jobsearch" >Return To Job Search</a>
+                                    </li>
+                                 </ul>
+                              </div>
+                           </span>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+               <br/>
+               <h2> Congratulatons! You have successfully applied for the Job of {!selJob.TR1__Job_Title__c} </h2>
+            </apex:outputpanel>
+            <apex:outputpanel layout="block" styleclass="atsMaster" rendered="{!!resumeflag}" >
+               <apex:form id="applicationform" rendered="{!!successmesg}" >
+                 <table class="atsFormTable table table-bordered" cellspacing="0" >
+                     <tbody>
+                        <tr>
+                           <td colspan="2" class="atsFormTdError">
+                              <apex:outputpanel layout="block" styleclass="atsError">
+                              </apex:outputpanel>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td colspan="2" class="atsFormTdTitle">
+                              <label for="jobNameLocation">Your Selected Job</label>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td colspan="2" class="atsFormTdTwoColumnLeft">
+                              <apex:outputtext value="{!selJob.TR1__Job_Title__c}" id="jobNameLocation" />
+                           </td>
+                        </tr>
+                        <tr>
+                           <td id="atsFormTdRequiredText" colspan="2">
+                              <span class="atsRequired">*</span>&nbsp;Required
+                           </td>
+                        </tr>
+                        <tr>
+                           <td colspan="2" class="atsFormTdTitle">Personal Information
+                           </td>
+                        </tr>
+                        
+                        <tr>
+                           <td class="atsFormTdLeft">
+                              <label for="firstName">First Name</label><span class="atsRequired">*</span>
+                           </td>
+                           <td class="atsFormTdRight">
+                              <apex:inputfield id="firstname" value="{!con.FirstName}" required="true"></apex:inputfield>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="atsFormTdLeft"><label for="lastName">Last Name</label><span class="atsRequired">*</span>
+                           </td>
+                           <td class="atsFormTdRight">
+                              <apex:inputfield id="lastname" value="{!con.LastName}" required="true"></apex:inputfield>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="atsFormTdLeft"><label for="email">
+                              Email Address</label><span class="atsRequired">*</span>
+                           </td>
+                           <td class="atsFormTdRight">
+                              <apex:inputfield id="email" value="{!con.Email}" required="true" />
+                              <span style="display: none;" id="registerPage:j_id1:jobBoardTag:jobBoardComponent:registerTag:registerComponent:atsForm:tnemail"></span>
+                           </td>
+                        </tr>
+                        <!--<tr>
+                           <td class="atsFormTdLeft"><label for="phone">Phone</label><span class="atsRequired">*</span>
+                           </td>
+                           <td class="atsFormTdRight">
+                              <apex:inputfield id="phone" value="{!con.phone}" required="true"></apex:inputfield>
+                           </td>
+                        </tr> -->
+                        <tr>
+                           <td class="atsFormTdLeft"><label for="mobile">Mobile Phone</label><span class="atsRequired">*</span>
+                           </td>
+                           <td class="atsFormTdRight">
+                              <apex:inputfield id="mobile" value="{!con.mobilephone}"  required="true"></apex:inputfield>
+                           </td>
+                        </tr>
+                        <!--<tr>
+                           <td colspan="2" class="atsFormTdTitle">Address
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="atsFormTdLeft"><label for="street">Street</label>
+                           </td>
+                           <td class="atsFormTdRight">
+                              <apex:inputfield id="street" value="{!con.MailingStreet}" ></apex:inputfield>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="atsFormTdLeft"><label for="MailingCity">City</label>
+                           </td>
+                           <td class="atsFormTdRight">
+                              <apex:inputfield id="MailingCity" value="{!con.MailingCity}" ></apex:inputfield>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="atsFormTdLeft"><label for="state">State</label>
+                           </td>
+                           <td class="atsFormTdRight">
+                              <apex:inputfield id="state" value="{!con.MailingState}" ></apex:inputfield>
+                           </td>
+                        </tr> -->
+                        <tr style="display:{!IF($CurrentPage.parameters.Jobboard == 'THMED','none','all')}">
+                           <td class="atsFormTdLeft"><label for="function">Function</label>
+                            </td>
+                           <td class="atsFormTdRight">
+                              <apex:inputfield id="function" value="{!con.TR1__Function__c}"></apex:inputfield>
+                           </td>
+                        </tr>
+                        
+                      <tr style="display:{!IF($CurrentPage.parameters.Jobboard == 'THMED','none','all')}">
+                           <td class="atsFormTdLeft"><label for="speciality">Specialties</label>
+                           </td>
+                            <td > 
+                            <apex:inputfield id="specialties" value="{!con.Specialties__c}"   ></apex:inputfield>
+                           </td>
+                        </tr>
+                        <apex:outputPanel rendered="{!IF(($CurrentPage.parameters.Jobboard == 'THMED') || ($CurrentPage.parameters.Jobboard == 'THMED Executive Search'),False,True)}">
+                       <tr >
+                           <td class="atsFormTdLeft"><label for="StateLicensure">State Licensure</label><span class="atsRequired" style="display:{!IF($CurrentPage.parameters.Jobboard == 'ASN','none','all')}">*</span>
+                           </td>
+                           <td class="atsFormTdRight">
+                              <apex:inputField id="StateLicensure" value="{!con.State_Licensure__c}" required="{!IF($CurrentPage.parameters.Jobboard == 'ASN',false,true)}"></apex:inputfield>
+                           </td>
+                        </tr>
+                        </apex:outputPanel>
+                        <tr>
+                           <td class="atsFormTdLeft"><label for="zip">Postal Code</label><span class="atsRequired">*</span>
+                           </td>
+                           <td class="atsFormTdRight">
+                              <apex:inputfield id="zip" value="{!con.mailingpostalcode}" required="true" ></apex:inputfield>
+                           </td>
+                        </tr>
+                       <!-- <tr>
+                           <td class="atsFormTdLeft"><label for="country">Country</label>
+                           </td>
+                           <td class="atsFormTdRight">
+                              <apex:inputfield id="country" value="{!con.Mailingcountry}"></apex:inputfield>
+                           </td>
+                        </tr> -->
+                        <!--tr>
+                           <td class="atsFormTdLeft"><label for="Source from">How did you hear about us?</label><span class="atsRequired">*</span>
+                           </td>
+                           <td class="atsFormTdRight">
+                              <apex:inputfield id="Source" value="{!con.Sourced_From__c}" required="true"></apex:inputfield>
+                           </td>
+                        </tr--> 
+                        
+                        <tr>
+                           <td class="atsFormTdLeft">&nbsp;</td>
+                           <td class="atsFormTdRight">
+                              <apex:commandbutton styleclass="btn btn-default continue" value="Continue" id="contbutton" action="{!cont}" />
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </apex:form>
+            </apex:outputpanel>
+            <apex:outputpanel rendered="{!resumeflag}">
+               <apex:form rendered="{!!successmesg}">
+                  <table class="atsFormTable table table-bordered" cellspacing="0" >
+                     <tbody>
+                       
+                        <tr>
+                           <td class="atsFormTdTitle"><label for="resumeFile">
+                              Resume</label>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="atsFormTdTwoColumnUpload">
+                              <apex:selectRadio value="{!resumetype}" layout="pageDirection" >
+                                 <apex:selectOption itemValue="Upload" itemLabel="Upload" />
+                                 <apex:selectOption itemValue="Paste" itemLabel="Paste" />
+                                 <apex:actionsupport event="onchange" />
+                              </apex:selectRadio>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="atsFormTdTwoColumnLeft">
+                              <apex:pageMessages id="ResumeMessages"/>
+                              <apex:outputpanel rendered="{!resumetype == 'Upload'}" >
+                                 <apex:inputFile value="{!ResumeBody}" fileName="{!ResumeName}" contentType="{!resumecontentype}" />
+                                 &nbsp;&nbsp;
+                                 <apex:outputText value="{!$Label.TR1__SupportedResumeFileTypes}"/>
+                              </apex:outputpanel>
+                              <apex:outputpanel rendered="{!resumetype == 'Paste'}" >
+                                 <apex:inputTextarea value="{!ResumebodyText}" rows="10" style="width:80%;"/>
+                              </apex:outputpanel>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="atsFormTdTwoColumnCenter">
+                              <apex:commandButton id="BackButton" styleclass="btn btn-default jobreg formbuttons" value="Back" action="{!cont}" status="overlayStatus"  />
+                              <apex:commandButton id="SubmitButton" styleclass="btn btn-default jobreg formbuttons" onclick="disableOnSubmit(this,'{!$Component.SubmitWithoutResumeButton}','{!$Component.BackButton}');" value="Submit" action="{!createUpdateResume}" status="overlayStatus" disabled="false" />
+                              <apex:commandButton id="SubmitWithoutResumeButton" styleClass="btn btn-default jobreg formbuttons" onclick="disableOnSubmit(this,'{!$Component.SubmitButton}','{!$Component.BackButton}');" value="Submit without Resume" action="{!SubmitWOResume}" status="overlayStatus" disabled="false"  />                     
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </apex:form>
+            </apex:outputpanel>
+         </apex:outputpanel>
+      </apex:define>
+   </apex:composition>
+</apex:page>

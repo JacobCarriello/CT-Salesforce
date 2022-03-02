@@ -1,0 +1,238 @@
+<apex:page standardStyleSheets="false" applyBodyTag="false" applyHtmlTag="false" showHeader="false" sidebar="false"  controller="RC_Topics" id="pageId" action="{!redirectUnAuthenticatedUser}">
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1"/>
+            <apex:stylesheet value="{!URLFOR($Resource.SLDS092, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+            <apex:includeScript value="{!URLFOR($Resource.TB_JS, '/jQuery-1.11.3.min.js')}" />
+            <apex:includeScript value="{!URLFOR($Resource.TB_JS, '/jquery-ui-1.11.3.js')}" />
+            <style>
+                .decoration {
+                height: 1px;
+                background-color: rgba(0,0,0,0.1);
+                margin-bottom: 20px;
+                margin-top: 5px;
+                display: block;
+                clear: both;
+                }
+                .blog-post-more {
+                text-align: right;
+                }
+                .blog-post-date {
+                width: 50%;
+                float: left;
+                }
+                
+                .Rt_Area ul{list-style: disc!important; margin: 14px;padding-left: 15px;}
+                .Rt_Area ol{list-style: decimal!important;  margin: 14px;padding-left: 15px;}
+                
+                .textEllpisis{
+                    overflow: hidden;
+                     text-overflow: ellipsis;
+                     display: -webkit-box;
+                    /* max-height: 80px;     */
+                     /*-webkit-line-clamp: 5; */
+                     -webkit-box-orient: vertical;
+                     font-size: 12px;
+                }
+            </style>
+        </head>
+        <apex:composition template="RC_CommunityTemplate">
+            <apex:define name="body">
+                <style>
+                    .blog-category li a{
+                    color: #0070d2;
+                    }
+                </style>
+                <div style="height:60px;">&nbsp;</div>
+                <div class="slds-all-elements">
+                    <div id="content" class="slds-snap-content" style="z-index:100">
+                        <div class="slds-content" style="min-height:500px;">
+                            <span class="slds">
+                                <div class="slds-page-header" role="banner">
+                                    <div class="slds-grid slds-wrap slds-grid--align-spread">
+                                        <div class="slds-col">
+                                            <div class="slds-media">
+                                                <div class="slds-media__figure">
+                                                    <span class="slds-avatar slds-avatar--medium">
+                                                    <img src="{!URLFOR($Resource.SLDS092, '/assets/icons/standard/article_60.png')}" style="background-color: #3A635C;" /> 
+                                                    </span>
+                                                </div>
+                                                <div class="slds-media__body">
+                                                    <p class="slds-text-heading--label">{!$User.FirstName} {!$User.LastName}</p>
+                                                    <div class="slds-grid">
+                                                        <apex:outputPanel rendered="{!$CurrentPage.parameters.category == null}">
+                                                            <h1 class="slds-text-heading--medium">Topics</h1>
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel rendered="{!$CurrentPage.parameters.category != null}">
+                                                            <h1 class="slds-text-heading--medium"><a href="{!$Site.Prefix}/Topics">Topics</a> > {!strCategory}</h1>
+                                                        </apex:outputPanel>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                    <div class="slds-grid slds-wrap slds-grid--align-spread slds-page-header__detail-row">
+                                        <apex:repeat value="{!$ObjectType.Contact.Fieldsets.RC_My_Profile_Header}" var="field">
+                                            <div class="slds-col--padded slds-size--2-of-6 slds-medium-size--2-of-6 slds-large-size--1-of-6">
+                                                <dl>
+                                                    <dt>
+                                                        <p class="slds-text-heading--label slds-truncate" title="{!field.label}">{!field.label}</p>
+                                                    </dt>
+                                                    <dd>
+                                                        <p class="slds-text-body--regular slds-truncate" title="{!objContact[field]}">
+                                                            <apex:outputField value="{!objContact[field]}" />
+                                                        </p>
+                                                    </dd>
+                                                </dl>
+                                            </div>
+                                        </apex:repeat>
+                                    </div>
+                                </div>
+                                
+                                <div class="slds-grid slds-wrap slds-grid--align-spread slds-col--padded-large">
+                                    <div class="slds-col  slds-col--padded slds-small-order--2 slds-medium-order--1 slds-size--1-of-1 slds-medium-size--6-of-8 slds-large-size--9-of-12">
+                                        <div class="slds-m-top--large">
+                                           <apex:outputPanel id="messageBannerPanel">
+                                                <div class="slds-notify slds-notify--alert slds-theme--{!IF(isSuccess, 'success', IF(lstArticles.size == 0,'','error'))} slds-theme--alert-texture" role="alert" id="messageBanner" style="display:{!IF(strMessage != '', '','none')}">
+                                                    <div >
+                                                    
+                                                        <apex:outputPanel styleClass="slds-col slds-align-middle" id="idMsg">
+                                                            <h2 class="slds-text-heading--small " style="color:white">  
+                                                                <span>{!strMessage}</span>
+                                                            </h2>
+                                                        </apex:outputPanel>
+                                                    </div>
+                                                </div>
+                                                <br />
+                                            </apex:outputPanel> 
+                                            
+                                            <apex:outputPanel rendered="{!lstArticles.size>0}">
+                                                <apex:variable value="{!1}" var="rowNum"/>
+                                                <apex:repeat value="{!lstArticles}" var="art">
+                                                    <apex:outputPanel rendered="{!rowNum<1001}" layout="block">
+                                                        <h4 class="slds-m-bottom--small"> 
+                                                            <a href="{!$Site.Prefix}/Topics?id={!art.id}"><b>{!art.TR1__Title__c} </b></a> &nbsp;&nbsp;
+                                                            <apex:outputText styleClass="slds-badge" value="{!art.TR1__Category__c}" />
+                                                        </h4>
+                                                        <div id="showTrunc{!art.id}" class="Rt_Area">
+                                                                <apex:outputPanel rendered="{!ISBLANK(strId)}" layout="none">
+                                                                    <apex:outputField value="{!art.TR1__Content__c}" styleClass="Article{!art.id}"/> 
+                                                                    <script> 
+                                                                       var articleContent = $('#showTrunc{!art.id} .sfdc_richtext').html();
+                                                                       var Eclipses = '';
+                                                                       if(articleContent.length > 300)
+                                                                            Eclipses = '...';
+                                                                        
+                                                                       articleContent = articleContent.substring(0, 300);
+                                                                       
+                                                                       $('#showTrunc{!art.id} .sfdc_richtext').html(articleContent+''+Eclipses);
+                                                                    </script> 
+                                                                </apex:outputPanel>
+                                                                <apex:outputField value="{!art.TR1__Content__c}" rendered="{!NOT(ISBLANK(strId))}"/>  
+                                                        </div>
+                                                        <br />
+                                                        <div class="slds-text-body--small">
+                                                            <p class="blog-post-date">
+                                                                <i class="fa fa-calendar"></i>&nbsp;&nbsp;
+                                                                <apex:outputField value="{!art.createdDate}" styleClass="slds-text-body--small"/>
+                                                            </p>
+                                                        </div>
+                                                        <apex:outputPanel layout="none" rendered="{!AND(LEN(art.TR1__Content__c) >=300,ISBLANK(strId))}">
+                                                            <p class="blog-post-more slds-text-body--small"><a style="text-decoration:none" id="anc{!art.id}" href="{!$Site.Prefix}/Topics?id={!art.id}" >Read More <i class="fa fa-angle-right"></i></a></p>
+                                                        </apex:outputPanel>
+                                                    </apex:outputPanel>
+                                                    <div class="decoration"></div>
+                                                    <apex:variable var="rowNum" value="{!rowNum + 1}"/>
+                                                </apex:repeat>
+                                            </apex:outputPanel>
+                                                
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="slds-col  slds-col--padded slds-small-order--1 slds-medium-order--2 slds-size--1-of-1 slds-medium-size--2-of-8 slds-large-size--3-of-12">
+                                        <div class="blog-sidebar">
+                                            <apex:form >
+                                                <div class="slds-m-top--large">
+                                                    <b>Looking for something?</b>
+                                                    <p>
+                                                        Search all topics to get in on the conversation. If you can't find what you're looking for, add a new topic.  
+                                                    </p>
+                                                    <div class="slds-grid slds-grid--align-spread">
+                                                        <div >
+                                                            <apex:inputText id="searchText" Styleclass="slds-textarea slds-m-top--medium slds-m-bottom--small" html-placeholder="Search here..." value="{!strTopicForSearch}" />
+                                                        </div>
+                                                        <div >
+                                                            <div class="slds-m-top--medium">
+                                                                <a class="slds-button slds-button--neutral slds-m-top-medium slds-m-bottom--small" style = "cursor:pointer" onclick="searchAllTopics()">Search</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="decoration"></div>
+                                                <div>
+                                                    <h4><b>Topic Categories</b></h4>
+                                                    <div class="nonslds" style="margin-top: 0.3cm;">
+                                                        <ul class="blog-category">
+                                                        
+                                                            <apex:repeat value="{!lstPickListEntries}" var="pick">
+                                                                <apex:repeat value="{!lstAggregated}" var="category">
+                                                                    <apex:outputPanel layout="none" rendered="{!pick.value == category['TR1__Category__c']}" >
+                                                                        <li>
+                                                                            <a href="{!$Site.Prefix}/Topics?category={!URLENCODE(pick.value)}" >{!pick.label} <span class="slds-badge">{!category['numOfRecords']}</span></a>
+                                                                        </li>
+                                                                    
+                                                                    </apex:outputPanel>
+                                                                </apex:repeat>
+                                                            </apex:repeat>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </apex:form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </span>
+                        </div>
+                        <!-- Page Footer-->
+                        <span class="nonslds">
+                            <div class="footer">
+                                <div class="footer-socials half-bottom">
+                                    <a href="#" class="footer-share show-share-bottom"><i class="fa fa-share-alt"></i></a>
+                                    <a href="#" class="footer-up"><i class="fa fa-angle-up"></i></a>
+                                </div>
+                                <p class="center-text">&copy; 2015 Talent Rover. All rights reserved.</p>
+                            </div>
+                        </span>
+                    </div>
+                </div>
+            </apex:define>
+        </apex:composition>
+        <script>
+            $j = jQuery.noConflict();
+            $j(function() 
+            {
+                      $j('form').keypress(function(event) 
+                   { 
+                          if(event.keyCode == '13')
+                       {
+                                 searchAllTopics();
+                     }
+                    return event.keyCode != 13;
+                }); 
+            });
+            
+            function searchAllTopics() 
+            {
+               
+               if($('[id$=searchText]').val() != '')
+                       window.location.href = '{!$Site.Prefix}/Topics?topicToSearch='+escape($('[id$=searchText]').val());
+            }
+            
+            function closeBanner() 
+            {
+               document.getElementById('messageBanner').style.display = 'none';    
+            }
+            
+        </script>
+    </html>
+</apex:page>

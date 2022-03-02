@@ -1,0 +1,6 @@
+<apex:page standardController="TR1__Job_Leads__c"
+recordSetVar="accounts"
+extensions="taf_listbrowse.PassSelectedRecordsExt"
+showHeader="false"
+action="{!createListRecord}">
+</apex:page>

@@ -1,0 +1,17 @@
+<apex:page standardController="Lead" extensions="ImportToSalesLoft">
+    <div class="ImportPage">
+        <apex:stylesheet value="{!$Resource.sl_style}" />
+        <div class="ImportText">Your Import to SalesLoft has started in a new browser tab. Feel free to close this view.</div>
+    </div>
+    <apex:includeScript value="/support/console/43.0/integration.js"/>
+    <script type="text/javascript">
+        function launchImport() {
+            var importUrl = '{!importUrl}';
+            window.open(importUrl, "_blank");
+            if (!sforce.console.isInConsole()) {
+                window.history.back();
+            }
+        };
+        launchImport();
+    </script>
+</apex:page>

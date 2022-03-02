@@ -1,0 +1,363 @@
+<apex:page id="idMyPage" standardStyleSheets="false" showHeader="false" sidebar="false" extensions="WorkCallListController" standardController="TR1__Call_List__c">
+	<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	   <head>
+			<meta name="viewport" content="width=device-width, initial-scale=1"/>
+			<apex:stylesheet value="{!URLFOR($Resource.SLDS092, 'assets/styles/salesforce-lightning-design-system-vf.css')}" /> 
+			<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
+			<apex:includeScript value="{!URLFOR($Resource.TB_JS, '/jQuery-1.11.3.min.js')}" />
+			<apex:includeScript value="{!URLFOR($Resource.TB_JS, '/jquery-ui-1.11.3.js')}" />
+	   		<style>
+				.errorMsg{
+					color:red; 
+				} 
+			   
+				#outPopUp{
+				 position:absolute;
+				 z-index:9999999;
+				 top:50%;
+				 left:47%;
+				}  
+				
+				#outPopUpAction{
+					position:absolute;
+					z-index:9999999;
+					top:50%;
+					left:47%;
+				}
+				
+				.clsPopover
+				{
+					z-index: 99 !important;
+					position: absolute !important;
+					white-space: normal;
+				}
+				
+				.out{
+					display:none;
+				}
+				
+				.in{
+					display:'';
+				}
+				
+				.slds fieldset {
+					border: 1px solid #c0c0c0;
+					margin: 0 2px;
+					padding: 0.35em 0.625em 0.75em;
+				}
+				
+				.closeButton{
+					font-size: 18px;
+					FONT-WEIGHT: 600;
+				}
+				
+				.msgStyle{
+					color:white;
+				}
+				
+				.commentStyle{
+					min-height: 50px; 
+					max-height:50px
+				}
+				
+				.slds-table--bordered{
+					border-left: 1px solid #d8dde6;
+					border-right: 1px solid #d8dde6;
+				}
+				
+				.slds .slds-button-group {
+					display: -webkit-box;
+				}
+					
+				.multiSelectPicklistTable td{
+					width:45%;
+				}
+				
+				.multiSelectPicklistCell{
+					width:10% !important;
+					padding:3% !important;
+				}
+				
+				.multiSelectPicklistTable .slds-input{
+					width: 100% !important;
+				}
+				.multiSelectPicklistCell img{
+					border-left: 0px !important;
+				}
+				.breakTableColumnClass {
+					text-align:left !important;
+					word-wrap:break-word !important;
+					word-break: break-word !important;
+					overflow-wrap: break-word !important;
+					white-space: initial !important;
+				}  
+
+			</style>     
+	   	</head>
+	   	<apex:composition template="JepiaVFTemplate">
+		<apex:define name="body">
+			<div class="slds-all-elements">
+					<div>  <!-- class="slds-content" -->
+							<div class="slds">
+							<!-- Start Loading Status -->
+						   <apex:actionstatus id="processingImg">
+								 <apex:facet name="start">
+									<div id="outPopUpAction"> 
+										<div class="slds-spinner--medium" >
+											<img src="{!URLFOR($Resource.SLDS092, 'assets/images/spinners/slds_spinner_inverse.gif')}">  
+												<span class="slds-m-right--medium" style="color: #081BDE; font-weight:bolder;">Loading...</span>
+											</img>
+										</div>
+									</div> 
+									<div class="slds-modal-backdrop slds-modal-backdrop--open"  id="idBackDropAction"></div>
+								</apex:facet>
+							</apex:actionstatus>
+							<!-- End Loading Status -->
+							
+							<!-- Start apex form -->
+							<apex:form id="myform">  
+								<apex:pageMessages id="msg" />
+								<!-- End DML Operation error Message and URL Hacking -->
+									<!-- Start Header Section -->
+									<div class="slds-page-header" role="banner">
+										<div class="slds-grid slds-wrap slds-grid--align-spread">
+											<div class="slds-col">
+												<div class="slds-media">
+													<div class="slds-media__figure">
+														<span class="slds-avatar slds-avatar--medium">
+														   <img src="{!URLFOR($Resource.SLDS092, '/assets/icons/standard/report_60.png')}" style="background-color: #8291C3;" />
+														</span>
+													</div> 
+													 <div class="slds-media__body">
+													  <p class="slds-text-heading--label">{!$User.FirstName} {!$User.LastName}</p>
+														<div class="slds-grid">
+															<apex:outputPanel >
+																<h1 class="slds-text-heading--medium slds-m-right--small slds-truncate slds-align-middle" title="{!$Label.Work_Call_List}">{!$Label.Work_Call_List}</h1>
+															</apex:outputPanel>
+														</div>
+													 </div>
+												</div>
+											</div>
+											<apex:outputPanel id="btnGroup" layout="block" styleClass="slds-col"> 
+												<div class="slds-button-group slds-m-top--medium " role="group">
+													
+													<apex:commandButton styleclass="slds-button slds-button--neutral" action="{!cancel}" value="Cancel" status="processingImg" rerender="dummy"/>
+													<apex:commandButton styleclass="slds-button slds-button--brand" action="{!save}" value="Save" status="processingImg" rerender="idLineItemnCino"/>
+												</div>
+											</apex:outputPanel>
+										</div>
+									</div>
+									<!-- End Header Section -->
+									<!-- Start Customer Meeting details -->
+									<apex:outputPanel id="expRep"  layout="block" styleClass="slds-m-top--medium">
+										<div class="slds-grid slds-wrap slds-grid--align-spread slds-col--padded-large">
+											<div class="slds-col  slds-col--padded slds-size--1-of-1 slds-medium-size--3-of-6 slds-large-size--6-of-12">
+												<label class="slds-form-element__label slds-m-top--medium" for="opportunity">{!$Label.Call_List}</label>
+<!-- 	                                            <apex:outputText  style="color: #0070d2;" value="{!customerMeeting.Opportunity__r.Name}" styleClass="slds-form-element__static"/>-->
+												<apex:outputLink target="_self" value="/{!callListId}" styleClass="slds-form-element__static">{!callList.Name}</apex:outputLink>
+											</div>
+										</div>
+									</apex:outputPanel> 
+									<!-- End Customer Meeting details -->
+									<br/>
+								
+									<!-- Start New Demo Audience Member Item -->
+									<div class="slds-tabs--scoped slds-col--padded-large">
+											<ul class="slds-tabs--scoped__nav" role="tablist">
+												<li class="slds-tabs__item slds-text-heading--label slds-active" title="nCino Audience Member" role="presentation" id="callListMemberTab" style="list-style: none;">
+													<a href="#" role="tab" tabindex="0" aria-selected="true" aria-controls="tab-scoped-1">{!$Label.Call_List_Members}</a>
+												</li>
+											</ul>
+											
+											<div id="tab-scoped-1" class="slds-tabs__content slds-show" role="tabpanel">
+												<div class="slds-grid slds-wrap slds-grid--align-spread">
+													<div class="slds-col  slds-size--1-of-1 slds-medium-size--6-of-6 slds-large-size--12-of-12">    
+														<apex:outputPanel styleClass="slds-grid slds-wrap slds-grid--align-spread" id="idLineItemnCino">
+																<apex:variable value="{!fieldSetContact.size+2}" var="columnCount" />
+																<table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal slds-table_striped"> 
+																	<thead>
+																		<tr class="slds-text-heading--label">
+																			<th data-label="" class="slds-text-heading--label slds-size--1-of-{!columnCount}" scope="col"></th>
+																			<apex:repeat value="{!fieldSetContact}" var="field">
+																				<th data-label="{!field.Label}" class="slds-text-heading--label slds-size--1-of-{!columnCount} breakTableColumnClass" scope="col" style="{!if(field.FieldPath == 'State_Licensure__c','width:20%' ,'')}"><b>{!IF(CONTAINS(field.FieldPath, 'RecordTypeId'), '',field.Label)}</b></th>
+																			</apex:repeat>
+																			<th data-label="" class="slds-text-heading--label slds-size--1-of-{!columnCount} breakTableColumnClass" scope="col"><b>{!$label.Do_Not_Contact}</b></th>
+																		</tr>
+																	</thead>
+																	<tbody> 
+																	   <apex:variable var="varLineDate" value="{!0}" />
+																	   <apex:repeat value="{!ContactWrapper}" var="objExpItem" id="expRecNew"> 
+																			<tr class="slds-hint-parent" id="newExpItem{!varLineDate}" style="{!If(objExpItem.callListMember.Do_Not_Contact__c, 'background : lightgrey' ,'')}">
+																				<td data-label="" class="slds-size--1-of-{!columnCount} breakTableColumnClass">
+																					<button class="slds-button slds-button--icon-border slds-toggle-visibility header" id="{!varLineDate}" style="text-align: center;cursor:pointer;" onClick="return ExpandAndCollapse({!varLineDate});">
+																						<img src="{!URLFOR($Resource.SLDS092, '/assets/icons/utility/right_60.png')}" id="img{!varLineDate}" height="15" width="15" ></img>
+																						<span class="slds-assistive-text">{!$label.View_More}</span>
+																				  	</button>
+																				</td>
+																				<apex:repeat value="{!fieldSetContact}" var="field" id="expRecFldsNew">
+																					<td data-label="{!field.label}" class="slds-size--1-of-{!columnCount} breakTableColumnClass" style="{!if(field.FieldPath == 'State_Licensure__c','width:20%' ,'')}">
+																					
+																					  <apex:outputPanel rendered="{!AND((field.Type != 'date'), (field.FieldPath != 'RecordTypeId'),(field.FieldPath != 'Name'),(field.Type != 'boolean'), (field.FieldPath != 'FirstName'), (field.FieldPath != 'LastName'))}">
+																							<apex:outputField styleClass="slds-output LineItemRow{!varLineDate}" value="{!objExpItem.contact[field.FieldPath]}" />
+																						</apex:outputPanel>  
+																						<apex:outputPanel rendered="{!OR((field.FieldPath == 'Name') || (field.FieldPath == 'FirstName') || (field.FieldPath == 'LastName'))}">
+																							<apex:outputLink styleClass="slds-output LineItemRow{!varLineDate}" value="/{!objExpItem.contact['Id']}" target="_blank">{!objExpItem.contact[field.FieldPath]}</apex:outputLink>
+																						</apex:outputPanel>
+																						<apex:outputPanel rendered="{!IF(field.Type == 'date', IF(field.FieldPath != 'RecordTypeId', true,false), false)}" >
+																							<apex:outputField styleClass="slds-output clsdateTime clsDynamicLineDate{!varLineDate} LineItemRow{!varLineDate} " value="{!objExpItem.contact[field.FieldPath]}" /> 
+																							 <script>
+																								if('{!objExpItem.contact[field]}' != '')
+																								{
+																									var DateConverts = convertUTCDateToLocalDate(new Date('{!objExpItem.contact[field.FieldPath]}'));
+																										
+																									DateConverts = DateConverts.getMonth()+1+'/'+DateConverts.getDate()+'/'+DateConverts.getFullYear();                                 
+																									document.getElementsByClassName("clsDynamicLineDate{!varLineDate}")[0].value = DateConverts;
+																								}
+																							</script>
+																						</apex:outputPanel> 
+																					</td>
+																				</apex:repeat>
+																				<td data-label="" class="slds-size--1-of-{!columnCount} breakTableColumnClass" style="text-align: center;">
+																					<apex:inputCheckbox value="{!objExpItem.callListMember.Do_Not_Contact__c}" onchange="addBackgroundClass('newExpItem{!varLineDate}', this.checked);return false;"/>
+																				</td>
+																			</tr>
+																			<tr id="collapseme{!varLineDate}" class="out clsCollapse">
+																				<td colspan="{!columnCount}">
+																					<apex:outputPanel id="idAdditionalFields" layout="none">
+																					   <div style="display:none" id="divAddInfo1{!varLineDate}">
+																						 <fieldset class="slds-form-element">
+																							<legend style="font-weight:bold;" align="left" class="slds-form-element__label slds-form-element__label--top slds-text-heading--label">{!$Label.Additional_Details}</legend>
+																								<div class="slds-grid slds-wrap slds-grid--align-spread clsComment{!varLineDate}">
+																									<table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal ">  
+																										<thead>
+																											<tr class="slds-text-heading--label">
+																												<th data-label="nCinoAudienceMember" class="slds-text-heading--label slds-size--1-of-3 breakTableColumnClass" scope="col" style="width:20%;"><b>{!$Label.Subject}</b></th>
+																												<th data-label="presentationDuration" class="slds-text-heading--label slds-size--1-of-3 breakTableColumnClass" scope="col" style="width:60%;"><b>{!$Label.Comments}</b></th>
+																												<th data-label="role" class="slds-text-heading--label slds-size--1-of-3 breakTableColumnClass" scope="col" style="width:10%;"><b>{!$Label.Due_Date}</b></th>
+																												<th data-label="role" class="slds-text-heading--label slds-size--1-of-3 breakTableColumnClass" scope="col" style="width:10%;"><b>{!$Label.Assigned_To}</b></th>
+																											</tr>
+																										</thead>
+																										<tbody> 
+																											<apex:variable var="varLineDate4" value="{!0}" />
+																											<apex:repeat value="{!objExpItem.tasks}" var="activity">
+																												 <tr class="slds-hint-parent" id = "newNCinoItem2{!varLineDate4}">
+																													<td data-label="Name" class="slds-size--1-of-3 breakTableColumnClass" style="width:20%;">
+																														<div class="slds-form-element">
+																															<apex:outputField styleClass="slds-output " value="{!activity.subject}"  />
+																														</div>
+																													</td>
+																													
+																													<td data-label="Email" class="slds-size--1-of-3 breakTableColumnClass" style="width:60%;">
+																														<div class="slds-form-element">
+																															<apex:outputField styleClass="slds-output " value="{!activity.Description}"  />
+																														</div>
+																													</td>
+																													
+																													<td data-label="Mobile" class="slds-size--1-of-3 breakTableColumnClass" style="width:10%;">
+																														<div class="slds-form-element">
+																															<apex:outputField styleClass="slds-output " value="{!activity.ActivityDate}"  />
+																														</div>
+																													</td>
+
+																													<td data-label="Mobile" class="slds-size--1-of-3 breakTableColumnClass" style="width:10%;">
+																														<div class="slds-form-element">
+																															<apex:outputField styleClass="slds-output " value="{!activity.OwnerId}"  />
+																														</div>
+																													</td>
+																												</tr>
+																												<apex:variable var="varLineDate4" value="{!varLineDate4+1}" /> 
+																											</apex:repeat>
+																										</tbody>
+																								  	</table>
+																								</div>
+																						 	</fieldset>
+																					  	</div>
+																				   	</apex:outputPanel>
+																				</td>
+																			</tr>
+																			<apex:variable var="varLineDate" value="{!varLineDate+1}" />
+																		</apex:repeat> 
+																	</tbody>
+														  </table>
+													   </apex:outputPanel>  
+													</div>
+												 </div>
+										</div>
+									</div>
+									<div class="slds-grid slds-col--padded-large">
+							            <div class="slds-col">
+							                <div class="slds-box slds-box--small slds-theme--shade slds-text-align--center">
+							                	<apex:outputPanel layout="block" id="buttonPanel">
+							                		<apex:selectList multiselect="FALSE" size="1" value="{!recordLimit}" styleClass="slds-dropdown slds-dropdown--left" style="left: 35px !important;min-width: 40px!important;max-width: 50px!important;">  
+							                            <apex:selectOption itemValue="10" itemLabel="10"/>
+							                            <apex:selectOption itemValue="20" itemLabel="20"/>
+							                            <apex:selectOption itemValue="50" itemLabel="50"/>
+							                            <apex:selectOption itemValue="100" itemLabel="100"/>
+							                            <apex:actionSupport event="onchange" action="{!refreshPageSize}" reRender="buttonPanel, idLineItemnCino" status="processingImg"/>
+							                        </apex:selectlist>
+							                		<span Class="slds-dropdown slds-dropdown--left" style="left: 95px !important;">
+							                			&nbsp; Showing records {!(setCon.pageNumber * recordLimit) + 1 - recordLimit} - {!IF((setCon.pageNumber * recordLimit) > total_size, total_size, (setCon.pageNumber * recordLimit))} of {!total_size}&nbsp;
+						                			</span>
+								                	<apex:commandButton value="First" reRender="buttonPanel, idLineItemnCino" action="{!setCon.first}" disabled="{!!setCon.hasPrevious}"  status="processingImg" styleClass="slds-button slds-button--brand"/>&nbsp;
+								                	<apex:commandButton value="Previous" reRender="buttonPanel, idLineItemnCino" action="{!setCon.previous}" disabled="{!!setCon.hasPrevious}"  status="processingImg" styleClass="slds-button slds-button--brand"/>&nbsp;
+								                	<apex:commandButton value="Next" reRender="buttonPanel, idLineItemnCino" action="{!setCon.next}" disabled="{!!setCon.hasNext}"  status="processingImg" styleClass="slds-button slds-button--brand"/>&nbsp;
+								                	<apex:commandButton value="Last" reRender="buttonPanel, idLineItemnCino" action="{!setCon.last}" disabled="{!!setCon.hasNext}"  status="processingImg" styleClass="slds-button slds-button--brand"/>
+								                    <span class="slds-dropdown slds-dropdown--right" style="right: 35px !important;">
+								                    	&nbsp; Showing page &nbsp;<apex:selectList multiselect="FALSE" size="1" value="{!pageNumber}" style="min-width: 40px!important; border: 1px solid #d8dde6; border-radius: 4px; box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.16); background: white; padding: 1px;">  
+							                            <apex:selectOptions value="{!pageNumberList}"  />  
+							                            <apex:actionSupport event="onchange" action="{!retrieveRecordsBasedOnPageNumber}" reRender="buttonPanel, idLineItemnCino" status="processingImg"/> 
+							                        </apex:selectlist>&nbsp; of {!TotalPages} &nbsp;</span>
+						                        </apex:outputPanel>
+							                </div>
+							            </div>
+							        </div>
+							</apex:form>
+						</div>
+					</div>     
+					<br/><br/>
+			</div>
+			<script>
+			function ExpandAndCollapse(rowNum)
+			{ 
+				console.log('--rowNum---',rowNum);
+				
+				if($('#divAddInfo'+rowNum).css('display') == 'none')
+					$('#divAddInfo'+rowNum).show();
+				else
+					$('#divAddInfo'+rowNum).hide();
+					
+				if($('#divAddInfo1'+rowNum).css('display') == 'none')
+					$('#divAddInfo1'+rowNum).show();
+				else
+					$('#divAddInfo1'+rowNum).hide();
+					
+			   /* $('.clsAddDetails'+''+rowNum).each(function() {
+					$(this).hide();
+				});*/
+				
+				$('#'+$('.clsRecordType'+rowNum).val()+''+rowNum).show();
+				
+				if($("#collapseme"+rowNum).hasClass("out")) {
+					$("#collapseme"+rowNum).addClass("in");
+					$("#collapseme"+rowNum).removeClass("out");
+					$('#img'+rowNum).attr('src','{!URLFOR($Resource.SLDS092, "/assets/icons/utility/down_60.png")}');
+				} 
+				else {
+					$("#collapseme"+rowNum).addClass("out");
+					$("#collapseme"+rowNum).removeClass("in");
+					$('#img'+rowNum).attr('src','{!URLFOR($Resource.SLDS092, "/assets/icons/utility/right_60.png")}');
+				}
+				
+				return false;
+			}
+			function addBackgroundClass(id,value) {
+				if(value)
+					$('#'+id).css("background","lightgrey");
+				else
+					$('#'+id).css("background","");
+			}	
+			</script>
+		</apex:define>
+	</apex:composition>
+  </html> 
+</apex:page>

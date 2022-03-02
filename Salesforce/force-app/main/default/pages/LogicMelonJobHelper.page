@@ -1,0 +1,39 @@
+<apex:page standardController="TR1__Job__c" extensions="PostToLogicMelonController" title="Job Status" sidebar="false">
+    <apex:form id="formId">
+        <apex:pageBlock title="Logic Melon Existing Channel List">
+            
+            <apex:pageMessages id="msgId"/>
+            
+            <apex:pageBlockTable value="{!advChannelWrapperList}" var="status" >
+                
+                <apex:column headervalue="Delete Job Posting?" styleClass="actionColumn">
+                    <apex:inputCheckBox value="{!status.isDeleteJob}" style="align:center"/>
+                </apex:column>
+                <apex:column value="{!status.channelName}"  headervalue="Channel Name" style="font-size:13px"/>
+                <apex:column value="{!status.channelId}"  headervalue="Channel ID" style="font-size:13px"/>
+                <apex:column value=" {!status.CurrencyVal} {!status.CostVal} "  headervalue="Cost" style="font-size:13px"/>
+                <apex:column headervalue="Channel Status" style="font-size:13px">
+                     <apex:image url="/img/msg_icons/confirm16.png" rendered="{!status.ChannelStatus = 'Delivered'}"/>
+                     <apex:image url="/img/msg_icons/error16.png" rendered="{!status.ChannelStatus = 'Deleted'}"/>
+                     <apex:image url="/img/msg_icons/warning16.png" rendered="{!status.ChannelStatus = 'Being delivered'}"/>
+                        "{!status.ChannelStatus}" 
+                </apex:column>
+                <apex:column value="{!status.PostedTime}"  headervalue="Posted Date" style="font-size:13px"/>
+                <apex:column value="{!status.RemovalTime}"  headervalue="Removal Date" style="font-size:13px"/>
+                 <apex:column value="{!status.EstimatedExpireTime}"  headervalue="Estimated Expire Time" style="font-size:13px"/>
+                <apex:column value="{!status.Responses}"  headervalue="Responses" style="font-size:13px"/>
+                
+            </apex:pageBlockTable>            
+            
+            <apex:pageBlockButtons >            
+                <apex:actionStatus id="counterStatus" style="align:center;" >
+                    <apex:facet name="start" >
+                        <apex:image url="/img/loading32.gif" height="20" width="20" />                      
+                    </apex:facet>
+                </apex:actionStatus>
+                <apex:commandButton action="{!deletePosting}" value="Delete Posting" rerender="msgId,formId" rendered="{!advChannelWrapperList.size>0}" status="counterStatus"/> 
+            </apex:pageBlockButtons>
+            
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

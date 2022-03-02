@@ -1,0 +1,62 @@
+<apex:page controller="RC_ResumeUpload" sidebar="false" showHeader="false" standardStylesheets="false">
+    <apex:stylesheet value="{!URLFOR($Resource.SLDS092, 'assets/styles/salesforce-lightning-design-system-vf.css')}" /> 
+	<apex:form id="FileUploadForm" style="margin-top:-8px;" styleClass="slds">
+	
+		<apex:actionFunction id="uploadFile1" name="uploadFile" action="{!insertContent}" />
+
+			<div style="font:normal 12px Arial; color:#c40000;"> 
+				<apex:outputpanel rendered="{!success == 'false'}"> 
+					<strong>An error has occurred while uploading the file </strong>  
+				</apex:outputpanel>
+			</div>
+			<apex:outputPanel id="FilePostRenderSection2" rendered="{!success == 'uploaded'}" layout="none">
+				<script>
+				console.log('{!$CurrentPage.parameters.UserExist}');
+				parent.sendDocId('{!$CurrentPage.parameters.cId}','{!$CurrentPage.parameters.UserExist}');
+				</script>
+			</apex:outputPanel>
+		
+			<apex:outputPanel rendered="{!success == null}" >
+	            <div id="fileUploadDiv" style="color:#7C7F83;display: -webkit-box; display:flex; ">
+	            	<apex:inputFile id="inputUpload" value="{!objAttachment.Body}" fileSize="{!objAttachment.BodyLength}" size="30" 
+	            		style="width: 84%;" onchange="calFile(this)" Filename="{!objAttachment.Name}" contentType="{!objAttachment.ContentType}"/>
+            		 <a id = "removeLink" onclick = "removeUploadedFile();" style = "cursor: pointer; color: blue;display:none;text-decoration: underline;">Remove</a>
+	            </div>
+            </apex:outputPanel>	
+	</apex:form>
+	
+	<script>
+	 function upload(){
+	     //document.getElementById('contactInsert').firstChild.value= conId;
+	     uploadFile();
+	 }
+		var uploadFileObj;
+		var attId;
+		function calFile(fileObj){
+			uploadFileObj = fileObj;
+			if(fileObj.files.length > 0) {
+			    //validate file attachment is not > 500k
+			    var uploadFileSize = fileObj.files[0].size;
+			    console.log(uploadFileSize);
+			    if(uploadFileSize > 1024 * 1024 * 25){
+			        alert('File uploads must be less than 25 Mb in size. Your file size is: '+(Math.round(uploadFileSize/(1024*1024))) + 'Mb');
+			        fileObj.value = '';
+			    }
+			    else{
+					if(uploadFileObj.value !=  undefined && uploadFileObj.value != '')	    
+			    		document.getElementById('removeLink').style.display = 'block';
+			    }
+			}
+			else{
+			    // no file attached, if not required, call save method
+			}
+		}
+		
+		function removeUploadedFile()
+		{
+			uploadFileObj.value = '';
+			document.getElementById('removeLink').style.display = 'none';
+		}
+		
+	</script>
+</apex:page>

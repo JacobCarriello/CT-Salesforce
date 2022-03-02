@@ -1,0 +1,11 @@
+ID,NAME,RECORDTYPEID,SHIPPINGCITY,SHIPPINGCOUNTRY,SHIPPINGPOSTALCODE,SHIPPINGSTATE,SHIPPINGSTREET,WEBSITE
+1,Peachtree Suites,0122M000001MHuXQAW,Atlanta,United States,30001,GA,111 Test ST,http://www.peachtreesuites.com
+2,SeaTac International Airport,0122M000001MI8HQAW,Tacoma,,98001,WA,,
+3,United Airlines,0122M000001MHuXQAW,,,,,,http://www.united.com
+4,Dollar Rental,0122M000001MHuXQAW,Atlanta,,30001,GA,111 Test st.,http://www.dollar.com
+5,Delta,0122M000001MHuXQAW,,,,,,http://www.delta.com
+6,Enterprise,0122M000001MHuXQAW,Atlanta,United States,30001,GA,111 Test ST,http://www.enterprise.com
+7,Atlanta Jackson-Hartsfield Airport,0122M000001MI8HQAW,Atlanta,,30001,GA,,
+8,Holiday Inn Express,0122M000001MHuXQAW,Atlanta,United States,30001,GA,111 Test ST,http://www.holidayinn.com
+9,Candidate Pool,01241000000kGw4AAE,,,,,,
+10,Hoag Hospital,01241000000kGw4AAE,,,,,,

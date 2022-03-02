@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Manage community user logins and login as user.</description>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Contact.Communities_Enabled__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Community User Logins</label>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>ManagePartners</name>
+    </userPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>ModerateNetworkUsers</name>
+    </userPermissions>
+</PermissionSet>

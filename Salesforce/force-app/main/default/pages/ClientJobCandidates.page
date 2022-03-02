@@ -1,0 +1,332 @@
+<apex:page controller="RC_JobCandidates" showHeader="false" standardStylesheets="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false" action="{!redirectUnAuthenticatedUser}">
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+       <head> 
+            <title>{!objJob.Job_Title__c}</title>
+            <apex:stylesheet value="{!URLFOR($Resource.SLDS092, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+            <apex:includeScript value="{!URLFOR($Resource.TB_JS, '/jQuery-1.11.3.min.js')}" />
+            <apex:includeScript value="{!URLFOR($Resource.TB_JS, '/jquery-ui-1.11.3.js')}" />
+            <script>
+                function closeBanner() 
+                {
+                   document.getElementById('messageBanner').style.display = 'none';    
+                }
+            </script>
+       </head>
+    
+    <apex:composition template="RC_CommunityTemplate">
+        
+        <apex:define name="body">
+               <style> 
+                #outPopUp {
+                position:absolute;
+                z-index:15;
+                top:50%;
+                left:50%;
+                margin:-100px 0 0 -150px;
+                } 
+                .slds-button--neutral{ 
+                white-space : nowrap !important;
+                }
+                .Qualified-and-Interested{
+                    background-color:lavender;
+                }
+                .Not-Qualified-and-Interested{
+                    background-color: #ffdde1;
+                }
+                .Qualified-and-Not-Interested{
+                    background-color:#faffbd;
+                }
+                .slds-table--bordered{
+                    border-left: 1px solid #d8dde6;
+                    border-right: 1px solid #d8dde6;
+                } 
+            </style>
+            <script>
+                function checkError()
+                {
+                    var jq=jQuery.noConflict();
+                    
+                    if(jq(document).find('.errorMsg').length > 0)
+                    {
+                        var container = jq('div'),
+                            scrollTo = jq('.errorMsg');
+                        
+                        document.getElementById('idSuccess').style.display = 'none';
+                        
+                        container.animate({
+                            scrollTop: scrollTo.offset().top - container.offset().top + container.scrollTop()
+                        });
+                    }
+                    else
+                    {
+                        var container = jq('div'),
+                            scrollTo = jq('#idSuccess');
+                        
+                        document.getElementById('idSuccess').style.display = '';
+                        
+                        
+                            container.animate({
+                                scrollTop: scrollTo.offset().top - container.offset().top + container.scrollTop()
+                            });
+                        
+                    }       
+                    
+                }
+            </script>
+            
+            <apex:actionstatus id="processingImg">
+                 <apex:facet name="start">
+                    <div id="preloader" style="background-color: #dcdcdc; opacity: 0.7;">
+                        <div id="status">
+                            <p class="center-text">
+                                Updating the contact...                             
+                            </p>
+                        </div>
+                    </div>
+                </apex:facet>
+            </apex:actionstatus>
+            <div style="height:60px;">&nbsp;</div>
+                <div class="slds-all-elements">
+                    <div id="content" class="slds-snap-content" style="z-index:100">
+                        <div class="slds-content">
+                            <div  class="slds">   
+                                <apex:form >
+                                    <!--Section to display any type of errors, exception, notification msgs-->  
+                                    <apex:outputPanel id="errors">
+                                        <div id = "exceptionMsg" class="slds-notify slds-notify--alert slds-theme--alert-texture" role="alert">
+                                            <div class="notify__content slds-grid">
+                                                <div class="slds-col slds-align-middle">
+                                                    <h2  id = "msgId"  class="slds-text-heading--small msgId ">
+                                                       <apex:messages /> 
+                                                    </h2>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <script>
+                                            if($('#msgId').children().length == 0 || $('#msgId').parent().children().length > 1)
+                                                $('#exceptionMsg').remove();
+                                             
+                                        </script>
+                                    </apex:outputPanel>
+                                    <!-- Exception handling ENDs here-->
+                                    
+                                    
+                                    <apex:actionFunction name="taskCreate" action="{!createTask}" rerender="dummy" >
+                                        <apex:param name="candidateId" value="" />
+                                    </apex:actionFunction>
+                                    <apex:actionFunction name="reOrderShortListed" action="{!reOrderOppDiscussed}" rerender="shortListTable" />
+                                    
+                                    <div class="slds-page-header" role="banner">
+                                        <div class="slds-grid slds-wrap slds-grid--align-spread">
+                                            <div class="slds-col">
+                                                <div class="slds-media">
+                                                    <div class="slds-media__figure">
+                                                        <span class="slds-avatar slds-avatar--medium">
+                                                           <img src="{!URLFOR($Resource.SLDS092, '/assets/icons/standard/case_60.png')}" style="background-color: #43b4e7;" />
+                                                        </span>
+                                                    </div> 
+                                                    
+                                                    <div class="slds-media__body">
+                                                      <p class="slds-text-heading--label">{!$User.FirstName} {!$User.LastName}</p>
+                                                      <div class="slds-grid">
+                                                        <h1 class="slds-text-heading--medium slds-m-right--small slds-truncate slds-align-middle">Job Candidates</h1>
+                                                      </div>
+                                                      <!-- <p class="slds-text-heading--label">{!objJob.Job_Title__c}</p> -->
+                                                     
+                                                     </div>
+                                                </div>
+                                            </div>
+                                            <div class="slds-col">
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="slds-grid slds-wrap slds-grid--align-spread slds-page-header__detail-row">
+                                            <apex:repeat value="{!$ObjectType.Contact.Fieldsets.RC_My_Profile_Header}" var="field">
+                                                <div class="slds-col--padded slds-size--2-of-6 slds-medium-size--2-of-6 slds-large-size--1-of-6">
+                                                  <dl>
+                                                    <dt>
+                                                      <p class="slds-text-heading--label slds-truncate" title="{!field.label}">{!field.label}</p>
+                                                    </dt>
+                                                    <dd>
+                                                      <p class="slds-text-body--regular slds-truncate" title="{!objContact[field]}"> 
+                                                          <apex:outputField value="{!objContact[field]}" /></p>
+                                                    </dd>
+                                                  </dl>
+                                                </div>
+                                            </apex:repeat>
+                                        </div>
+                                        
+                                    </div>
+                                    
+                                    <div class="slds-tabs--scoped slds-m-top--medium slds-col--padded-large">
+                                        <ul class="slds-tabs--scoped__nav" role="tablist">
+                                            <li class="slds-tabs__item slds-text-heading--label slds-active " title="Item One" role="presentation">
+                                                <a href="#" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-1" >Shortlisted</a>
+                                            </li>
+                                            <li class="slds-tabs__item slds-text-heading--label " title="Item two" role="presentation">
+                                                <a href="#" role="tab" tabindex="0" aria-selected="true" aria-controls="tab-default-2" >Job Applications</a>
+                                            </li>
+                                            
+                                        </ul>
+                                        <!-- Tab-1 Shortlisted Candidates-->
+                                        <div id="tab-default-1" class="slds-tabs__content slds-show" role="tabpanel">
+                                            <apex:outputPanel id="shortListTable">
+                                                <apex:outputPanel layout="none" rendered="{!lstOppDiscussed.size > 0 }" >
+                                                    <apex:variable value="{!lstFieldsShortlist.size + 2}" var="fieldCount" />
+                                                    <apex:outputPanel layout="none" rendered="{!lstFieldsShortlist.size > 0}"> 
+                                                        <table id ="sum_table" class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal slds-no-row-hover">
+                                                            <thead>
+                                                                <tr class = "slds-text-heading--label">
+                                                                    <apex:repeat value="{!lstFieldsShortlist}" var="field">
+                                                                        <apex:outputPanel layout="none" rendered="{!field.FieldPath != 'TR1__Interest_Level__c'}">
+                                                                            <th data-label ="{!field.Label}" class="slds-text-heading--x-small slds-size--{!IF(field.FieldPath == 'TR1__Comments__c','3','1')}-of-{!fieldCount}" scope="col">
+                                                                                <b>{!field.Label}</b>
+                                                                            </th>
+                                                                        </apex:outputPanel>
+                                                                        <apex:outputPanel layout="none" rendered="{!field.FieldPath == 'TR1__Interest_Level__c'}">
+                                                                            <th onclick = "reOrderShortListed();" data-label ="{!field.Label}" class="slds-is-sortable slds-text-heading--x-small slds-size--1-of-{!fieldCount}" scope="col">
+                                                                                <span><b>{!field.Label}</b></span>
+                                                                                <button class="slds-button slds-button--icon-bare" >
+                                                                                    <img src="{!URLFOR($Resource.SLDS092, '/assets/icons/utility/arrowdown_60.png')}" width="24%"/>
+                                                                                    <span class="slds-assistive-text">Sort</span>
+                                                                                </button>
+                                                                            </th> 
+                                                                        </apex:outputPanel>
+                                                                    </apex:repeat>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <apex:repeat value="{!lstOppDiscussed}" var="objOppDis">
+                                                                    <tr class="slds-hint-parent">
+                                                                        <apex:repeat value="{!lstFieldsShortlist}" var="field">
+                                                                            <td  data-label ="{!field.Label}"
+                                                                                class="slds-cell-wrap slds-size--{!IF(field.FieldPath == 'TR1__Comments__c','3','1')}-of-{!fieldCount} {!IF(field.FieldPath == 'TR1__Interest_Level__c', SUBSTITUTE(objOppDis.TR1__Interest_Level__c,' ','-'),'')}" >
+                                                                                <apex:outputPanel layout="none" rendered="{!field.FieldPath != 'TR1__Candidate__r.Rating__c'}">
+                                                                                    {!objOppDis[field.FieldPath]}
+                                                                                </apex:outputPanel>
+                                                                                <apex:outputPanel layout="none" rendered="{!field.FieldPath == 'TR1__Candidate__r.Rating__c'}">
+                                                                                    <img src="/img/samples/stars_{!NULLVALUE(objOppDis[field.FieldPath],'0')}00.gif" />
+                                                                                </apex:outputPanel>
+                                                                            </td>
+                                                                        </apex:repeat>
+                                                                    </tr>
+                                                                </apex:repeat>
+                                                            </tbody>
+                                                        </table>
+                                                    </apex:outputPanel>
+                                                    
+                                                </apex:outputPanel>
+                                                <apex:outputPanel rendered="{!lstOppDiscussed.size == 0}">  
+                                                    <div  id = "NoOppDiscussedMsg" class="slds-m-top--small slds-notify slds-notify--alert slds-theme--alert-texture" role="alert">
+                                                        <div class="notify__content slds-grid">
+                                                            <div class="slds-col slds-align-middle">
+                                                                <h2  class="slds-text-heading--small ">
+                                                                   No shortlisted Candidate for this Job
+                                                                </h2>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </apex:outputPanel>
+                                            </apex:outputPanel>
+                                        </div>
+                                        <!-- Tab 2   Job Reporting Candidates--> 
+                                        <div id="tab-default-2" class="slds-tabs__content slds-hide" role="tabpanel">
+                                            <apex:variable value="{!lstFieldsCandidates.size + 1}" var="FieldCountCan"/>
+                                            <apex:outputPanel rendered="{!lstJobReporting.size > 0}">  
+                                                <table id ="sum_table" class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal">
+                                                    <thead>
+                                                        <tr class = "slds-text-heading--label">
+                                                            <apex:repeat value="{!lstFieldsCandidates}" var="field">
+                                                                <th data-label ="{!field.Label}" class="slds-text-heading--x-small slds-size--1-of-{!FieldCountCan}" scope="col">
+                                                                    <b>{!field.Label}</b>
+                                                                </th>
+                                                            </apex:repeat>
+                                                            <th data-label ="resume" class="slds-text-heading--x-small slds-size--1-of-{!FieldCountCan}" scope="col"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <apex:repeat value="{!lstJobStagesOrdered}" var="stage">
+                                                            <apex:repeat value="{!lstJobReporting}" var="objJobReport">
+                                                                <apex:outputPanel rendered="{!objJobReport.TR1__Stage__c == stage}">
+                                                                    <tr class="slds-hint-parent">
+                                                                        <apex:repeat value="{!lstFieldsCandidates}" var="field">
+                                                                            <td  data-label ="{!field.Label}" class="slds-cell-wrap 
+                                                                            slds-size--1-of-{!FieldCountCan}" >
+                                                                                <apex:outputPanel rendered="{!field.FieldPath != 'TR1__Contact__r.Rating__c'}">
+                                                                                       <apex:outputLink value="{!$Site.prefix}/ViewCandidate?id={!objJobReport.TR1__Contact__c}&JobId={!objJobReport.TR1__Job__c}" rendered="{!field.FieldPath == 'TR1__Contact__r.Name'}">{!objJobReport[field.FieldPath]}</apex:outputLink>
+                                                                                       <apex:outputField rendered="{!field.FieldPath != 'TR1__Contact__r.Name'}" value="{!objJobReport[field.FieldPath]}" />
+                                                                                </apex:outputPanel>
+                                                                                <apex:outputPanel rendered="{!field.FieldPath == 'TR1__Contact__r.Rating__c'}">
+                                                                                    <img src="/img/samples/stars_{!NULLVALUE(objJobReport[field.FieldPath],'0')}00.gif" />
+                                                                                </apex:outputPanel>
+                                                                            </td>
+                                                                        </apex:repeat>
+                                                                        <apex:outputPanel rendered="{!mapContactDocURL[objJobReport.TR1__Contact__c] != 'no_resume'}">
+                                                                            <td  class="slds-size--1-of-{!FieldCountCan}" >
+                                                                                <a target ="_blank" href="{!mapContactDocURL[objJobReport.TR1__Contact__c]}"  
+                                                                                    style="{!IF(mapContactDocURL[objJobReport.TR1__Contact__c] == '','cursor:not-allowed;pointer-event:none','')}" 
+                                                                                    onclick = "taskCreate('{!objJobReport.TR1__Contact__c}')" 
+                                                                                    class="slds-button slds-button--neutral">View Resume</a>
+                                                                            </td>   
+                                                                        </apex:outputPanel>
+                                                                        <apex:outputPanel rendered="{!mapContactDocURL[objJobReport.TR1__Contact__c] == 'no_resume'}">
+                                                                           <td  class="slds-size--1-of-{!FieldCountCan}" > No Resume</td>
+                                                                        </apex:outputPanel>
+                                                                    </tr>
+                                                                </apex:outputPanel>
+                                                            </apex:repeat>
+                                                        </apex:repeat>
+                                                    </tbody>
+                                                </table>
+                                            </apex:outputPanel>
+                                             <apex:outputPanel rendered="{!lstJobReporting.size == 0}">  
+                                                    <div  id = "NoOppDiscussedMsg" class="slds-m-top--small slds-notify slds-notify--alert slds-theme--alert-texture" role="alert">
+                                                        <div class="notify__content slds-grid">
+                                                            <div class="slds-col slds-align-middle">
+                                                                <h2  class="slds-text-heading--small ">
+                                                                  No Candidate applied to this job
+                                                                </h2>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </apex:outputPanel>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="slds-text-align--center slds-m-around--large">
+                                        <a href="{!$Site.Prefix}/JobListing" class="slds-button slds-button--neutral">Back</a>
+                                    </div>
+                                    <script>
+                                        $('.slds-tabs__item').on('click', function(){
+                                        $(this).addClass('slds-active');
+                                        $(this).find('a').attr('aria-selected', true);
+                                        var $contentToShow = $('#'+$(this).find('a').attr('aria-controls'));
+                                        $contentToShow.removeClass('slds-hide');
+                                        $contentToShow.addClass('slds-show');
+                                        
+                                        $(this).siblings().removeClass('slds-active');
+                                        $(this).siblings().find('a').attr('aria-selected', false);
+                                        $contentToShow.siblings('.slds-tabs__content').removeClass('slds-show');
+                                        $contentToShow.siblings('.slds-tabs__content').addClass('slds-hide');
+                                        });
+                                    </script>
+                                </apex:form>
+                            </div>
+                        </div>     
+                        <!-- Page Footer-->
+                        <span class="nonslds">
+                            <div class="footer">
+                                <div class="footer-socials half-bottom">
+                                    <a href="#" class="footer-share show-share-bottom"><i class="fa fa-share-alt"></i></a>
+                                    <a href="#" class="footer-up"><i class="fa fa-angle-up"></i></a>
+                                </div>
+                                <p class="center-text">&copy; 2015 Talent Rover. All rights reserved.</p>
+                            </div>   
+                        </span>  
+                    </div>
+                </div>
+        </apex:define> 
+    </apex:composition>
+  </html>    
+</apex:page>

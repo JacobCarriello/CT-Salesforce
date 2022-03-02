@@ -1,0 +1,211 @@
+<apex:page standardStyleSheets="false" showHeader="false" sidebar="false" action="{!redirectUnAuthenticatedUser}" controller="RC_ContactUsController">
+
+
+<apex:composition template="RC_CommunityTemplate">
+        
+        <apex:define name="body">
+            
+            <style>
+                .errorMsg{
+                    color:red;
+                }   
+                
+                .SelectEmail{
+                    background-color: rgba(255,255,255,0.4);
+                    font-size: 12px;
+                    color: #666;
+                    border: solid 1px #cacaca;
+                    min-width: 100%;
+                    display: block;
+                    box-sizing: border-box;
+                    height: 40px;
+                    padding-left: 10px;
+                    padding-right: 10px;
+                    margin-bottom: 10px;
+                }
+                
+                .foneLabel{float:left; width:200px;}
+                .foneNumber{float:left; width:100px;}
+                
+                .selectBox{position:relative;}
+                .arrowFix{position:absolute; right:2%; top:25%;}
+                option{height:55px; line-height:55px; background:none; border-bottom:1px solid #d9d9d9;}
+                            
+            </style>  
+            <script>
+                function formValidation()
+                {
+                    document.getElementById('idNameError').style.display = 'none';
+                    document.getElementById('idEmailError').style.display = 'none';
+                    document.getElementById('idMsgError').style.display = 'none';
+                    document.getElementById('idSuccess').style.display = 'none';
+                    
+                    if(document.getElementById('{!$Component.contactForm.contactNameField}').value.trim() == '')
+                    {
+                        document.getElementById('idNameError').style.display = 'inline-block';
+                        return false;
+                    }
+                    else if(document.getElementById('{!$Component.contactForm.idEmail}').value == 'Select')
+                    {
+                        document.getElementById('idEmailError').style.display = 'inline-block';
+                        return false;
+                    }
+                    else if(document.getElementById('{!$Component.contactForm.contactMessageTextarea}').value.trim() == '')
+                    {
+                        document.getElementById('idMsgError').style.display = 'inline-block';
+                        return false;
+                    }
+                        sendEmail();
+                    return true;
+                }
+                
+                //To show the successfull message for sending email
+                function SuccessEmail()
+                {
+                    document.getElementById('idSuccess').style.display = '';
+                    document.getElementById('{!$Component.contactForm.idEmail}').value = 'Select';
+                    document.getElementById('{!$Component.contactForm.contactMessageTextarea}').value = '';                     
+                }
+                
+            </script>           
+            <apex:actionstatus id="processingImg">
+                 <apex:facet name="start">
+                    <div id="preloader" style="background-color: #dcdcdc; opacity: 0.7;">
+                        <div id="status">
+                            <p class="center-text">
+                                Sending an Email...                             
+                            </p>
+                        </div>
+                    </div>
+                </apex:facet>
+            </apex:actionstatus>
+            
+            
+            <div style="height:60px;">&nbsp;</div>
+            <div class="nonslds all-elements">
+            <div id="content" class="snap-content" style="z-index:100">
+                <!-- Content Heding -->
+                <div class="content-heading">
+                    <h4>Contact Us</h4>
+                    <p></p>
+                    <i class="fa fa-home"></i>
+                    <div class="overlay"></div>
+                    <apex:image url="{!URLFOR($Resource.RC_Resources, 'images/pictures/standardw.jpg')}" />
+                </div>
+                
+                <div style="width: 50%;left: 22%;right: 22%;">                  
+                    <div id="idSuccess" style="display:none; text-align:center;"><h2 style="color:#27ae60;">Your email has been sent successfully!</h2></div>
+                </div>      
+                <br/>
+        
+                <div class="content">       
+                    <div class="one-half-responsive">
+                        <div class="container no-bottom">
+                            <h4>Call Us Today</h4>
+                            <p>
+                                <div class="foneLabel">Timesheets &nbsp; Credentialing:</div>
+                                <a href="#" class="contact-call foneNumber">877-868-5350</a><br clear="all" />
+                                <div class="foneLabel">After Emergency Phone Number:</div>
+                                <a href="#" class="contact-call foneNumber">214-952-7187</a><br clear="all" />
+                                <!--<div class="foneLabel">Talent Rover Schaumburg: </div>
+                                <a href="#" class="contact-call foneNumber">999-999-9999</a><br clear="all" />
+                                <div class="foneLabel">TMSP: </div>
+                                <a href="#" class="contact-call foneNumber">999-999-9999</a><br clear="all" />
+                                <div class="foneLabel">AWI Appleton: </div>
+                                <a href="#" class="contact-call foneNumber">999-999-9999</a><br clear="all" />
+                                <div class="foneLabel">AWI Schaumburg: </div>
+                                <a href="#" class="contact-call foneNumber">999-999-9999</a><br clear="all" />-->
+        
+                            </p>
+                            <h4>Our Locations</h4>
+                            <p>
+                                <strong>Medestar</strong><br />
+                                1603 LBJ Freeway, Suite 700, Dallas, TX 75234 <br />
+                               <!-- <strong>Divisions:</strong> <em style="color:#3498db;">AWI Engineering, AWI Technology Appleton, MDF, Travel, Per Diem, TMSP</em>-->
+                            </p>
+                            <!--<p>
+                                <strong>Schaumburg</strong><br />
+                                505 Sansome Street, Suite 1020, San Francisco, CA 94111<br />
+                                <strong>Divisions:</strong> <em style="color:#3498db;">HIT, AWI Technology Schaumburg, MDF</em>
+                            </p>
+        
+                            <p>
+                                <strong>Southern Pines</strong><br />
+                                505 Sansome Street, Suite 1020, San Francisco, CA 94111<br />
+                                <strong>Divisions:</strong> <em style="color:#3498db;">Travel</em>
+                            </p>-->
+        
+                        </div>   
+                    </div>
+                    <div class="decoration hide-if-responsive"></div>
+                    <div class="one-half-responsive last-column">
+                        <h4>Need assistance? Send us an email.</h4>
+                        <div class="container no-bottom">
+                            <div class="contact-form no-bottom"> 
+                                <div class="formSuccessMessageWrap" id="formSuccessMessageWrap">
+                                    <div class="big-notification green-notification">
+                                        <h3 class="uppercase">Message Sent </h3>
+                                        <a href="#" class="close-big-notification">x</a>
+                                        <p>Your message has been successfuly sent. Please allow up to 48 hours for a reply! Thank you!</p>
+                                    </div>
+                                </div>
+        
+                                <apex:form id="contactForm">
+                                        <apex:actionFunction name="sendEmail" action="{!sendEmail}" rerender="contactForm" status="processingImg" onComplete="SuccessEmail();"/>
+                                        
+                                        <div class="formFieldWrap">
+                                            <label class="field-title contactNameField" for="contactNameField">Name:</label>
+                                            <apex:inputText value="{!strName}" styleClass="contactField requiredField" id="contactNameField" />
+                                            <span id="idNameError" style="display:none;margin-top: -11px;color: red;font-weight: bold;">Please enter a Name </span>
+                                        </div>
+                                        
+                                        <div class="formFieldWrap">
+                                            <label class="field-title contactNameField" for="contactNameField">Subject:</label>
+                                            <apex:inputText value="{!strSubject}" styleClass="contactField requiredField" id="contactSubjectField" disabled="true" />
+                                        </div>
+                                        
+                                        <div class="formFieldWrap">
+                                            <label class="field-title contactEmailField" for="contactEmailField">Email:</label>
+                                            <div class="selectBox">
+                                                <i class="fa fa-caret-down arrowFix"></i>
+                                                <apex:selectList id="idEmail" value="{!strEmail}" multiselect="false" size="1" styleClass="contactField requiredField">
+                                                    <apex:selectOption itemValue="Select" itemLabel=" - SELECT - "/> 
+                                                    <apex:selectOption itemValue="Operations@medestar.com" itemLabel="Timesheets & Credentialing"/> <!-- itemValue="community@awiengineering.com " --->
+                                                    <apex:selectOption itemValue="May.Usman@medestar.com;Carolyn.Magilley@medestar.com" itemLabel="Scheduling"/> <!-- itemValue="community@awitechnology.com" --->
+                                                    <!--<apex:selectOption itemValue="nsrikanth@talentrover.com;srikanth.gnm@gmail.com" itemLabel="TalentRover"/>--> <!-- itemValue="community@talentrover.com" --->
+                                                </apex:selectList> 
+                                            </div>
+                                            <span id="idEmailError" style="display:none;margin-top: -11px;color: red;font-weight: bold;">Please select an Email</span>
+                                        </div>
+                                        <div class="formTextareaWrap">
+                                            <label class="field-title contactMessageTextarea" for="contactMessageTextarea">Message:</label>
+                                            <apex:inputTextarea value="{!strDescription}" styleClass="contactTextarea" id="contactMessageTextarea" />
+                                            <span id="idMsgError" style="display:none;margin-top: -23px;color: red;font-weight: bold;">Please enter the Message</span>
+                                        </div>
+                                        <div class="formSubmitButtonErrorsWrap">
+                                                <input type="button" class="buttonWrap button button-green contactSubmitButton" value="SUBMIT" onClick="formValidation();"/>
+<!--                                            <apex:commandbutton action="{!sendEmail}" styleClass="buttonWrap button button-green contactSubmitButton" value="SUBMIT" rerender="contactForm" status="processingImg" onClick="return formValidation();"/> -->
+                                        </div>
+                                </apex:form>       
+                            </div>
+                        </div>                                 
+                    </div>
+                </div>
+        
+                <div class="decoration container"></div>  
+                    
+                <!-- Page Footer-->
+                <div class="footer">
+                    <div class="footer-socials half-bottom">
+                        <a href="#" class="footer-share show-share-bottom"><i class="fa fa-share-alt"></i></a>
+                        <a href="#" class="footer-up"><i class="fa fa-angle-up"></i></a>
+                    </div>
+                    <p class="center-text">&copy; 2017 Medestar. All rights reserved.</p>
+                </div>       
+            </div>
+        </div>    
+        </apex:define> 
+        
+        
+    </apex:composition>
+</apex:page>

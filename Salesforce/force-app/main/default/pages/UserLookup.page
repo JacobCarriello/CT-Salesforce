@@ -1,0 +1,15 @@
+<apex:page controller="ReassignGuestOwnershipController" tabStyle="Contact" sidebar="false" showHeader="false">
+    <apex:form >
+        <apex:sectionHeader title="Select User"/>
+        <apex:pageBlock >
+            <apex:pageBlockSection columns="1">
+                <apex:repeat value="{!userList}" var="us">
+                    <apex:commandLink value="{!us.Name}" action="{!goBack}">
+                        <apex:param value="{!us.Name}" name="userName"/>
+                        <apex:param value="{!us.Id}" name="userId"/>
+                    </apex:commandLink>
+                </apex:repeat>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

@@ -1,0 +1,1806 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Academics</fullName>
+        <default>false</default>
+        <label>Academics</label>
+    </customValue>
+    <customValue>
+        <fullName>Accounting/Finance</fullName>
+        <default>false</default>
+        <label>Accounting/Finance</label>
+    </customValue>
+    <customValue>
+        <fullName>Acute Care</fullName>
+        <default>false</default>
+        <label>Acute Care</label>
+    </customValue>
+    <customValue>
+        <fullName>Addiction Medicine</fullName>
+        <default>false</default>
+        <label>Addiction Medicine</label>
+    </customValue>
+    <customValue>
+        <fullName>Addiction Psychiatry</fullName>
+        <default>false</default>
+        <label>Addiction Psychiatry</label>
+    </customValue>
+    <customValue>
+        <fullName>Administrator</fullName>
+        <default>false</default>
+        <label>Administrator</label>
+    </customValue>
+    <customValue>
+        <fullName>Adolescent Medicine</fullName>
+        <default>false</default>
+        <label>Adolescent Medicine</label>
+    </customValue>
+    <customValue>
+        <fullName>Adult Health</fullName>
+        <default>false</default>
+        <label>Adult Health</label>
+    </customValue>
+    <customValue>
+        <fullName>Advanced Practice Clinician</fullName>
+        <default>false</default>
+        <label>Advanced Practice Clinician</label>
+    </customValue>
+    <customValue>
+        <fullName>Allergy, Asthma &amp; Immunology</fullName>
+        <default>false</default>
+        <label>Allergy Asthma &amp; Immunology</label>
+    </customValue>
+    <customValue>
+        <fullName>Ambulatory</fullName>
+        <default>false</default>
+        <label>Ambulatory</label>
+    </customValue>
+    <customValue>
+        <fullName>Anatomic Pathology</fullName>
+        <default>false</default>
+        <label>Anatomic Pathology</label>
+    </customValue>
+    <customValue>
+        <fullName>Anesthesiology</fullName>
+        <default>false</default>
+        <label>Anesthesiology</label>
+    </customValue>
+    <customValue>
+        <fullName>Anesthesiology Assistant</fullName>
+        <default>false</default>
+        <label>Anesthesiology Assistant</label>
+    </customValue>
+    <customValue>
+        <fullName>Audiologist</fullName>
+        <default>false</default>
+        <label>Audiologist</label>
+    </customValue>
+    <customValue>
+        <fullName>Bariatric Surgery</fullName>
+        <default>false</default>
+        <label>Bariatric Surgery</label>
+    </customValue>
+    <customValue>
+        <fullName>Breast Imaging</fullName>
+        <default>false</default>
+        <label>Breast Imaging</label>
+    </customValue>
+    <customValue>
+        <fullName>Breast Surgery</fullName>
+        <default>false</default>
+        <label>Breast Surgery</label>
+    </customValue>
+    <customValue>
+        <fullName>Burn Care</fullName>
+        <default>false</default>
+        <label>Burn Care</label>
+    </customValue>
+    <customValue>
+        <fullName>Business Development</fullName>
+        <default>false</default>
+        <label>Business Development</label>
+    </customValue>
+    <customValue>
+        <fullName>Cardiac Anesthesiology</fullName>
+        <default>false</default>
+        <label>Cardiac Anesthesiology</label>
+    </customValue>
+    <customValue>
+        <fullName>Cardiac Electrophysiology</fullName>
+        <default>false</default>
+        <label>Cardiac Electrophysiology</label>
+    </customValue>
+    <customValue>
+        <fullName>Cardiac Surgery</fullName>
+        <default>false</default>
+        <label>Cardiac Surgery</label>
+    </customValue>
+    <customValue>
+        <fullName>Cardiology</fullName>
+        <default>false</default>
+        <label>Cardiology</label>
+    </customValue>
+    <customValue>
+        <fullName>Cardiothoracic Surgery</fullName>
+        <default>false</default>
+        <label>Cardiothoracic Surgery</label>
+    </customValue>
+    <customValue>
+        <fullName>Cardiovascular Intensive Care</fullName>
+        <default>false</default>
+        <label>Cardiovascular Intensive Care</label>
+    </customValue>
+    <customValue>
+        <fullName>Cardiovascular Surgery</fullName>
+        <default>false</default>
+        <label>Cardiovascular Surgery</label>
+    </customValue>
+    <customValue>
+        <fullName>Cardiovascular Technologist</fullName>
+        <default>false</default>
+        <label>Cardiovascular Technologist</label>
+    </customValue>
+    <customValue>
+        <fullName>Case Manager</fullName>
+        <default>false</default>
+        <label>Case Manager</label>
+    </customValue>
+    <customValue>
+        <fullName>Cath Lab Nurse</fullName>
+        <default>false</default>
+        <label>Cath Lab Nurse</label>
+    </customValue>
+    <customValue>
+        <fullName>Cath Lab Tech</fullName>
+        <default>false</default>
+        <label>Cath Lab Tech</label>
+    </customValue>
+    <customValue>
+        <fullName>Certified First Assist</fullName>
+        <default>false</default>
+        <label>Certified First Assist</label>
+    </customValue>
+    <customValue>
+        <fullName>Certified Hand Therapist</fullName>
+        <default>false</default>
+        <label>Certified Hand Therapist</label>
+    </customValue>
+    <customValue>
+        <fullName>Certified Midwife</fullName>
+        <default>false</default>
+        <label>Certified Midwife</label>
+    </customValue>
+    <customValue>
+        <fullName>Certified Nursing Assistant</fullName>
+        <default>false</default>
+        <label>Certified Nursing Assistant</label>
+    </customValue>
+    <customValue>
+        <fullName>Certified Occupational Therapy Assistant</fullName>
+        <default>false</default>
+        <label>Certified Occupational Therapy Assistant</label>
+    </customValue>
+    <customValue>
+        <fullName>Charge Nurse</fullName>
+        <default>false</default>
+        <label>Charge Nurse</label>
+    </customValue>
+    <customValue>
+        <fullName>Chief Executive Officer</fullName>
+        <default>false</default>
+        <label>Chief Executive Officer</label>
+    </customValue>
+    <customValue>
+        <fullName>Chief Financial Officer</fullName>
+        <default>false</default>
+        <label>Chief Financial Officer</label>
+    </customValue>
+    <customValue>
+        <fullName>Chief Information Officer</fullName>
+        <default>false</default>
+        <label>Chief Information Officer</label>
+    </customValue>
+    <customValue>
+        <fullName>Chief Medical Officer</fullName>
+        <default>false</default>
+        <label>Chief Medical Officer</label>
+    </customValue>
+    <customValue>
+        <fullName>Chief Nursing Officer</fullName>
+        <default>false</default>
+        <label>Chief Nursing Officer</label>
+    </customValue>
+    <customValue>
+        <fullName>Chief of Staff</fullName>
+        <default>false</default>
+        <label>Chief of Staff</label>
+    </customValue>
+    <customValue>
+        <fullName>Chief Operating Officer</fullName>
+        <default>false</default>
+        <label>Chief Operating Officer</label>
+    </customValue>
+    <customValue>
+        <fullName>Chief Strategy Officer</fullName>
+        <default>false</default>
+        <label>Chief Strategy Officer</label>
+    </customValue>
+    <customValue>
+        <fullName>Chief Technology Officer</fullName>
+        <default>false</default>
+        <label>Chief Technology Officer</label>
+    </customValue>
+    <customValue>
+        <fullName>Child and Adolescent Psychiatry</fullName>
+        <default>false</default>
+        <label>Child and Adolescent Psychiatry</label>
+    </customValue>
+    <customValue>
+        <fullName>Chiropractor</fullName>
+        <default>false</default>
+        <label>Chiropractor</label>
+    </customValue>
+    <customValue>
+        <fullName>Chronic Care</fullName>
+        <default>false</default>
+        <label>Chronic Care</label>
+    </customValue>
+    <customValue>
+        <fullName>Clinical Laboratory Operations</fullName>
+        <default>false</default>
+        <label>Clinical Laboratory Operations</label>
+    </customValue>
+    <customValue>
+        <fullName>Clinical Laboratory Scientist</fullName>
+        <default>false</default>
+        <label>Clinical Laboratory Scientist</label>
+    </customValue>
+    <customValue>
+        <fullName>Clinical Neuophysiology</fullName>
+        <default>false</default>
+        <label>Clinical Neuophysiology</label>
+    </customValue>
+    <customValue>
+        <fullName>Clinical Nurse Specialist</fullName>
+        <default>false</default>
+        <label>Clinical Nurse Specialist</label>
+    </customValue>
+    <customValue>
+        <fullName>Clinical Operations</fullName>
+        <default>false</default>
+        <label>Clinical Operations</label>
+    </customValue>
+    <customValue>
+        <fullName>Collaborative Physician</fullName>
+        <default>false</default>
+        <label>Collaborative Physician</label>
+    </customValue>
+    <customValue>
+        <fullName>Colon &amp; Rectal Surgery</fullName>
+        <default>false</default>
+        <label>Colon &amp; Rectal Surgery</label>
+    </customValue>
+    <customValue>
+        <fullName>Controller</fullName>
+        <default>false</default>
+        <label>Controller</label>
+    </customValue>
+    <customValue>
+        <fullName>Corneal &amp; Contact Management</fullName>
+        <default>false</default>
+        <label>Corneal &amp; Contact Management</label>
+    </customValue>
+    <customValue>
+        <fullName>Cost Containment</fullName>
+        <default>false</default>
+        <label>Cost Containment</label>
+    </customValue>
+    <customValue>
+        <fullName>Critical Care Medicine</fullName>
+        <default>false</default>
+        <label>Critical Care Medicine</label>
+    </customValue>
+    <customValue>
+        <fullName>Critical Care Surgery</fullName>
+        <default>false</default>
+        <label>Critical Care Surgery</label>
+    </customValue>
+    <customValue>
+        <fullName>Certified Registered Nurse Anesthetist</fullName>
+        <default>false</default>
+        <label>CRNA</label>
+    </customValue>
+    <customValue>
+        <fullName>CT Technologist</fullName>
+        <default>false</default>
+        <label>CT Technologist</label>
+    </customValue>
+    <customValue>
+        <fullName>Cytogenetics</fullName>
+        <default>false</default>
+        <label>Cytogenetics</label>
+    </customValue>
+    <customValue>
+        <fullName>Dental Assistant</fullName>
+        <default>false</default>
+        <label>Dental Assistant</label>
+    </customValue>
+    <customValue>
+        <fullName>Dental Hygienist</fullName>
+        <default>false</default>
+        <label>Dental Hygienist</label>
+    </customValue>
+    <customValue>
+        <fullName>Dental Public Health</fullName>
+        <default>false</default>
+        <label>Dental Public Health</label>
+    </customValue>
+    <customValue>
+        <fullName>Dentist</fullName>
+        <default>false</default>
+        <label>Dentist</label>
+    </customValue>
+    <customValue>
+        <fullName>Dentist Anesthesiologist</fullName>
+        <default>false</default>
+        <label>Dentist Anesthesiologist</label>
+    </customValue>
+    <customValue>
+        <fullName>Department Chief</fullName>
+        <default>false</default>
+        <label>Department Chief</label>
+    </customValue>
+    <customValue>
+        <fullName>Dermatology</fullName>
+        <default>false</default>
+        <label>Dermatology</label>
+    </customValue>
+    <customValue>
+        <fullName>Dermatopathology</fullName>
+        <default>false</default>
+        <label>Dermatopathology</label>
+    </customValue>
+    <customValue>
+        <fullName>Developmental Behavioral Pediatrics</fullName>
+        <default>false</default>
+        <label>Developmental Behavioral Pediatrics</label>
+    </customValue>
+    <customValue>
+        <fullName>Diabetes</fullName>
+        <default>false</default>
+        <label>Diabetes</label>
+    </customValue>
+    <customValue>
+        <fullName>Diagnostic Radiology</fullName>
+        <default>false</default>
+        <label>Diagnostic Radiology</label>
+    </customValue>
+    <customValue>
+        <fullName>Dialysis</fullName>
+        <default>false</default>
+        <label>Dialysis</label>
+    </customValue>
+    <customValue>
+        <fullName>Director</fullName>
+        <default>false</default>
+        <label>Director</label>
+    </customValue>
+    <customValue>
+        <fullName>Director of Clinical Laboratory Operations</fullName>
+        <default>false</default>
+        <label>Director of Clinical Laboratory Operations</label>
+    </customValue>
+    <customValue>
+        <fullName>Director of Compliance</fullName>
+        <default>false</default>
+        <label>Director of Compliance</label>
+    </customValue>
+    <customValue>
+        <fullName>Director of Environmental Services</fullName>
+        <default>false</default>
+        <label>Director of Environmental Services</label>
+    </customValue>
+    <customValue>
+        <fullName>Director of Information Systems</fullName>
+        <default>false</default>
+        <label>Director of Information Systems</label>
+    </customValue>
+    <customValue>
+        <fullName>Director of Navigation and Population Health</fullName>
+        <default>false</default>
+        <label>Director of Navigation and Population Health</label>
+    </customValue>
+    <customValue>
+        <fullName>Educator</fullName>
+        <default>false</default>
+        <label>Educator</label>
+    </customValue>
+    <customValue>
+        <fullName>EEG Technologist</fullName>
+        <default>false</default>
+        <label>EEG Technologist</label>
+    </customValue>
+    <customValue>
+        <fullName>Emergency Medicine</fullName>
+        <default>false</default>
+        <label>Emergency Medicine</label>
+    </customValue>
+    <customValue>
+        <fullName>Endocrinology</fullName>
+        <default>false</default>
+        <label>Endocrinology</label>
+    </customValue>
+    <customValue>
+        <fullName>Endodontics</fullName>
+        <default>false</default>
+        <label>Endodontics</label>
+    </customValue>
+    <customValue>
+        <fullName>Endoscopy</fullName>
+        <default>false</default>
+        <label>Endoscopy</label>
+    </customValue>
+    <customValue>
+        <fullName>Environmental Services</fullName>
+        <default>false</default>
+        <label>Environmental Services</label>
+    </customValue>
+    <customValue>
+        <fullName>Executive Director</fullName>
+        <default>false</default>
+        <label>Executive Director</label>
+    </customValue>
+    <customValue>
+        <fullName>Facial Plastic Surgery</fullName>
+        <default>false</default>
+        <label>Facial Plastic Surgery</label>
+    </customValue>
+    <customValue>
+        <fullName>Family Geriatric Medicine</fullName>
+        <default>false</default>
+        <label>Family Geriatric Medicine</label>
+    </customValue>
+    <customValue>
+        <fullName>Family Practice</fullName>
+        <default>false</default>
+        <label>Family Practice</label>
+    </customValue>
+    <customValue>
+        <fullName>Family Practice with OB</fullName>
+        <default>false</default>
+        <label>Family Practice with OB</label>
+    </customValue>
+    <customValue>
+        <fullName>Female Pelvic Medicine &amp; Reconstructive Surgery</fullName>
+        <default>false</default>
+        <label>Female Pelvic Med &amp; Recon Surgery</label>
+    </customValue>
+    <customValue>
+        <fullName>Float</fullName>
+        <default>false</default>
+        <label>Float</label>
+    </customValue>
+    <customValue>
+        <fullName>Foot &amp; Ankle Surgery</fullName>
+        <default>false</default>
+        <label>Foot &amp; Ankle Surgery</label>
+    </customValue>
+    <customValue>
+        <fullName>Forensic Pathology</fullName>
+        <default>false</default>
+        <label>Forensic Pathology</label>
+    </customValue>
+    <customValue>
+        <fullName>Forensic Psychiatry</fullName>
+        <default>false</default>
+        <label>Forensic Psychiatry</label>
+    </customValue>
+    <customValue>
+        <fullName>Gastroenterology</fullName>
+        <default>false</default>
+        <label>Gastroenterology</label>
+    </customValue>
+    <customValue>
+        <fullName>Generalist</fullName>
+        <default>false</default>
+        <label>Generalist</label>
+    </customValue>
+    <customValue>
+        <fullName>General Optometry</fullName>
+        <default>false</default>
+        <label>General Optometry</label>
+    </customValue>
+    <customValue>
+        <fullName>General Practice</fullName>
+        <default>false</default>
+        <label>General Practice</label>
+    </customValue>
+    <customValue>
+        <fullName>General Preventive Medicine</fullName>
+        <default>false</default>
+        <label>General Preventive Medicine</label>
+    </customValue>
+    <customValue>
+        <fullName>General Surgery</fullName>
+        <default>false</default>
+        <label>General Surgery</label>
+    </customValue>
+    <customValue>
+        <fullName>Genetics</fullName>
+        <default>false</default>
+        <label>Genetics</label>
+    </customValue>
+    <customValue>
+        <fullName>Geriatric Psychiatry</fullName>
+        <default>false</default>
+        <label>Geriatric Psychiatry</label>
+    </customValue>
+    <customValue>
+        <fullName>Geriatrics</fullName>
+        <default>false</default>
+        <label>Geriatrics</label>
+    </customValue>
+    <customValue>
+        <fullName>Gerontology</fullName>
+        <default>false</default>
+        <label>Gerontology</label>
+    </customValue>
+    <customValue>
+        <fullName>Government</fullName>
+        <default>false</default>
+        <label>Government</label>
+    </customValue>
+    <customValue>
+        <fullName>Gynecology</fullName>
+        <default>false</default>
+        <label>Gynecology</label>
+    </customValue>
+    <customValue>
+        <fullName>Gynecology Oncology</fullName>
+        <default>false</default>
+        <label>Gynecology Oncology</label>
+    </customValue>
+    <customValue>
+        <fullName>Hand Surgery</fullName>
+        <default>false</default>
+        <label>Hand Surgery</label>
+    </customValue>
+    <customValue>
+        <fullName>Health Information Manager</fullName>
+        <default>false</default>
+        <label>Health Information Manager</label>
+    </customValue>
+    <customValue>
+        <fullName>Hematology</fullName>
+        <default>false</default>
+        <label>Hematology</label>
+    </customValue>
+    <customValue>
+        <fullName>Hematology/Oncology</fullName>
+        <default>false</default>
+        <label>Hematology/Oncology</label>
+    </customValue>
+    <customValue>
+        <fullName>Hepatology</fullName>
+        <default>false</default>
+        <label>Hepatology</label>
+    </customValue>
+    <customValue>
+        <fullName>HIM ( Health Information Manager)</fullName>
+        <default>false</default>
+        <label>HIM ( Health Information Manager)</label>
+    </customValue>
+    <customValue>
+        <fullName>HIPAA Security Officer</fullName>
+        <default>false</default>
+        <label>HIPAA Security Officer</label>
+    </customValue>
+    <customValue>
+        <fullName>Histology Technologist</fullName>
+        <default>false</default>
+        <label>Histology Technologist</label>
+    </customValue>
+    <customValue>
+        <fullName>Home Health</fullName>
+        <default>false</default>
+        <label>Home Health</label>
+    </customValue>
+    <customValue>
+        <fullName>Hospice</fullName>
+        <default>false</default>
+        <label>Hospice</label>
+    </customValue>
+    <customValue>
+        <fullName>Hospitalist</fullName>
+        <default>false</default>
+        <label>Hospitalist</label>
+    </customValue>
+    <customValue>
+        <fullName>House Supervisor</fullName>
+        <default>false</default>
+        <label>House Supervisor</label>
+    </customValue>
+    <customValue>
+        <fullName>Human Resources</fullName>
+        <default>false</default>
+        <label>Human Resources</label>
+    </customValue>
+    <customValue>
+        <fullName>Hyperbaric Medicine</fullName>
+        <default>false</default>
+        <label>Hyperbaric Medicine</label>
+    </customValue>
+    <customValue>
+        <fullName>Imaging</fullName>
+        <default>false</default>
+        <label>Imaging</label>
+    </customValue>
+    <customValue>
+        <fullName>Independent</fullName>
+        <default>false</default>
+        <label>Independent</label>
+    </customValue>
+    <customValue>
+        <fullName>Infectious Disease</fullName>
+        <default>false</default>
+        <label>Infectious Disease</label>
+    </customValue>
+    <customValue>
+        <fullName>Informatics</fullName>
+        <default>false</default>
+        <label>Informatics</label>
+    </customValue>
+    <customValue>
+        <fullName>Infusion Nurse</fullName>
+        <default>false</default>
+        <label>Infusion Nurse</label>
+    </customValue>
+    <customValue>
+        <fullName>Integrative Medicine</fullName>
+        <default>false</default>
+        <label>Integrative Medicine</label>
+    </customValue>
+    <customValue>
+        <fullName>Intensive/Critical Care Unit</fullName>
+        <default>false</default>
+        <label>Intensive Care Unit</label>
+    </customValue>
+    <customValue>
+        <fullName>Interim Management</fullName>
+        <default>false</default>
+        <label>Interim Management</label>
+    </customValue>
+    <customValue>
+        <fullName>Intermediate Care/Step-Down</fullName>
+        <default>false</default>
+        <label>Intermediate Care/Step-Down</label>
+    </customValue>
+    <customValue>
+        <fullName>Intern</fullName>
+        <default>false</default>
+        <label>Intern</label>
+    </customValue>
+    <customValue>
+        <fullName>Internal Medicine</fullName>
+        <default>false</default>
+        <label>Internal Medicine</label>
+    </customValue>
+    <customValue>
+        <fullName>Internal Medicine/Pediatrics</fullName>
+        <default>false</default>
+        <label>Internal Medicine/Pediatrics</label>
+    </customValue>
+    <customValue>
+        <fullName>Interventional Cardiology</fullName>
+        <default>false</default>
+        <label>Interventional Cardiology</label>
+    </customValue>
+    <customValue>
+        <fullName>Interventional Neurology</fullName>
+        <default>false</default>
+        <label>Interventional Neurology</label>
+    </customValue>
+    <customValue>
+        <fullName>Interventional Radiology</fullName>
+        <default>false</default>
+        <label>Interventional Radiology</label>
+    </customValue>
+    <customValue>
+        <fullName>IOM Technician</fullName>
+        <default>false</default>
+        <label>IOM Technician</label>
+    </customValue>
+    <customValue>
+        <fullName>Labor and Delivery</fullName>
+        <default>false</default>
+        <label>Labor and Delivery</label>
+    </customValue>
+    <customValue>
+        <fullName>Laborist</fullName>
+        <default>false</default>
+        <label>Laborist</label>
+    </customValue>
+    <customValue>
+        <fullName>Lab Technician</fullName>
+        <default>false</default>
+        <label>Lab Technician</label>
+    </customValue>
+    <customValue>
+        <fullName>Licensed Practical Nurse</fullName>
+        <default>false</default>
+        <label>Licensed Practical Nurse</label>
+    </customValue>
+    <customValue>
+        <fullName>Licensed Professional Counselor</fullName>
+        <default>false</default>
+        <label>Licensed Professional Counselor</label>
+    </customValue>
+    <customValue>
+        <fullName>Long Term Acute Care</fullName>
+        <default>false</default>
+        <label>Long Term Acute Care</label>
+    </customValue>
+    <customValue>
+        <fullName>Long Term Care</fullName>
+        <default>false</default>
+        <label>Long Term Care - Skilled Nursing</label>
+    </customValue>
+    <customValue>
+        <fullName>Low Vision Rehabilitation</fullName>
+        <default>false</default>
+        <label>Low Vision Rehabilitation</label>
+    </customValue>
+    <customValue>
+        <fullName>Licensed Practical Nurse/Licensed Vocational Nurse</fullName>
+        <default>false</default>
+        <label>LPN/LVN</label>
+    </customValue>
+    <customValue>
+        <fullName>Mammography Technologist</fullName>
+        <default>false</default>
+        <label>Mammography Technologist</label>
+    </customValue>
+    <customValue>
+        <fullName>Managed Care</fullName>
+        <default>false</default>
+        <label>Managed Care</label>
+    </customValue>
+    <customValue>
+        <fullName>Marriage and Family Therapy</fullName>
+        <default>false</default>
+        <label>Marriage and Family Therapy</label>
+    </customValue>
+    <customValue>
+        <fullName>Maternal &amp; Fetal Medicine</fullName>
+        <default>false</default>
+        <label>Maternal &amp; Fetal Medicine</label>
+    </customValue>
+    <customValue>
+        <fullName>Medical Affairs</fullName>
+        <default>false</default>
+        <label>Medical Affairs</label>
+    </customValue>
+    <customValue>
+        <fullName>Medical Director</fullName>
+        <default>false</default>
+        <label>Medical Director</label>
+    </customValue>
+    <customValue>
+        <fullName>Medical Informatics</fullName>
+        <default>false</default>
+        <label>Medical Informatics</label>
+    </customValue>
+    <customValue>
+        <fullName>Medical Lab Technologist</fullName>
+        <default>false</default>
+        <label>Medical Lab Technologist</label>
+    </customValue>
+    <customValue>
+        <fullName>Medical Oncology</fullName>
+        <default>false</default>
+        <label>Medical Oncology</label>
+    </customValue>
+    <customValue>
+        <fullName>Medical Physicist</fullName>
+        <default>false</default>
+        <label>Medical Physicist</label>
+    </customValue>
+    <customValue>
+        <fullName>Medical Quality</fullName>
+        <default>false</default>
+        <label>Medical Quality</label>
+    </customValue>
+    <customValue>
+        <fullName>Medical Surgical</fullName>
+        <default>false</default>
+        <label>Medical Surgical</label>
+    </customValue>
+    <customValue>
+        <fullName>Medical Technician</fullName>
+        <default>false</default>
+        <label>Medical Technician</label>
+    </customValue>
+    <customValue>
+        <fullName>Medical Technologist</fullName>
+        <default>false</default>
+        <label>Medical Technologist</label>
+    </customValue>
+    <customValue>
+        <fullName>Mgr/Director Business Systems / IT</fullName>
+        <default>false</default>
+        <label>Mgr/Director Business Systems / IT</label>
+    </customValue>
+    <customValue>
+        <fullName>Mother Baby</fullName>
+        <default>false</default>
+        <label>Mother Baby</label>
+    </customValue>
+    <customValue>
+        <fullName>MRI Technologist</fullName>
+        <default>false</default>
+        <label>MRI Technologist</label>
+    </customValue>
+    <customValue>
+        <fullName>MS</fullName>
+        <default>false</default>
+        <label>MS</label>
+    </customValue>
+    <customValue>
+        <fullName>Musculoskeletal Radiology</fullName>
+        <default>false</default>
+        <label>Musculoskeletal Radiology</label>
+    </customValue>
+    <customValue>
+        <fullName>Navigation and Population Health</fullName>
+        <default>false</default>
+        <label>Navigation and Population Health</label>
+    </customValue>
+    <customValue>
+        <fullName>Neonatal Intensive Care Unit</fullName>
+        <default>false</default>
+        <label>Neonatal Intensive Care Unit</label>
+    </customValue>
+    <customValue>
+        <fullName>Neonatology</fullName>
+        <default>false</default>
+        <label>Neonatology</label>
+    </customValue>
+    <customValue>
+        <fullName>Nephrology</fullName>
+        <default>false</default>
+        <label>Nephrology</label>
+    </customValue>
+    <customValue>
+        <fullName>Neurohospitalist</fullName>
+        <default>false</default>
+        <label>Neurohospitalist</label>
+    </customValue>
+    <customValue>
+        <fullName>Neurointensivist</fullName>
+        <default>false</default>
+        <label>Neurointensivist</label>
+    </customValue>
+    <customValue>
+        <fullName>Neurological Surgery</fullName>
+        <default>false</default>
+        <label>Neurological Surgery</label>
+    </customValue>
+    <customValue>
+        <fullName>Neurology</fullName>
+        <default>false</default>
+        <label>Neurology</label>
+    </customValue>
+    <customValue>
+        <fullName>Neuropsychiatry</fullName>
+        <default>false</default>
+        <label>Neuropsychiatry</label>
+    </customValue>
+    <customValue>
+        <fullName>Neuroradiology</fullName>
+        <default>false</default>
+        <label>Neuroradiology</label>
+    </customValue>
+    <customValue>
+        <fullName>Nocturnist</fullName>
+        <default>false</default>
+        <label>Nocturnist</label>
+    </customValue>
+    <customValue>
+        <fullName>Nuclear Medicine</fullName>
+        <default>false</default>
+        <label>Nuclear Medicine</label>
+    </customValue>
+    <customValue>
+        <fullName>Nuclear Medicine Technologist</fullName>
+        <default>false</default>
+        <label>Nuclear Medicine Technologist</label>
+    </customValue>
+    <customValue>
+        <fullName>Nurse Educator</fullName>
+        <default>false</default>
+        <label>Nurse Educator</label>
+    </customValue>
+    <customValue>
+        <fullName>Nurse Manager</fullName>
+        <default>false</default>
+        <label>Nurse Manager</label>
+    </customValue>
+    <customValue>
+        <fullName>Nurse Navigator</fullName>
+        <default>false</default>
+        <label>Nurse Navigator</label>
+    </customValue>
+    <customValue>
+        <fullName>Nurse Practitioner</fullName>
+        <default>false</default>
+        <label>Nurse Practitioner</label>
+    </customValue>
+    <customValue>
+        <fullName>Nutrition</fullName>
+        <default>false</default>
+        <label>Nutrition</label>
+    </customValue>
+    <customValue>
+        <fullName>Obstetrics</fullName>
+        <default>false</default>
+        <label>Obstetrics</label>
+    </customValue>
+    <customValue>
+        <fullName>Obstetrics &amp; Gynecology</fullName>
+        <default>false</default>
+        <label>Obstetrics &amp; Gynecology</label>
+    </customValue>
+    <customValue>
+        <fullName>Occupational Health</fullName>
+        <default>false</default>
+        <label>Occupational Health</label>
+    </customValue>
+    <customValue>
+        <fullName>Occupational Medicine</fullName>
+        <default>false</default>
+        <label>Occupational Medicine</label>
+    </customValue>
+    <customValue>
+        <fullName>Occupational Therapy</fullName>
+        <default>false</default>
+        <label>Occupational Therapy</label>
+    </customValue>
+    <customValue>
+        <fullName>Occupational Therapy Assistant</fullName>
+        <default>false</default>
+        <label>Occupational Therapy Assistant</label>
+    </customValue>
+    <customValue>
+        <fullName>Occupational Vision</fullName>
+        <default>false</default>
+        <label>Occupational Vision</label>
+    </customValue>
+    <customValue>
+        <fullName>Oncology</fullName>
+        <default>false</default>
+        <label>Oncology</label>
+    </customValue>
+    <customValue>
+        <fullName>Oncology Pediatrics</fullName>
+        <default>false</default>
+        <label>Oncology Pediatrics</label>
+    </customValue>
+    <customValue>
+        <fullName>Operating Room</fullName>
+        <default>false</default>
+        <label>Operating Room</label>
+    </customValue>
+    <customValue>
+        <fullName>Operations</fullName>
+        <default>false</default>
+        <label>Operations</label>
+    </customValue>
+    <customValue>
+        <fullName>Ophthalmology</fullName>
+        <default>false</default>
+        <label>Ophthalmology</label>
+    </customValue>
+    <customValue>
+        <fullName>Optometry</fullName>
+        <default>false</default>
+        <label>Optometry</label>
+    </customValue>
+    <customValue>
+        <fullName>OR/Surgery/Perioperative</fullName>
+        <default>false</default>
+        <label>OR/Surgery/Perioperative</label>
+    </customValue>
+    <customValue>
+        <fullName>Oral &amp; Maxillofacial Pathology</fullName>
+        <default>false</default>
+        <label>Oral &amp; Maxillofacial Pathology</label>
+    </customValue>
+    <customValue>
+        <fullName>Oral &amp; Maxillofacial Radiology</fullName>
+        <default>false</default>
+        <label>Oral &amp; Maxillofacial Radiology</label>
+    </customValue>
+    <customValue>
+        <fullName>Oral &amp; Maxillofacial Surgery</fullName>
+        <default>false</default>
+        <label>Oral &amp; Maxillofacial Surgery</label>
+    </customValue>
+    <customValue>
+        <fullName>Orthodontics and Dentofacial Orthopedics</fullName>
+        <default>false</default>
+        <label>Orthodontics and Dentofacial Orthopedics</label>
+    </customValue>
+    <customValue>
+        <fullName>Orthopaedic Foot &amp; Ankle Surgery</fullName>
+        <default>false</default>
+        <label>Orthopaedic Foot &amp; Ankle Surgery</label>
+    </customValue>
+    <customValue>
+        <fullName>Orthopaedic Hand Surgery</fullName>
+        <default>false</default>
+        <label>Orthopaedic Hand Surgery</label>
+    </customValue>
+    <customValue>
+        <fullName>Orthopaedic Spine Surgery</fullName>
+        <default>false</default>
+        <label>Orthopaedic Spine Surgery</label>
+    </customValue>
+    <customValue>
+        <fullName>Orthopaedic Sports Medicine</fullName>
+        <default>false</default>
+        <label>Orthopaedic Sports Medicine</label>
+    </customValue>
+    <customValue>
+        <fullName>Orthopaedic Total Joints Surgery</fullName>
+        <default>false</default>
+        <label>Orthopaedic Total Joints Surgery</label>
+    </customValue>
+    <customValue>
+        <fullName>Orthopaedic Trauma Surgery</fullName>
+        <default>false</default>
+        <label>Orthopaedic Trauma Surgery</label>
+    </customValue>
+    <customValue>
+        <fullName>Orthopedic Spine Surgery</fullName>
+        <default>false</default>
+        <label>Orthopedic Spine Surgery</label>
+    </customValue>
+    <customValue>
+        <fullName>Orthopedic Surgery</fullName>
+        <default>false</default>
+        <label>Orthopedic Surgery</label>
+    </customValue>
+    <customValue>
+        <fullName>Orthopedic Surgery, Foot &amp; Ankle</fullName>
+        <default>false</default>
+        <label>Orthopedic Surgery, Foot &amp; Ankle</label>
+    </customValue>
+    <customValue>
+        <fullName>Orthopedic Surgery, Hand</fullName>
+        <default>false</default>
+        <label>Orthopedic Surgery, Hand</label>
+    </customValue>
+    <customValue>
+        <fullName>Orthopedic Trauma</fullName>
+        <default>false</default>
+        <label>Orthopedic Trauma</label>
+    </customValue>
+    <customValue>
+        <fullName>Otolaryngology</fullName>
+        <default>false</default>
+        <label>Otolaryngology</label>
+    </customValue>
+    <customValue>
+        <fullName>PACU/Recovery</fullName>
+        <default>false</default>
+        <label>PACU/Recovery</label>
+    </customValue>
+    <customValue>
+        <fullName>Pain Management</fullName>
+        <default>false</default>
+        <label>Pain Management</label>
+    </customValue>
+    <customValue>
+        <fullName>Pain Medicine</fullName>
+        <default>false</default>
+        <label>Pain Medicine</label>
+    </customValue>
+    <customValue>
+        <fullName>Palliative Care</fullName>
+        <default>false</default>
+        <label>Palliative Care</label>
+    </customValue>
+    <customValue>
+        <fullName>Palliative Medicine</fullName>
+        <default>false</default>
+        <label>Palliative Medicine</label>
+    </customValue>
+    <customValue>
+        <fullName>Pathologist Assistant</fullName>
+        <default>false</default>
+        <label>Pathologist Assistant</label>
+    </customValue>
+    <customValue>
+        <fullName>Pathology, Anatomic/Clinical</fullName>
+        <default>false</default>
+        <label>Pathology Anatomic/Clinical</label>
+    </customValue>
+    <customValue>
+        <fullName>Patient Care Services</fullName>
+        <default>false</default>
+        <label>Patient Care Services</label>
+    </customValue>
+    <customValue>
+        <fullName>Patient Engagement</fullName>
+        <default>false</default>
+        <label>Patient Engagement</label>
+    </customValue>
+    <customValue>
+        <fullName>Pediatric Adolescent Gynecology</fullName>
+        <default>false</default>
+        <label>Pediatric Adolescent Gynecology</label>
+    </customValue>
+    <customValue>
+        <fullName>Pediatric Anesthesiology</fullName>
+        <default>false</default>
+        <label>Pediatric Anesthesiology</label>
+    </customValue>
+    <customValue>
+        <fullName>Pediatric Cardiology</fullName>
+        <default>false</default>
+        <label>Pediatric Cardiology</label>
+    </customValue>
+    <customValue>
+        <fullName>Pediatric Cardiothoracic Surgery</fullName>
+        <default>false</default>
+        <label>Pediatric Cardiothoracic Surgery</label>
+    </customValue>
+    <customValue>
+        <fullName>Pediatric Critical Care</fullName>
+        <default>false</default>
+        <label>Pediatric Critical Care</label>
+    </customValue>
+    <customValue>
+        <fullName>Pediatric Dentistry</fullName>
+        <default>false</default>
+        <label>Pediatric Dentistry</label>
+    </customValue>
+    <customValue>
+        <fullName>Pediatric Emergency Medicine (EM)</fullName>
+        <default>false</default>
+        <label>Pediatric Emergency Medicine</label>
+    </customValue>
+    <customValue>
+        <fullName>Pediatric Endocrinology</fullName>
+        <default>false</default>
+        <label>Pediatric Endocrinology</label>
+    </customValue>
+    <customValue>
+        <fullName>Pediatric Gastroenterology</fullName>
+        <default>false</default>
+        <label>Pediatric Gastroenterology</label>
+    </customValue>
+    <customValue>
+        <fullName>Pediatric Hematology/Oncology</fullName>
+        <default>false</default>
+        <label>Pediatric Hematology/Oncology</label>
+    </customValue>
+    <customValue>
+        <fullName>Pediatric Hospitalist</fullName>
+        <default>false</default>
+        <label>Pediatric Hospitalist</label>
+    </customValue>
+    <customValue>
+        <fullName>Pediatric Infectious Disease</fullName>
+        <default>false</default>
+        <label>Pediatric Infectious Disease</label>
+    </customValue>
+    <customValue>
+        <fullName>Pediatric Intesive/Critical Care Unit</fullName>
+        <default>false</default>
+        <label>Pediatric Intensive Care Unit</label>
+    </customValue>
+    <customValue>
+        <fullName>Pediatric Nephrology</fullName>
+        <default>false</default>
+        <label>Pediatric Nephrology</label>
+    </customValue>
+    <customValue>
+        <fullName>Pediatric Neurological Surgery</fullName>
+        <default>false</default>
+        <label>Pediatric Neurological Surgery</label>
+    </customValue>
+    <customValue>
+        <fullName>Pediatric Neurology</fullName>
+        <default>false</default>
+        <label>Pediatric Neurology</label>
+    </customValue>
+    <customValue>
+        <fullName>Pediatric Neuropsychology</fullName>
+        <default>false</default>
+        <label>Pediatric Neuropsychology</label>
+    </customValue>
+    <customValue>
+        <fullName>Pediatric Ophthalmology</fullName>
+        <default>false</default>
+        <label>Pediatric Ophthalmology</label>
+    </customValue>
+    <customValue>
+        <fullName>Pediatric Orthopedics</fullName>
+        <default>false</default>
+        <label>Pediatric Orthopedics</label>
+    </customValue>
+    <customValue>
+        <fullName>Pediatric Otolaryngology</fullName>
+        <default>false</default>
+        <label>Pediatric Otolaryngology</label>
+    </customValue>
+    <customValue>
+        <fullName>Pediatric Pathology</fullName>
+        <default>false</default>
+        <label>Pediatric Pathology</label>
+    </customValue>
+    <customValue>
+        <fullName>Pediatric Pulmonology</fullName>
+        <default>false</default>
+        <label>Pediatric Pulmonology</label>
+    </customValue>
+    <customValue>
+        <fullName>Pediatric Radiology</fullName>
+        <default>false</default>
+        <label>Pediatric Radiology</label>
+    </customValue>
+    <customValue>
+        <fullName>Pediatric Rehabilitation Medicine</fullName>
+        <default>false</default>
+        <label>Pediatric Rehabilitation Medicine</label>
+    </customValue>
+    <customValue>
+        <fullName>Pediatric Rheumatology</fullName>
+        <default>false</default>
+        <label>Pediatric Rheumatology</label>
+    </customValue>
+    <customValue>
+        <fullName>Pediatrics</fullName>
+        <default>false</default>
+        <label>Pediatrics</label>
+    </customValue>
+    <customValue>
+        <fullName>Pediatric Surgery</fullName>
+        <default>false</default>
+        <label>Pediatric Surgery</label>
+    </customValue>
+    <customValue>
+        <fullName>Pediatric Urology</fullName>
+        <default>false</default>
+        <label>Pediatric Urology</label>
+    </customValue>
+    <customValue>
+        <fullName>Perfusion</fullName>
+        <default>false</default>
+        <label>Perfusion</label>
+    </customValue>
+    <customValue>
+        <fullName>Perinatal Medicine</fullName>
+        <default>false</default>
+        <label>Perinatal Medicine</label>
+    </customValue>
+    <customValue>
+        <fullName>Periodontics</fullName>
+        <default>false</default>
+        <label>Periodontics</label>
+    </customValue>
+    <customValue>
+        <fullName>Pharmaceutical Industry</fullName>
+        <default>false</default>
+        <label>Pharmaceutical Industry</label>
+    </customValue>
+    <customValue>
+        <fullName>Pharmacist</fullName>
+        <default>false</default>
+        <label>Pharmacist</label>
+    </customValue>
+    <customValue>
+        <fullName>Physical Medicine &amp; Rehabilitation</fullName>
+        <default>false</default>
+        <label>Physical Medicine &amp; Rehabilitation</label>
+    </customValue>
+    <customValue>
+        <fullName>Physical Therapy</fullName>
+        <default>false</default>
+        <label>Physical Therapy</label>
+    </customValue>
+    <customValue>
+        <fullName>Physical Therapy Assistant</fullName>
+        <default>false</default>
+        <label>Physical Therapy Assistant</label>
+    </customValue>
+    <customValue>
+        <fullName>Physical Therapy Director</fullName>
+        <default>false</default>
+        <label>Physical Therapy Director</label>
+    </customValue>
+    <customValue>
+        <fullName>Physician Assistant</fullName>
+        <default>false</default>
+        <label>Physician Assistant</label>
+    </customValue>
+    <customValue>
+        <fullName>Physician Integration</fullName>
+        <default>false</default>
+        <label>Physician Integration</label>
+    </customValue>
+    <customValue>
+        <fullName>Physician Relations</fullName>
+        <default>false</default>
+        <label>Physician Relations</label>
+    </customValue>
+    <customValue>
+        <fullName>Physician Services</fullName>
+        <default>false</default>
+        <label>Physician Services</label>
+    </customValue>
+    <customValue>
+        <fullName>PICC Line</fullName>
+        <default>false</default>
+        <label>PICC Line</label>
+    </customValue>
+    <customValue>
+        <fullName>Plastic &amp; Reconstructive Surgery</fullName>
+        <default>false</default>
+        <label>Plastic &amp; Reconstructive Surgery</label>
+    </customValue>
+    <customValue>
+        <fullName>Plastic Surgery</fullName>
+        <default>false</default>
+        <label>Plastic Surgery</label>
+    </customValue>
+    <customValue>
+        <fullName>Podiatry</fullName>
+        <default>false</default>
+        <label>Podiatry</label>
+    </customValue>
+    <customValue>
+        <fullName>Practice Manager</fullName>
+        <default>false</default>
+        <label>Practice Manager</label>
+    </customValue>
+    <customValue>
+        <fullName>Practice Operations</fullName>
+        <default>false</default>
+        <label>Practice Operations</label>
+    </customValue>
+    <customValue>
+        <fullName>Primary Care</fullName>
+        <default>false</default>
+        <label>Primary Care</label>
+    </customValue>
+    <customValue>
+        <fullName>Primary Podiatric Medicine</fullName>
+        <default>false</default>
+        <label>Primary Podiatric Medicine</label>
+    </customValue>
+    <customValue>
+        <fullName>Program Coordinator</fullName>
+        <default>false</default>
+        <label>Program Coordinator</label>
+    </customValue>
+    <customValue>
+        <fullName>Progressive Care Unit</fullName>
+        <default>false</default>
+        <label>Progressive Care Unit</label>
+    </customValue>
+    <customValue>
+        <fullName>Prosthetist/Orthotist</fullName>
+        <default>false</default>
+        <label>Prosthetist/Orthotist</label>
+    </customValue>
+    <customValue>
+        <fullName>Prosthodontics</fullName>
+        <default>false</default>
+        <label>Prosthodontics</label>
+    </customValue>
+    <customValue>
+        <fullName>Psychiatry</fullName>
+        <default>false</default>
+        <label>Psychiatry</label>
+    </customValue>
+    <customValue>
+        <fullName>Psychiatry/Psychology</fullName>
+        <default>false</default>
+        <label>Psychiatry/Psychology</label>
+    </customValue>
+    <customValue>
+        <fullName>Psychologist</fullName>
+        <default>false</default>
+        <label>Psychologist</label>
+    </customValue>
+    <customValue>
+        <fullName>Public Health</fullName>
+        <default>false</default>
+        <label>Public Health</label>
+    </customValue>
+    <customValue>
+        <fullName>Pulmonary Critical Care Medicine</fullName>
+        <default>false</default>
+        <label>Pulmonary Critical Care Medicine</label>
+    </customValue>
+    <customValue>
+        <fullName>Pulmonary Disease</fullName>
+        <default>false</default>
+        <label>Pulmonary Disease</label>
+    </customValue>
+    <customValue>
+        <fullName>Quality Assurance</fullName>
+        <default>false</default>
+        <label>Quality Assurance</label>
+    </customValue>
+    <customValue>
+        <fullName>Quality Management</fullName>
+        <default>false</default>
+        <label>Quality Management</label>
+    </customValue>
+    <customValue>
+        <fullName>Radiation Oncology</fullName>
+        <default>false</default>
+        <label>Radiation Oncology</label>
+    </customValue>
+    <customValue>
+        <fullName>Radiation Therapist</fullName>
+        <default>false</default>
+        <label>Radiation Therapist</label>
+    </customValue>
+    <customValue>
+        <fullName>Radio</fullName>
+        <default>false</default>
+        <label>Radio</label>
+    </customValue>
+    <customValue>
+        <fullName>Radiology</fullName>
+        <default>false</default>
+        <label>Radiology</label>
+    </customValue>
+    <customValue>
+        <fullName>Radiology Director</fullName>
+        <default>false</default>
+        <label>Radiology Director</label>
+    </customValue>
+    <customValue>
+        <fullName>Radiology Technologist</fullName>
+        <default>false</default>
+        <label>Radiology Technologist</label>
+    </customValue>
+    <customValue>
+        <fullName>Recruiter</fullName>
+        <default>false</default>
+        <label>Recruiter</label>
+    </customValue>
+    <customValue>
+        <fullName>Regional Medical Officer</fullName>
+        <default>false</default>
+        <label>Regional Medical Officer</label>
+    </customValue>
+    <customValue>
+        <fullName>Registered Nurse</fullName>
+        <default>false</default>
+        <label>Registered Nurse</label>
+    </customValue>
+    <customValue>
+        <fullName>Registered Polysomnographic Technologist</fullName>
+        <default>false</default>
+        <label>Registered Polysomnographic Tech</label>
+    </customValue>
+    <customValue>
+        <fullName>Rehabilitation</fullName>
+        <default>false</default>
+        <label>Rehabilitation</label>
+    </customValue>
+    <customValue>
+        <fullName>Rehabilitation Therapy</fullName>
+        <default>false</default>
+        <label>Rehabilitation Therapy</label>
+    </customValue>
+    <customValue>
+        <fullName>Rehabilitation Therapy - Massage</fullName>
+        <default>false</default>
+        <label>Rehabilitation Therapy - Massage</label>
+    </customValue>
+    <customValue>
+        <fullName>Rehabilitation Therapy - Recreation / Play</fullName>
+        <default>false</default>
+        <label>Rehabilitation Therapy - Recreation / Play</label>
+    </customValue>
+    <customValue>
+        <fullName>Rehabilitation Therapy - Rehabilitation</fullName>
+        <default>false</default>
+        <label>Rehabilitation Therapy - Rehabilitation</label>
+    </customValue>
+    <customValue>
+        <fullName>Rehabilitation Therapy - Exercise Physiology / Kinesiology</fullName>
+        <default>false</default>
+        <label>Rehab Therapy - Exercise Physiology/Kinesiology</label>
+    </customValue>
+    <customValue>
+        <fullName>Research</fullName>
+        <default>false</default>
+        <label>Research</label>
+    </customValue>
+    <customValue>
+        <fullName>Residency Director</fullName>
+        <default>false</default>
+        <label>Residency Director</label>
+    </customValue>
+    <customValue>
+        <fullName>Respiratory Therapy</fullName>
+        <default>false</default>
+        <label>Respiratory Therapy</label>
+    </customValue>
+    <customValue>
+        <fullName>Respiratory Therapy Technician</fullName>
+        <default>false</default>
+        <label>Respiratory Therapy Technician</label>
+    </customValue>
+    <customValue>
+        <fullName>Retina Specialist</fullName>
+        <default>false</default>
+        <label>Retina Specialist</label>
+    </customValue>
+    <customValue>
+        <fullName>Revenue Cycle</fullName>
+        <default>false</default>
+        <label>Revenue Cycle</label>
+    </customValue>
+    <customValue>
+        <fullName>Rheumatology</fullName>
+        <default>false</default>
+        <label>Rheumatology</label>
+    </customValue>
+    <customValue>
+        <fullName>School Nurse</fullName>
+        <default>false</default>
+        <label>School Nurse</label>
+    </customValue>
+    <customValue>
+        <fullName>Senior Vice President</fullName>
+        <default>false</default>
+        <label>Senior Vice President</label>
+    </customValue>
+    <customValue>
+        <fullName>Sleep Medicine</fullName>
+        <default>false</default>
+        <label>Sleep Medicine</label>
+    </customValue>
+    <customValue>
+        <fullName>Sleep Technologist</fullName>
+        <default>false</default>
+        <label>Sleep Technologist</label>
+    </customValue>
+    <customValue>
+        <fullName>Social Worker</fullName>
+        <default>false</default>
+        <label>Social Worker</label>
+    </customValue>
+    <customValue>
+        <fullName>Speech Language Pathologist</fullName>
+        <default>false</default>
+        <label>Speech Language Pathologist</label>
+    </customValue>
+    <customValue>
+        <fullName>Sports Medicine</fullName>
+        <default>false</default>
+        <label>Sports Medicine</label>
+    </customValue>
+    <customValue>
+        <fullName>Sports Vision</fullName>
+        <default>false</default>
+        <label>Sports Vision</label>
+    </customValue>
+    <customValue>
+        <fullName>Staff Nurse</fullName>
+        <default>false</default>
+        <label>Staff Nurse</label>
+    </customValue>
+    <customValue>
+        <fullName>Sterile Processing Technician</fullName>
+        <default>false</default>
+        <label>Sterile Processing Technician</label>
+    </customValue>
+    <customValue>
+        <fullName>Supply Chain Director</fullName>
+        <default>false</default>
+        <label>Supply Chain Director</label>
+    </customValue>
+    <customValue>
+        <fullName>Supply Chain Management</fullName>
+        <default>false</default>
+        <label>Supply Chain Management</label>
+    </customValue>
+    <customValue>
+        <fullName>Surgical Oncology</fullName>
+        <default>false</default>
+        <label>Surgical Oncology</label>
+    </customValue>
+    <customValue>
+        <fullName>Surgical Technologist</fullName>
+        <default>false</default>
+        <label>Surgical Technologist</label>
+    </customValue>
+    <customValue>
+        <fullName>Telemetry</fullName>
+        <default>false</default>
+        <label>Telemetry</label>
+    </customValue>
+    <customValue>
+        <fullName>Therapists</fullName>
+        <default>false</default>
+        <label>Therapists</label>
+    </customValue>
+    <customValue>
+        <fullName>Thoracic Surgery</fullName>
+        <default>false</default>
+        <label>Thoracic Surgery</label>
+    </customValue>
+    <customValue>
+        <fullName>Toxicology</fullName>
+        <default>false</default>
+        <label>Toxicology</label>
+    </customValue>
+    <customValue>
+        <fullName>Transplant</fullName>
+        <default>false</default>
+        <label>Transplant</label>
+    </customValue>
+    <customValue>
+        <fullName>Transplantation</fullName>
+        <default>false</default>
+        <label>Transplantation</label>
+    </customValue>
+    <customValue>
+        <fullName>Trauma Surgery</fullName>
+        <default>false</default>
+        <label>Trauma Surgery</label>
+    </customValue>
+    <customValue>
+        <fullName>Triage</fullName>
+        <default>false</default>
+        <label>Triage</label>
+    </customValue>
+    <customValue>
+        <fullName>Ultrasound Technologist</fullName>
+        <default>false</default>
+        <label>Ultrasound Technologist</label>
+    </customValue>
+    <customValue>
+        <fullName>Unspecified</fullName>
+        <default>false</default>
+        <label>Unspecified</label>
+    </customValue>
+    <customValue>
+        <fullName>Unspecified Specialty</fullName>
+        <default>false</default>
+        <label>Unspecified Specialty</label>
+    </customValue>
+    <customValue>
+        <fullName>Urgent Care</fullName>
+        <default>false</default>
+        <label>Urgent Care</label>
+    </customValue>
+    <customValue>
+        <fullName>Urogynecology</fullName>
+        <default>false</default>
+        <label>Urogynecology</label>
+    </customValue>
+    <customValue>
+        <fullName>Urology</fullName>
+        <default>false</default>
+        <label>Urology</label>
+    </customValue>
+    <customValue>
+        <fullName>Utilization Management</fullName>
+        <default>false</default>
+        <label>Utilization Management</label>
+    </customValue>
+    <customValue>
+        <fullName>Utilization Review</fullName>
+        <default>false</default>
+        <label>Utilization Review</label>
+    </customValue>
+    <customValue>
+        <fullName>Vascular / Endovascular Surgery</fullName>
+        <default>false</default>
+        <label>Vascular / Endovascular Surgery</label>
+    </customValue>
+    <customValue>
+        <fullName>Vascular Surgery</fullName>
+        <default>false</default>
+        <label>Vascular Surgery</label>
+    </customValue>
+    <customValue>
+        <fullName>Venous and Lymphatic Medicine</fullName>
+        <default>false</default>
+        <label>Venous and Lymphatic Medicine</label>
+    </customValue>
+    <customValue>
+        <fullName>Vision Therapy</fullName>
+        <default>false</default>
+        <label>Vision Therapy</label>
+    </customValue>
+    <customValue>
+        <fullName>Womens Health</fullName>
+        <default>false</default>
+        <label>Womens Health</label>
+    </customValue>
+    <customValue>
+        <fullName>Wound Care</fullName>
+        <default>false</default>
+        <label>Wound Care</label>
+    </customValue>
+    <customValue>
+        <fullName>surgical)</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>surgical)</label>
+    </customValue>
+    <customValue>
+        <fullName>Manager</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Manager</label>
+    </customValue>
+    <customValue>
+        <fullName>VP, Marketing</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>VP, Marketing</label>
+    </customValue>
+    <customValue>
+        <fullName>Resources</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Resources</label>
+    </customValue>
+    <customValue>
+        <fullName>Account Management</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Account Management</label>
+    </customValue>
+    <customValue>
+        <fullName>Vice President</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Vice President</label>
+    </customValue>
+    <customValue>
+        <fullName>VP, Business Development / Marketing</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>VP, Business Development / Marketing</label>
+    </customValue>
+    <customValue>
+        <fullName>Certified Scrub Technician</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Certified Scrub Technician</label>
+    </customValue>
+    <customValue>
+        <fullName>Executive Vice President</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Executive Vice President</label>
+    </customValue>
+    <customValue>
+        <fullName>Technologist</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Technologist</label>
+    </customValue>
+    <customValue>
+        <fullName>*Jobs at THMED</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>*Jobs at THMED</label>
+    </customValue>
+    <masterLabel>Specialties</masterLabel>
+    <sorted>true</sorted>
+</GlobalValueSet>

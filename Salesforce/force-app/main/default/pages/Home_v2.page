@@ -1,0 +1,198 @@
+<apex:page standardStyleSheets="false" showHeader="false" sidebar="false" controller="RC_HomeController" action="{!redirectUnAuthenticatedUser}">   
+
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    </head>
+    <!-- To refer the site template for Header and Footer -->
+    <apex:composition template="RC_CommunityTemplate"> 
+        
+        <!-- Actual body of the content for current page -->
+        <apex:define name="body">
+            <div style="height:60px;">&nbsp;</div>
+        <div class="nonslds all-elements">
+            <div id="content" class="snap-content" style="z-index:100">
+                <!-- Content Heading -->
+                <div class="content-heading">
+                    <h4>Recruitment Home</h4>
+                    <p>Manage your account, contact us if you need assistance.</p>
+                    <i class="fa fa-home"></i>
+                    <div class="overlay"></div>
+                    <apex:image url="{!URLFOR($Resource.RC_Resources, 'images/pictures/standardw.jpg')}" />
+                </div>
+                
+                <div class="content">       
+                        <div class="one-half-responsive">
+                             <h2>Welcome back, {!$User.FirstName} {!$User.LastName}</h2>
+                             <p>Your last login was {!objUser.LastLoginDate}</p>
+                             
+                        </div>
+                        <div class="two-half-responsive last-column" align="center">
+                        <div class="dashboard-buttons">
+                            <p>
+                               <a href="{!$Site.Prefix}/MyAccount_v1" class="button-main">My Account</a>
+                               <a href="{!$Site.Prefix}/ContactUs" class="button-main">Help</a>
+                               <a href="{!$Site.Prefix}/Logout" class="button-main">Logout</a>
+                            </p>        
+                        </div></div>
+        
+        
+                    <div class="decoration"></div>
+                </div> 
+                
+                <!-- Page Content-->
+                <div class="content">
+                            <div class="container large-title no-bottom">
+                                <h3>Get Started By Updating Your Account Details</h3>
+                                </div>
+                                <br />
+                    <!-- dbsection Slider-->
+                    <div class="container">
+                        <a href="#" class="next-dbsection" style="position:fixed"></a>
+                        <a href="#" class="prev-dbsection" style="position:fixed"></a>
+                        <div class="dbsection-slider" data-snap-ignore="true">
+                        
+                        <div class="dbsection-timesheets"><div>
+                                <div class="dbsection-item">
+                                <i class="fa fa-clock-o"></i>
+                                    <h4>Timesheets</h4>
+                                    <a href="{!$Site.Prefix}/TimesheetListing" class="button button-timesheets center-button">Go!</a>
+                                </div>
+                            </div></div>
+                            
+                            <div class="dbsection-scheduler"><div>
+                                <div class="dbsection-item">
+                                <i class="fa fa-calendar"></i>
+                                    <h4>Scheduler</h4>
+                                    <a href="{!$Site.Prefix}/CandidateAvailability" class="button button-scheduler center-button">Go!</a>
+                                </div>
+                            </div></div>
+                            
+                            
+                            <!-- Added 'Travel Details' tab for TR-3227 - Start Here-->
+                            <div class="dbsection-travel"><div> 
+                                <div class="dbsection-item">
+                                <i class="fa fa-cube" style="color: #2a8adf;"></i>
+                                    <h4>Travel Details</h4>
+                                    <a href="{!$Site.Prefix}/TravelDetailsListing" class="button button-travel center-button">Go!</a>
+                                </div>
+                            </div></div>
+                            <!-- Added 'Travel Details' tab for TR-3227 - Stop Here-->
+                            
+                            <div class="dbsection-expensereports"><div>
+                                <div class="dbsection-item">
+                                <i class="fa fa-file-text"></i>
+                                    <h4>Expense Reports</h4>
+                                    <a href="{!$Site.Prefix}/ExpenseReports" class="button button-expensereports center-button">Go!</a>
+                                </div>
+                            </div></div> 
+                            
+                            <div class="dbsection-book"><div>
+                                <div class="dbsection-item">
+                                <i class="fa fa-book"></i>
+                                    <h4>Topics</h4>
+                                   <!-- <em>DISCUSS</em>
+                                    <strong>Start a discussion, ask questions, or join a conversation.</strong> -->
+                                    <a href="{!$site.prefix}/Topics" class="button button-book center-button">Go!</a>
+                                </div>
+                            </div></div>
+                            <div class="dbsection-reporting"><div>
+                                <div class="dbsection-item">
+                                <i class="fa fa-user"></i>
+                                    <h4>My Account</h4>
+                                    <!--<em>ANALYZE</em>
+                                    <strong>Customized reports and dashboards right at your fingertips.</strong> -->
+                                    <a href="{!$site.prefix}/MyAccount_v1" class="button button-reporting center-button">Go!</a>
+                                </div>
+                            </div></div>
+                            <!-- <div class="dbsection-chatter"><div>
+                                <div class="dbsection-item">
+                                <i class="fa fa-weixin"></i>
+                                    <h4>Chatter</h4> -->
+                                   <!-- <em>DISCUSS</em>
+                                    <strong>Start a discussion, ask questions, or join a conversation.</strong> -->
+                                    <!--<a href="{!$site.prefix}/MyChatter" class="button button-chatter center-button">Go!</a>
+                                </div>
+                            </div></div>-->
+                            
+                            
+                            
+                            
+                           <!--<div class="dbsection-topics"><div>
+                               <div class="dbsection-item">-->
+                               <!-- <i class="fa fa-pencil"></i>-->
+                                    <!--<h4>Take Assessments</h4>-->
+                                   <!-- <em>DISCUSS</em>
+                                    <strong>Start a discussion, ask questions, or join a conversation.</strong> -->
+                                    <!--<apex:outputPanel rendered="{!IF(objContact.Consol_URL__c != '', true, false)}">
+                                        <a href="{!objContact.Consol_URL__c}" class="button button-topics center-button" target="_blank">Go!</a> 
+                                    </apex:outputPanel>-->
+                                    <!--<apex:outputPanel rendered="{!IF(objContact.Consol_URL__c == '', true, false)}">
+                                        <a href="#" class="button button-topics center-button">Go!</a> 
+                                    </apex:outputPanel>-->
+                                <!--</div>
+                            </div></div>-->
+                            <!--<div class="dbsection-jobs"><div>
+                                <div class="dbsection-item">
+                                <i class="fa fa-briefcase"></i>
+                                    <h4>My Jobs</h4>
+                                    <!--<em>HIRE</em>
+                                    <strong>Conveniently manage your job search functions in one place.</strong>
+                                    <a href="{!$site.prefix}/JobListing" class="button button-jobs center-button ">Go!</a>
+                                </div>
+                            </div></div>-->
+                            
+                            
+                            <!-- <div class="dbsection-chatter"><div>
+                                <div class="dbsection-item">
+                                <i class="fa fa-weixin"></i>
+                                    <h4>Chatter</h4>
+                                    <em>CONNECT</em>
+                                    <strong>Connect, collaborate, and share your knowledge or data.</strong>
+                                    <a href="#" class="button button-chatter center-button">Go!</a>
+                                </div>
+                            </div></div>-->
+                           <!-- <div class="dbsection-scheduler"><div>
+                                <div class="dbsection-item">
+                                <i class="fa fa-calendar"></i>
+                                    <h4>Scheduler</h4>
+                                    <em>PLAN</em>
+                                    <strong>View your active jobs and schedule candidates for each shift.</strong>
+                                    <a href="#" class="button button-scheduler center-button">Go!</a>
+                                </div>
+                            </div></div> -->
+                           <!-- <div class="dbsection-timesheets"><div>
+                                <div class="dbsection-item">
+                                <i class="fa fa-clock-o"></i>
+                                    <h4>Timesheets</h4>
+                                    <em>APPROVE</em>
+                                    <strong>View, print, manage, and approve your candidate timesheets.</strong>
+                                    <a href="#" class="button button-timesheets center-button">Go!</a>
+                                </div>
+                            </div></div> -->
+                            
+                            <!--<div class="dbsection-invoices"><div>
+                                <div class="dbsection-item">
+                                <i class="fa fa-usd"></i>
+                                    <h4>Invoices</h4>
+                                    <em>REVIEW</em>
+                                    <strong>Review your recruitment and staffing billables in one place.</strong>
+                                    <a href="#" class="button button-invoices center-button">Go!</a>
+                                </div>
+                            </div></div> -->
+                        </div>
+                    </div>  
+                    <div class="decoration"></div>
+                </div>    
+                <!-- Page Footer-->
+                <div class="footer">
+                    <div class="footer-socials half-bottom">
+                        <a href="#" class="footer-share show-share-bottom"><i class="fa fa-share-alt"></i></a>
+                        <a href="#" class="footer-up"><i class="fa fa-angle-up"></i></a>
+                    </div>
+                    <p class="center-text">&copy; 2015 Talent Rover. All rights reserved.</p>
+                </div>  
+            </div>
+        </div>
+        </apex:define> 
+    </apex:composition>
+</apex:page>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Lightning Permissions</label>
+    <pageAccesses>
+        <apexPage>TimesheetApproval</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>LightningExperienceUser</name>
+    </userPermissions>
+</PermissionSet>

@@ -1,0 +1,437 @@
+<apex:page controller="RC_Shiftwork" showHeader="false" standardStylesheets="true" sidebar="false" applyHtmlTag="false" applyBodyTag="false" action="{!redirectUnAuthenticatedUser}" docType="html-5.0">
+    
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <head>
+            <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+            <apex:stylesheet value="{!URLFOR($Resource.SLDS092, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+            <apex:includeScript value="{!URLFOR($Resource.TB_JS, '/jQuery-1.11.3.min.js')}" />
+            <apex:includeScript value="{!URLFOR($Resource.TB_JS, '/jquery-ui-1.11.3.js')}" />
+            <apex:stylesheet value="{!URLFOR($Resource.TR1__timeentry, 'timeentry/jquery.timeentry.css')}" />
+            <script type="text/javascript" src="{!URLFOR($Resource.TR1__timeentry, 'timeentry/jquery.plugin.js')}"></script>
+            <script type="text/javascript" src="{!URLFOR($Resource.TR1__timeentry, 'timeentry/jquery.timeentry.js')}"></script>
+           
+            
+            <style>
+                
+                #outPopUp{
+                 position:absolute;
+                 z-index:9999999;
+                 top:50%;
+                 left:47%;
+                }
+                .slds audio, .slds canvas, .slds iframe, .slds img, .slds svg, .slds video {
+    vertical-align: text-top;
+}
+                .closeButton{
+                    font-size: 18px;
+                    FONT-WEIGHT: 600;
+                }
+                 .slds-table--bordered{
+                    border-left: 1px solid #d8dde6;
+                    border-right: 1px solid #d8dde6;
+                }
+                .slds:not(html), .slds body {
+    font-size: 12px;
+    background: transparent;
+}
+
+         .lookupInput a { 
+            width: 45px !important;
+           // margin-left: -5%;
+            //padding: 8px 0px 5px 0px !important;
+            background-image:"{!$Resource.Search}"
+            
+        }
+        
+        .slds img {
+    max-width: 100%;
+    height: auto;
+    margin-top: -5%;
+    margin-left: 51%;
+    min-width: 1%;
+}
+
+@media screen and (640px) {
+  .slds img {
+    max-width: 100%;
+    height: auto;
+    margin-top: -2%;
+    margin-left: 51%;
+    min-width: 1%;
+  }
+}
+        .slds .slds-input {
+          Max-width: 50%;
+          min-width: 7%;
+        }
+         
+        
+            </style>
+        </head>
+        
+        <apex:composition template="RC_CommunityTemplate">
+        
+        <apex:define name="body">
+            <style>
+                 
+                .leaveAfter{
+                    width: 23%;
+                }
+                /* added by veda */
+                .slds .slds-table tr > th:last-child, .slds .slds-table tr > td:last-child {
+                  padding-right: 10px !important;
+                 }
+    
+                .slds .slds-table th, .slds .slds-table td {
+                  padding: 8px;
+                  white-space: nowrap;
+                  position: relative;
+                  width: 0px;
+                 }
+                .slds .slds-badge{
+                    text-transform: none;
+                    font-size: 11px;
+                }
+                .saveClass{
+                    -webkit-border-bottom-right-radius: 5px !important;
+                    -webkit-border-top-right-radius: 5px !important;
+                }
+                a.tooltip span {
+                  display:none;
+                  padding:1px 10px;
+                  margin-left:8px;
+                  height:auto;
+                  overflow:auto;
+                  white-space:normal !important;
+                  
+                  
+                }
+                a.tooltip:hover span{
+                  display:inline;
+                  position:absolute;
+                  height:auto;
+                  background:#FFC;
+                  border:1px solid #cccccc;
+                  color:#000000;
+                  overflow:auto;
+                  text-decoration: none !important;
+                  z-index: 1; 
+                  white-space:normal !important;
+                }
+            /*   .messageText{
+                  text-align:center; */
+              }
+            </style> 
+            
+            <div style="height:60px;">&nbsp;</div>
+            <div class="slds-all-elements">
+                <div id="content" class="slds-snap-content" style="z-index:100">
+                    <div class="slds-content" style="min-height:500px;">
+                        <div class="slds">
+                            <apex:form id="formid">
+                               <apex:actionFunction name="saveTimeInandOut" action="{!Save}" reRender="exceptionBlock,errorBlock"/>
+                               <apex:actionFunction name="rerenderStartTopPanel" action="{!StartStartTimeFormate}" reRender="errorBlock,timesheetheaderid,exceptionBlock"/>
+                               <apex:actionFunction name="rerenderEndTopPanel" action="{!StartEndTimeFormate}" reRender="exceptionBlock,errorBlock"/>
+                               <apex:actionFunction name="rerenderStartEndTopPanel" action="{!errorOnStartEndTimeFormate}" reRender="exceptionBlock,errorBlock"/> 
+                                <div id ="deleteIt" style="display:none;">
+                                 <!--  <div id ="exceptionMsg" class="slds-m-top--small slds-notify slds-notify--alert slds-theme--error slds-theme--alert-texture" role="alert">
+                                        <a class="slds-button slds-notify__close" onclick="CloseBanner()">
+                                            <svg aria-hidden="true" class="slds-button__icon slds-button__icon--inverse">
+                                                <use xlink:href="{!URLFOR($Resource.SLDS092, '/assets/icons/action-sprite/svg/symbols.svg#close')}"></use>
+                                            </svg>
+                                            <span class="slds-assistive-text">Close</span>
+                                        </a>
+                                        <div >
+                                            <svg aria-hidden="true" class="slds-icon icon-text-email slds-icon--small slds-m-right--x-small">
+                                                <use xlink:href="{!URLFOR($Resource.SLDS092, '/assets/icons/utility-sprite/svg/symbols.svg#ban')}"></use> 
+                                            </svg>
+                                      <div class="slds-col slds-align-middle">
+                                             <h2 id = "msgId" class="slds-text-heading--small "> 
+                                                    <apex:pageMessages id="errors"/>
+                                                </h2>
+                                            </div> 
+                                        </div>
+                                    </div>  -->
+                                    <apex:outputPanel id="errorBlock">
+                                     <div id = "exceptionMsg" class="slds-notify slds-notify--alert slds-theme--{!IF(isError,'error','success')} slds-theme--alert-texture" role="alert">
+                                        <div >
+                                         <div class="slds-col slds-align-middle">
+                                            <h2 id ="msgId" class="slds-text-heading--small "> 
+                                              <apex:pageMessages id="errors"/>
+                                            </h2>
+                                         </div>
+                                         </div>
+                                      </div>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel id="exceptionBlock"> 
+                                      <script>
+                                            if($('[id$=errors]').children().length == 0)
+                                              $('#deleteIt').hide();
+                                            else
+                                              $('#deleteIt').show();
+                                      </script> 
+                                    </apex:outputPanel>
+                                </div>
+                                <apex:actionStatus id="myStatus">  
+                                    <apex:facet name="start">  
+                                        <div class="waitingSearchDiv" id="outPopUp" style=""> 
+                                            <div class="slds-spinner--small" >
+                                                <img src="{!URLFOR($Resource.SLDS092, 'assets/images/spinners/slds_spinner.gif')}" />  
+                                            </div>
+                                        </div> 
+                                    </apex:facet>   
+                                </apex:actionStatus>
+                               
+                               
+                               <apex:outputPanel id="timesheetDetails" rendered="{!!noParameter}">
+                                   
+                                   <div class="slds-page-header" role="banner">
+                                        <div class="slds-grid slds-wrap slds-grid--align-spread">
+                                            <div class="slds-col">
+                                                <div class="slds-media">
+                                                    <div class="slds-media__figure">
+                                                        <span class="slds-avatar slds-avatar--medium" style="margin-left:0px Important">
+                                                           <img src="{!URLFOR($Resource.SLDS092, '/assets/icons/custom/custom25_60.png')}" style="background-color: #b19f1b;margin-left: 1px !important;" />
+                                                        </span>
+                                                    </div> 
+                                                    
+                                                    <div class="slds-media__body">
+                                                      <p class="slds-text-heading--label">{!$User.FirstName} {!$User.LastName}</p>
+                                                      <h1 class="slds-text-heading--medium">Add Time</h1>
+                                                     
+                                                     </div>
+                                                </div>
+                                            </div>
+                                            <div class="slds-col slds-no-flex slds-align-bottom">
+                                              <div class="slds-button-group" role="group">
+                                              <!--td ><a href="{!$Site.Prefix}/TimesheetDetails?tsId={!objTS.TR1__Timesheet__c}" class="slds-button slds-button--neutral">Back</a></td-->
+                                               <!--td > <a href="{!$Site.Prefix}/RC_TimesheetDetailsbutton?tsId={!objTS.Id}" class="slds-button slds-button--neutral"><p >Back</p></a> </td-->
+                                                  <!--apex:commandButton action="/apex/TimesheetListing" styleClass="slds-button slds-button--neutral" value="Back"/-->
+                                                <td> <apex:commandButton styleClass="slds-button slds-button--neutral" action="{!cancelRedirect}" value="Back" immediate="true" html-formnovalidate="formnovalidate"/> </td>
+                                                 
+                                                 <apex:outputPanel rendered="{!!isClient}" layout="none">
+                                                   
+                                                    <apex:commandButton styleClass="slds-button slds-button--brand"  value="Save" onclick="validateTime(); return false;"/><!-- action="{!Save}" rerender="errorBlock,exceptionBlock"--> 
+                                                    <apex:commandButton styleClass="slds-button slds-button--brand"  action="{!SaveNew}" value="Save & AddTime" style="border-left: 1px solid white;"/> 
+                                                </apex:outputPanel>
+                                                
+                                              </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="slds-grid slds-wrap slds-grid--align-spread slds-page-header__detail-row">
+                                           <apex:repeat value="{!$ObjectType.Contact.Fieldsets.RC_My_Profile_Header}" var="field">
+                                                <div class="slds-col--padded slds-size--2-of-6 slds-medium-size--2-of-6 slds-large-size--1-of-6">
+                                                  <dl>
+                                                    <dt>
+                                                      <p class="slds-text-heading--label slds-truncate" title="{!field.label}">{!field.label}</p>
+                                                    </dt>
+                                                    <dd>
+                                                      <p class="slds-text-body--regular slds-truncate" title="{!objContact[field]}"><apex:outputField value="{!objContact[field]}"/></p>
+                                                    </dd>
+                                                  </dl>
+                                                </div>
+                                            </apex:repeat> 
+                                         </div>
+                                        
+                                    </div>
+                                    
+                                    <div class="slds-col--padded-large slds-m-top--medium" style="overflow-x: scroll;">
+                                        <!--Timesheet Header -->
+                                        <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal slds-no-row-hover">
+                                            <tbody>
+                                                <apex:repeat value="{!fieldSetTimesheetHeader}" var="field">
+                                                    <tr class="slds-hint-parent">
+                                                        <td class="slds-size--1-of-5"><b>{!field.Label}</b></td>
+                                                        <td class="slds-size--4-of-5">
+                                                            <apex:outputField value="{!objTS[field.FieldPath]}"/>
+                                                        </td>
+                                                    </tr>
+                                                </apex:repeat>
+                                                <tr class="slds-hint-parent">
+                                                    <td class="slds-size- -1-of-5"><b>Work Location</b></td>
+                                                    <td class="slds-size--4-of-5">
+                                                        <apex:inputField styleClass="slds-select" value="{!objTS.Work_Location__c}" style="width: fit-content;"/>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        </div>
+                                         
+                                        <!--END ---Timesheet Header -->
+                                        <br/>
+                                        <!--Timesheet Detail -->
+                               <b style="margin-left:56px;">Enter Shift Details Record</b>
+                               <br/><br/>
+                                <apex:outputPanel >
+                                <table style="margin-left: 57px;border:1px solid gainsboro;width:90%;" >
+                                        <tr>
+                                        <apex:outputPanel >
+                                         <td>
+                                          <div class="slds-p-horizontal--small " >
+                                            <label class="slds-form-element__label" >Rate</label>
+                                              <div class="slds-form-element__control">
+                                                  <apex:selectList size="1" value="{!selectedRecordType}" multiselect="false" styleClass="slds-select" style="width: inherit;"> 
+                                                    <apex:selectOptions value="{!RecordTypes}" /> 
+                                                    <apex:actionSupport event="onchange" action="{!amountslection}" reRender="TheForm"/ >
+                                                  </apex:selectList>
+                                              </div>
+                                              <br/>
+                                           </div>
+                                          </td>
+                                           
+                                          
+                                      
+                                        </apex:outputPanel>
+                                        </tr>
+                                          </table>
+                                           </apex:outputPanel>
+                                           <br/><br/><br/>
+                                          <!--srikanth-->
+                                         
+                                          <apex:outputPanel id="TheForm"  >
+                                        <table style="margin-left: 57px;border:1px solid gainsboro;width:90%;" >
+                                        
+                                        <tr>
+                                         <!--td>
+                                         <apex:outputPanel rendered="{!If(show2 || show1,True,False)}">
+                                             <div class="slds-p-horizontal--small " >
+                                            <label class="slds-form-element__label" >Time Type</label>
+                                            <div class="slds-form-element__control">
+                                            <apex:outputtext value="{!ratetitmetype}"/>
+                                                     
+                                           </div>
+                                            </div> 
+                                            </apex:outputPanel>
+                                        </td-->
+                                        <td >
+                                        <div class="slds-p-horizontal--small ">
+                                        <!--<label class="slds-form-element__label">Amount</label>-->
+                                        <apex:outputText rendered="{!If(show1,True,False)}">Hours</apex:outputText>
+                                        <div class="slds-form-element__control">
+                                        <apex:inputField style="margin-bottom:4px;" value="{!sh.TR1__Hours__c}" styleClass="slds-input"  rendered="{!If(show1,True,False)}"/>    
+                                         </div>
+                                       
+                                        </div> 
+                                        </td>
+                                       
+                                        <td>
+                                        <div class="slds-p-horizontal--small ">
+                                       
+                                        <apex:outputText rendered="{!If(show2,True,False)}">TIME-IN</apex:outputText>
+                                        <div class="slds-form-element__control">
+                                        <apex:inputtext label="start Time" id="inTimeId" style="margin-bottom:4px;" value="{!sh.TR1__Start_Time__c}" rendered="{!If(show2,True,False)}"/>   
+                                       </div>
+                                        </div> 
+                                        </td>
+                                         <td>
+                                        <div class="slds-p-horizontal--small ">
+                                        
+                                        <apex:outputText rendered="{!If(show2,True,False)}">TIME-OUT</apex:outputText>
+                                        <div class="slds-form-element__control">
+                                        <apex:inputtext label="start Time" id="endTimeId" style="margin-bottom:4px;" value="{!sh.TR1__End_Time__c}" rendered="{!If(show2,True,False)}"/>
+                                           <script type="text/javascript">
+                                               /*   $(function () {
+                                                     inititalizeTimeEntry();
+                                                    });
+                                                     function inititalizeTimeEntry(){
+                                                       $('.timepic').timeEntry({defaultTime: "00:00",initialField: 0});
+                                                   }
+                                               */ 
+                                              
+                                              function validateTime(){
+                                                const regex = /(((0[1-9])|(1[0-2])):([0-5])(0|5)(A|P)M)/;
+                                                const strInTime = document.getElementById('j_id0:j_id7:formid:inTimeId').value  ;
+                                                const strEndTime = document.getElementById('j_id0:j_id7:formid:endTimeId').value ;
+                                                //const apexInput1=document.getElementById("{!$Component.formid.timeId}").value;
+                                                console.log(strInTime);
+                                                console.log(strEndTime);
+                                                if(strInTime.match(regex) && strEndTime.match(regex)) {
+                                                  console.log('strInTime==>1');
+                                                  saveTimeInandOut();
+                                                  console.log('strInTime==>2');
+                                                 }
+                                                else if(!strInTime.match(regex) && !strEndTime.match(regex)){
+                                                   rerenderStartEndTopPanel();
+                                                }
+                                                else {
+                                                    if(!regex.test(strInTime)){//   // strInTime.match(regex)
+                                                      console.log('else strInTime==>1');
+                                                      //document.getElementById("demo").innerHTML = 'email not valid';
+                                                      rerenderStartTopPanel();
+                                                      //alert('Entered intime formate is invalid');
+                                                     }else{
+                                                       console.log('else inside else');
+                                                       rerenderEndTopPanel();
+                                                    }
+                                                  }
+                                               }
+                                            </script>   
+                                       </div>
+                                        </div> 
+                                        </td>
+                                        
+                                        </tr>
+                                        <script>
+                                                                    /*     $j= jQuery.noConflict();
+                                                                            $j(document).ready(function(){
+                                                                               var dt = new Date();
+                                                                                var min = dt.getMinutes()*60;
+                                                                               $j('.timepic').timeEntry({defaultTime: -min}); 
+                                                                                
+                                                                            });  */
+                                                                         function gettime(){
+                                                                             var dt = new Date();
+                                                                             var min = dt.getMinutes()*60;
+                                                                             $('.timepic').timeEntry({defaultTime: "00:00"});
+                                                                          }   
+                                                                       </script>
+                                        </table>
+                                        </apex:outputpanel>
+                                        
+                                          <!--sriaknth-->
+                                        
+                                        <!-- END --Timesheet Detail -->
+                                        <br/>
+                                       
+                                </apex:outputPanel>
+                                <script>
+                                    if($('.errorMsg').length != 0){
+                                        $('.errorMsg').remove();
+                                    }
+                                </script>
+                            </apex:form>
+                        </div>
+                    </div>
+                    <!-- Page Footer-->
+                    <span class="nonslds">
+                        <div class="footer">
+                            <div class="footer-socials half-bottom">
+                                <a href="#" class="footer-share show-share-bottom"><i class="fa fa-share-alt"></i></a>
+                                <a href="#" class="footer-up"><i class="fa fa-angle-up"></i></a>
+                            </div>
+                            <p class="center-text">&copy; 2015 Talent Rover. All rights reserved.</p>
+                        </div>   
+                    </span>
+                </div>
+            </div>
+            
+            
+        </apex:define>
+        </apex:composition>
+        
+        <script type="text/javascript">
+    var _gaq = _gaq || [];              
+          _gaq.push(['_setAccount', '{!$Site.AnalyticsTrackingCode}']);
+         _gaq.push([
+       '_trackEvent', 
+       'Page Errors', 
+       '{!$Site.ErrorMessage}', 
+       '{!$Site.OriginalUrl}--{!$Site.ErrorDescription} experienced by {!$User.Id}']);                      
+ </script>
+        
+        
+    </html>
+         
+
+</apex:page>

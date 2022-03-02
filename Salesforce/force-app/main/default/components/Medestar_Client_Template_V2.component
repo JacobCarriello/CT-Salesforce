@@ -1,0 +1,105 @@
+<apex:component controller="MedestarTemplateController" access="global">
+  <apex:attribute name="crId" description="Id of Closing Report" 
+                    type="String" access="global" assignTo="{!closingReportId}"/>
+  <html>
+    <body>
+        <style>
+            .headerCss{float:right;width:100%;text-align: right;font-weight:bold;}
+            .sectionHeaderClass{font-weight:bold;text-decoration: underline;}
+            .checkBoxClass{vertical-align: -webkit-baseline-middle;}
+        </style>
+
+        <!--<div class="headerCss">Curative Client Confirmation Letter</div>
+        <div class="headerCss">{!crRecord.TR1__Person_Placed__r.FirstName} {!crRecord.TR1__Person_Placed__r.LastName} - {!crRecord.TR1__Account__r.Name}</div>-->
+        <br/><br/>
+        <apex:outputText value="{0,date,MMMMM dd, YYYY}">
+             <apex:param value="{!TODAY()}" /> 
+        </apex:outputText>
+        <br/><br/> 
+        <!--
+        {!crRecord.TR1__Person_Placed__r.FirstName} {!crRecord.TR1__Person_Placed__r.LastName}<br/>
+        {!crRecord.TR1__Person_Placed__r.MailingStreet}, <br/>
+        {!crRecord.TR1__Person_Placed__r.MailingCity}, {!crRecord.TR1__Person_Placed__r.MailingState}, {!crRecord.TR1__Person_Placed__r.MailingPostalCode}<br/>
+        <br/><br/> -->
+        Dear {!crRecord.TR1__Person_Placed__r.Salutation} {!crRecord.Send_Confirmation_Letter_To__r.FirstName} {!crRecord.Send_Confirmation_Letter_To__r.LastName},
+        <br/> 
+        <p>This letter is to confirm your acceptance of {!crRecord.TR1__Person_Placed__r.FirstName} {!crRecord.TR1__Person_Placed__r.LastName} for locum tenens coverage at the worksites and for the dates listed below. Please note this assignment is contingent upon provider being approved for malpractice coverage and completion of our quality assurance pre-qualifying process.</p>
+         
+        <p>We will assist you in obtaining the necessary documentation for obtaining privileges for this provider. To ensure proper reporting enrollment under State Patient Compensation Fund rules and regulations, Curative must be notified 24 hours prior to Provider providing professional services on any dates not listed below.</p>
+         
+        <p>{!crRecord.TR1__Account__r.Name} agrees to pay Curative for the services rendered by the provider according to the schedule listed below. When a holiday premium is applicable, please refer to the order attached to your agreement for locum tenens coverage with Curative.</p>
+         
+         
+        <span class="sectionHeaderClass" style="font-weight:bold;">PROVIDER: </span> {!crRecord.TR1__Person_Placed__r.FirstName} {!crRecord.TR1__Person_Placed__r.LastName}
+        <br/> <br/>
+        <span class="sectionHeaderClass" style="font-weight:bold;">SPECIALTY: </span>{!crRecord.TR1__Job__r.TR1__Primary_Background__c}
+        <br/> <br/>
+        <div class="sectionHeaderClass" style="font-weight:bold;">BILL RATES:</div>
+        <ui>
+            <apex:repeat value="{!crRecord.TR1__Rates__r}" var="rate">
+                <li>  {!rate.TR1__TimeType__r.Name}: ${!rate.TR1__RateBill__c}  {!rate.Rate_Definition__c} </li>
+            </apex:repeat>
+            <li>Daily Administrative Fee:&nbsp;${!crRecord.Medestar_Daily_Admin_Fee__c}</li>
+        </ui>
+        <br/> <br/>
+        
+        <div class="sectionHeaderClass" style="font-weight:bold;">TRAVEL / LODGING:</div>
+        <ui>
+        <li>Mileage Reimbursement:&nbsp;<apex:outputText value="{!IF(crRecord.Mileage_Billable__c, 'Billable', 'Not Billable')}" /> ($0.56/mile)</li>
+        <li>Lodging:&nbsp;<apex:outputText value="{!IF(crRecord.Lodging_Billable__c, 'Billable', 'Not Billable')}" /></li>
+        <li>Rental Car:&nbsp;<apex:outputText value="{!IF(crRecord.Rental_Car_Billable__c, 'Billable', 'Not Billable')}" /></li>
+        <li>Airfare:&nbsp;<apex:outputText value="{!IF(crRecord.Airfare_Billable__c, 'Billable', 'Not Billable')}" /></li>
+        </ui>
+        <br/> <br/>
+        
+        <div class="sectionHeaderClass" style="font-weight:bold;">ASSIGNMENT DATES:</div><br/>
+        <!--<apex:repeat value="{!closingReportScheduleWrapper}" var="crs">
+         {!DAY(crs.startDate)}-{!MONTH(crs.startDate)}-{!YEAR(crs.startDate)}&nbsp;&nbsp;
+         <apex:outputText value="{0,date,hh:mm a} - {1,date,hh:mm a}">
+             <apex:param value="{!crs.localStartDate}" /> 
+             <apex:param value="{!crs.localEndDate}" />
+        </apex:outputText>   &nbsp;&nbsp;  {!crs.crs.Workshift_Location__c}  <br/>
+        </apex:repeat>-->
+        <table border="1" style="border-collapse: collapse;width:80%;">
+            <thead>
+                <th>Status</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Location</th>
+                <th>Address</th>
+            </thead>
+            <tbody style="text-align:center;">
+                <apex:repeat value="{!closingReportScheduleWrapper}" var="crs">
+                     <tr>
+                     <td>
+                         <apex:outputText value="{!crs.crs.Tentative_or_Confirmed__c}" />
+                     </td>
+                     <td>
+                         <apex:outputText value="{!crs.formattedStartDate}" />
+                     </td>    
+                     <td>
+                         <apex:outputText value="{!crs.formattedEndDate}" />
+                     </td>
+                     <td>{!crs.crs.TRSCHED__Work_Shift_Location_lkId__r.Name}</td>
+                     <td>{!crs.crs.TRSCHED__Work_Shift_Location_lkId__r.ShippingStreet},<br/>{!crs.crs.TRSCHED__Work_Shift_Location_lkId__r.ShippingCity},&nbsp;{!crs.crs.TRSCHED__Work_Shift_Location_lkId__r.ShippingState},&nbsp;{!crs.crs.TRSCHED__Work_Shift_Location_lkId__r.ShippingCountry},&nbsp;{!crs.crs.TRSCHED__Work_Shift_Location_lkId__r.ShippingPostalCode}</td>
+                     </tr>
+                </apex:repeat>
+            </tbody>
+        </table>
+        <br/>
+        <div class="sectionHeaderClass" style="font-weight:bold;">CANCELLATION:</div>
+        Should {!crRecord.TR1__Account__r.Name} decide to cancel any portion of this assignment, please refer to the cancellation clause in your agreement for locum tenens coverage.
+         
+        <p>If any concerns arise regarding this provider or this assignment, please contact your Account Manager.</p>
+        <!--<ui> 
+                <li>  The competency of the provider to perform in the scope of the practice as required;</li> 
+                <li>  Workplace accidents, including damage to client facilities;</li> 
+                <li>  Malpractice concerns, or potential malpractice claims;</li> 
+                <li>  Patient safety concerns, including unexpected patient events (Medestar does not want, and will not accept PHI); or OSHA violations, including potential workplace safety hazards</li>  
+            </ui>-->
+        <br/> <br/>  
+        <div class="sectionHeaderClass" style="font-weight:bold;">ASSIGNMENT ACCEPTANCE:</div>
+        This letter is confirmation of your acceptance and is a part of your agreement for locum tenens coverage. If you do not agree with any of the terms set for herein, you must notify Curative within 24 hours of receipt of this confirmation letter. By accepting this provider for locum tenens coverage, {!crRecord.TR1__Account__r.Name} acknowledges that provider is not an employee of Curative and that Curative simply acts as a staffing agency for {!crRecord.TR1__Account__r.Name}.
+    </body>
+</html>
+</apex:component>

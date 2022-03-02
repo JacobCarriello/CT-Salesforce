@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <alerts>
+        <fullName>Procurement_Invoice_Request_Email_Alert</fullName>
+        <ccEmails>invoicing@curativetalent.com</ccEmails>
+        <description>Procurement Invoice Request Email Alert</description>
+        <protected>false</protected>
+        <senderType>CurrentUser</senderType>
+        <template>THMED/Procurement_Invoice_Request</template>
+    </alerts>
+    <alerts>
+        <fullName>RemoveTotal_Reach_Posting</fullName>
+        <ccEmails>growthteam@curativetalent.com</ccEmails>
+        <description>Remove Total Reach Posting</description>
+        <protected>false</protected>
+        <senderType>DefaultWorkflowUser</senderType>
+        <template>Growth/TR_Remove_Posting_Request</template>
+    </alerts>
+    <alerts>
+        <fullName>Remove_Total_ReachPosting</fullName>
+        <ccEmails>growthteam@curativetalent.com</ccEmails>
+        <description>Remove Total Reach Posting</description>
+        <protected>false</protected>
+        <senderType>DefaultWorkflowUser</senderType>
+        <template>Growth/TR_Remove_Posting_Request</template>
+    </alerts>
+    <alerts>
+        <fullName>Remove_Total_Reach_Posting</fullName>
+        <ccEmails>growthteam@curativetalent.com</ccEmails>
+        <description>Remove Total Reach Posting</description>
+        <protected>false</protected>
+        <senderType>DefaultWorkflowUser</senderType>
+        <template>Growth/TR_Remove_Posting_Request</template>
+    </alerts>
+    <alerts>
+        <fullName>Total_Reach_Posting_Status_Check</fullName>
+        <ccEmails>growthteam@curativetalent.com</ccEmails>
+        <description>Total Reach Posting Status Check</description>
+        <protected>false</protected>
+        <senderType>DefaultWorkflowUser</senderType>
+        <template>THMED/Total_Reach_Posting_Status_Check</template>
+    </alerts>
+    <rules>
+        <fullName>Remove Total Reach Notification</fullName>
+        <active>false</active>
+        <booleanFilter>1 AND (2 OR 3 OR 4 OR 5 OR 6)</booleanFilter>
+        <criteriaItems>
+            <field>Procurement__c.Status__c</field>
+            <operation>equals</operation>
+            <value>Won</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Procurement__c.Doximity_Remove_Date__c</field>
+            <operation>notEqual</operation>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Procurement__c.ZipRecruiter_Remove_Date__c</field>
+            <operation>notEqual</operation>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Procurement__c.ZipRecruiter_Remove_Date__c</field>
+            <operation>notEqual</operation>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Procurement__c.Indeed_Remove_Date__c</field>
+            <operation>notEqual</operation>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Procurement__c.Featured_Posting_Remove_Date__c</field>
+            <operation>notEqual</operation>
+        </criteriaItems>
+        <description>email to Communications to remove total reach posting based on removal date fields</description>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+        <workflowTimeTriggers>
+            <actions>
+                <name>Remove_Total_Reach_Posting</name>
+                <type>Alert</type>
+            </actions>
+            <offsetFromField>Procurement__c.LinkedIn_Remove_Date__c</offsetFromField>
+            <timeLength>-1</timeLength>
+            <workflowTimeTriggerUnit>Days</workflowTimeTriggerUnit>
+        </workflowTimeTriggers>
+        <workflowTimeTriggers>
+            <actions>
+                <name>Remove_Total_Reach_Posting</name>
+                <type>Alert</type>
+            </actions>
+            <offsetFromField>Procurement__c.Indeed_Remove_Date__c</offsetFromField>
+            <timeLength>-1</timeLength>
+            <workflowTimeTriggerUnit>Days</workflowTimeTriggerUnit>
+        </workflowTimeTriggers>
+        <workflowTimeTriggers>
+            <actions>
+                <name>Remove_Total_Reach_Posting</name>
+                <type>Alert</type>
+            </actions>
+            <offsetFromField>Procurement__c.ZipRecruiter_Remove_Date__c</offsetFromField>
+            <timeLength>-1</timeLength>
+            <workflowTimeTriggerUnit>Days</workflowTimeTriggerUnit>
+        </workflowTimeTriggers>
+        <workflowTimeTriggers>
+            <actions>
+                <name>RemoveTotal_Reach_Posting</name>
+                <type>Alert</type>
+            </actions>
+            <offsetFromField>Procurement__c.Doximity_Remove_Date__c</offsetFromField>
+            <timeLength>-1</timeLength>
+            <workflowTimeTriggerUnit>Days</workflowTimeTriggerUnit>
+        </workflowTimeTriggers>
+    </rules>
+</Workflow>

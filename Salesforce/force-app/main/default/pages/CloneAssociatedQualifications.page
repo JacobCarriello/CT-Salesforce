@@ -1,0 +1,45 @@
+<apex:page controller="CloneAssociatedQualificationsController">
+    <script>
+        function selectAllCheckboxes(cb, receivedInputID) {
+            var inputCheckBox = document.getElementsByTagName("input");
+            for(var i=0; i<inputCheckBox.length; i++) {
+                if(inputCheckBox[i].id.indexOf(receivedInputID) != -1) {
+                    inputCheckBox[i].checked = cb.checked;
+                }
+            }
+        }
+        
+        function Cancel(){
+            var conID = '{!recordId}';
+            window.location.href ='/'+conID;
+        }
+ 
+    </script>
+    <apex:form >
+        <apex:pageMessages id="pgError" />
+        <apex:pageblock >
+            <apex:pageBlockButtons location="bottom" id="clientButtons">
+                <apex:commandButton action="{!cloneAssociatedQualificationRecords}" reRender="pgError" value="Add Related Credentials" disabled="{!AllAssociatedQualificationsOnParent.size == 0}" style="width:200px;"/>
+                <apex:commandButton action="{!cancel}" style="width:200px;" value="Cancel"/>
+            </apex:pageBlockButtons>
+            
+            <apex:outputPanel rendered = "{!If (AllAssociatedQualificationsOnParent.size > 0, true, false)}">
+                
+                <div><b>Associated Qualification Records</b></div><br/>
+                <apex:outputPanel >
+                <apex:pageblocktable value="{!AllAssociatedQualificationsOnParent}" var="aq" id="table1" headerClass="header" >
+                  <apex:column >
+                    <apex:facet name="header">
+                        <apex:inputCheckbox onclick="selectAllCheckboxes(this, 'chkbox1')"/>
+                    </apex:facet>
+                    <apex:inputCheckbox styleClass="test1" value="{!aq.isSelected}" id="chkbox1"/>
+                  </apex:column>  
+                 <apex:repeat value="{!$ObjectType.TR1__Associated_Qualification__c.FieldSets.CloneAssociatedQualification}" var="fieldValue">
+                   <apex:column value="{!aq.associatedQualification[fieldValue]}"></apex:column>
+                  </apex:repeat>
+                </apex:pageblocktable>
+               </apex:outputPanel>
+            </apex:outputPanel> 
+        </apex:pageblock>
+    </apex:form>
+</apex:page>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Data Loader</label>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>TR1__Job__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <recordTypeVisibilities>
+        <recordType>TR1__Job__c.Allied_Staffing</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <recordType>TR1__Job__c.CVConnection</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <recordType>TR1__Job__c.Fidelis</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <recordType>TR1__Job__c.Medestar_Locums</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+    <recordTypeVisibilities>
+        <recordType>TR1__Job__c.TES</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+</PermissionSet>

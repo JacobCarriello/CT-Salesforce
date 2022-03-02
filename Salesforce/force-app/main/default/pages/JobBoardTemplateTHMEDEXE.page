@@ -1,0 +1,247 @@
+<apex:page standardStyleSheets="true" showHeader="false" sidebar="false" cache="false"> 
+
+<title> THMED Executive Search </title> 
+<link rel="icon" type="image/png"/>
+<!--link rel="icon" type="image/png" href="{!$Resource.JobBoardFavicon}" /-->
+<link rel="stylesheet"  type="text/css" href="http://thmedexec.com/wp-content/themes/Total/style.css"/>
+<link rel="stylesheet"  type="text/css" href="http://thmedstaffing.com/wp-content/themes/scroller/styles/font-awesome-ie7.css?ver=4.7.2"/>
+     <!--apex:stylesheet value="{!URLFOR($Resource.JobBoardTemplate, 'css/bootstrap-theme.css')}" /--> 
+        <apex:stylesheet value="{!URLFOR($Resource.JobBoardTemplate, 'css/bootstrap-theme.min.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.JobBoardTemplate, 'css/bootstrap.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.JobBoardTemplate, 'css/bootstrap.min.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.JobBoardTemplate, 'css/selectone-job-board.css')}" />
+        <apex:includeScript value="{!URLFOR($Resource.JobBoardTemplate, 'js/bootstrap.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.JobBoardTemplate, 'js/bootstrap.min.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.JobBoardTemplate, 'js/npm.js')}" />
+        
+        <!-- Brandon R, provided files -->
+        <!--apex:stylesheet value="{!$Resource.JobBoard_CSS}" /-->
+        <apex:stylesheet value="{!$Resource.JobBoard_CSSmedestar}" />
+        <!--apex:stylesheet value="{!URLFOR($Resource.JobBoardTemplate, 'css/job-board-cos-styles.css')}" /-->
+        <apex:includeScript value="{!URLFOR($Resource.JobBoardTemplate, 'js/jquery.min.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.JobBoardTemplate, 'js/responsive-nav.min.js')}" />        
+        <br/>
+        
+   <style>
+        #site-navigation-wrap {
+    background: #1461a2;
+    height: 50px;
+}
+div.navbar-style-two {
+    border-top: 1px solid #e4e4e4;
+    position: relative;
+}
+/* Style the tab */
+div.tab {
+    overflow: hidden;
+    /*border: 1px solid #ccc;*/
+    background-color: #ffffff;
+}
+
+/* Style the buttons inside the tab */
+div.site-navigation{
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 50px;
+}
+
+/*----- Menu Outline -----*/
+.menu-wrap {
+width:100%;
+box-shadow:0px 1px 3px rgba(0,0,0,0.2);
+background:#1461a2;
+}
+.menu {
+
+margin:0px auto;
+margin-left: 174px;
+}
+.menu li {
+margin:0px;
+list-style:none;
+font-family:'Ek Mukta';
+border-right: 0.5px solid #e4e4e4;
+border-left: 0.5px solid #e4e4e4;
+
+}
+.menu a {
+transition:all linear 0.15s;
+color:#fff;
+
+}
+.menu li:hover > a, .menu .current-item > a {
+text-decoration:none;
+color:#fff;
+}
+.menu .arrow {
+font-size:11px;
+line-height:0%;
+}
+/*----- Top Level -----*/
+.menu > ul > li {
+float:left;
+display:inline-block;
+position:relative;
+font-size:13px;
+/*border-left: 1px solid #e4e4e4;*/
+}
+.menu > ul > li > a {
+padding:15px 20px;
+display:inline-block;
+text-shadow:0px 1px 0px rgba(0,0,0,0.4);
+}
+.menu > ul > li:hover > a, .menu > ul > .current-item > a {
+background:#1461a2;
+}
+/*----- Bottom Level -----*/
+.menu li:hover .sub-menu {
+z-index:1;
+opacity:1;
+}
+.sub-menu {
+width:160%;
+padding:5px 0px;
+position:absolute;
+top:100%;
+left:0px;
+z-index:-1;
+opacity:0;
+transition:opacity linear 0.15s;
+box-shadow:0px 2px 3px rgba(0,0,0,0.2);
+background:#fff;
+color:#000;
+}
+.sub-menu li {
+display:block;
+font-size:16px;
+color:#000;
+}
+.sub-menu li a {
+padding:10px 30px;
+display:block;
+color:#000;
+}
+.sub-menu li a:hover, .sub-menu .current-item a {
+background:#f7fbfc;
+color:#1461a2;
+}
+
+        </style>
+<script>
+
+$( document ).ready(function() {
+  var nav = responsiveNav("#navWrap",{label: "&nbsp;",customToggle: "customToggle"});
+});
+
+</script>
+<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Ek+Mukta"/>
+<div id="site-header-sticky-wrapper" class="sticky-wrapper" style="height: 194px;">
+ <header id="site-header" class="header-two clr fixed-scroll" role="banner" data-position="relative" data-top="0px">
+    <div id="site-header-inner" class="header-two-inner container clr">
+                
+        <!-- Mobile navigation -->
+        <div id="sidr-close">
+            <a href="#sidr-close" class="toggle-sidr-close"></a>
+        </div>
+        <div id="mobile-menu" class="clr">
+            <a href="#sidr" class="mobile-menu-toggle"><span class="fa fa-bars"></span></a>
+                    </div><!-- #mobile-menu -->
+
+                <div id="site-logo" class="header-two-logo">
+                            <a href="http://thmedexec.com/" title="THMED Executive Search" rel="home"><img src="http://thmedexec.com/wp-content/uploads/2013/12/Executive-Search-Final-e1387222275251.jpg" alt="" /></a>
+                    </div><!-- .header-two-logo -->
+        <aside id="header-aside" class=" header-two-aside clr">
+                            <div class="header-aside-content clr">&nbsp;
+
+    <a href="https://www.facebook.com/thmedexec" rel="attachment wp-att-301"><img class="alignright wp-image-301 size-full" src="http://thmedexec.com/wp-content/uploads/2016/02/1302735763_social_facebook_box_white.png" alt="Facebook" width="32" height="32" /></a><a href="http://twitter.com/thmedexec" rel="attachment wp-att-300"><img class="alignright wp-image-300 size-full" src="http://thmedexec.com/wp-content/uploads/2016/02/1302735750_social_twitter_box_blue.png" alt="Twitter" width="32" height="32" /></a>
+
+    <a href="https://www.linkedin.com/company/thmed-executive-search" rel="attachment wp-att-302"><img class="alignright wp-image-302 size-full" src="http://thmedexec.com/wp-content/uploads/2016/02/1302735772_social_linkedin_box_blue.png" alt="LinkedIn" width="32" height="32" /></a></div>
+                                    
+                                    <div id="header-two-search" class="clr">
+                                    
+                <form method="get" class="header-two-searchform" action="http://thmedexec.com/" role="search">
+                    <input type="search" id="header-two-search-input" name="s" value="search" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;"/>
+                    <input   id="header-two-search-submit" style="border: 1px solid rgba(0,0,0,0.15);"/>
+                    <span class="header-search-icon" ></span>
+                </form>
+            </div><!-- header-search -->
+            
+                    </aside><!-- #header-two-aside -->
+    </div>
+    
+    <!-- #header-two-inner -->
+    
+  <div id="site-navigation-wrap" class="clr navbar-style-two">      
+            <div class="menu-wrap">
+<nav class="menu">
+<ul class="clearfix">
+<li><a href="http://thmedexec.com/about-us/">About Us</a>
+<ul class="sub-menu">
+<li><a href="http://thmedexec.com/about-us/our-team/">Our Team</a></li></ul></li>
+<li><a href="http://thmedexec.com/search-jobs/">Search Jobs</a></li>
+<li><a href="http://thmedexec.com/our-solutions/">Our Solutions</a>
+<ul class="sub-menu">
+    <li><a href="http://thmedexec.com/our-solutions/cxo-recruitment/">CxO Recruitment</a></li>
+    <li><a href="http://thmedexec.com/our-solutions/healthcare-recruitment/">Healthcare Recruitment</a></li>
+    <li><a href="http://thmedexec.com/our-solutions/senior-management-recruitment/">Senior Management Recruitment</a></li>
+    <li><a href="http://thmedexec.com/our-solutions/middle-management-recruitment/">Middle Management Recruitment</a></li>
+    <li><a href="http://thmedexec.com/our-solutions/academic-recruitment/">Academic Recruitment</a></li>
+</ul>
+</li>
+<li><a href="http://thmedexec.com/experience-and-expertise/">Experience and Expertise</a>
+<ul class="sub-menu">
+    <li><a href="http://thmedexec.com/health-care-consumerism/">Health Care Consumerism</a></li>
+</ul>
+</li>
+<li><a href="http://thmedexec.com/our-process/">Our Process</a></li>
+<li><a href="http://thmedexec.com/blog/">Blog</a></li>
+<li><a href="http://thmedexec.com/contact-us/">Contact Us</a></li>
+</ul>
+</nav>
+</div><!-- #site-navigation -->
+    </div>
+<!-- #navbar-two -->
+    </header><!-- #header-two -->           
+  
+  <div id="BodyWrapper" class="row" style="margin-top:1%;padding:0px;">
+        <apex:insert name="body"/>
+    </div>
+        <br/>
+  
+  
+    <div id="footer-bottom" class="footer-one-bottom clr">
+        
+    <footer id="footer" class="site-footer footer-one">
+        <div id="footer-widgets" class="footer-one-widgets container row clr ">
+            <div class="footer-box span_1_of_4 col col-1">
+                            </div><!-- .footer-one-box -->
+            <div class="footer-box span_1_of_4 col col-2">
+                            </div><!-- .footer-one-box -->
+            <div class="footer-box span_1_of_4 col  col-3 ">
+                            </div><!-- .footer-one-box -->
+            <div class="footer-box span_1_of_4 col  col-4">
+                            </div><!-- .footer-box -->
+        </div><!-- #footer-widgets -->
+    </footer><!-- #footer -->   
+            
+    
+    
+    <div id="footer-bottom" class="footer-one-bottom clr">
+        <div id="footer-bottom-inner" class="footer-one-bottom-inner container clr">
+            <div id="copyright" class="clr footer-one-copyright" role="contentinfo">
+                © 2015 THMED | Healthcare Staffing Solutions
+
+<a href="http://thmedexec.com/privacy-policy/">Privacy Policy</a>           </div><!-- #copyright -->
+            <div id="footer-menu" class="footer-one-menu clr">
+                        </div><!-- #footer-menu -->
+        </div><!-- #footer-bottom-inner -->
+    </div><!-- #footer-bottom -->
+
+</div><!-- #wrap -->
+</div>
+</apex:page>

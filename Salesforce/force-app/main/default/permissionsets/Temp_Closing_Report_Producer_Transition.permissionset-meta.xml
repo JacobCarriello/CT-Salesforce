@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>TR1__Closing_Report__c.AM_Change_Effective_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>TR1__Closing_Report__c.Marketer_Change_Effective_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>TR1__Closing_Report__c.New_Account_Manager__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>TR1__Closing_Report__c.New_Marketer__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>TR1__Closing_Report__c.New_Recruiter__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>TR1__Closing_Report__c.Recruiter_Change_Effective_Date__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Temp - Closing Report Producer Transition</label>
+    <recordTypeVisibilities>
+        <recordType>Task.Producer_Transition_Request</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+</PermissionSet>

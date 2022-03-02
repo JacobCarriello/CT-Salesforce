@@ -1,0 +1,13 @@
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false">
+    <apex:iframe src="{!$Site.Prefix}/secur/logout.jsp" height="1" width="1" />
+    <script> 
+        function redirectToLogin()
+        {
+     
+            window.parent.location="{!$Site.Prefix}/Signin";
+        }
+     
+        setTimeout("redirectToLogin()", 1000);
+    </script>
+    <center>Logging out.....</center>
+</apex:page>

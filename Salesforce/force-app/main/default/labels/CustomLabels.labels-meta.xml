@@ -1,0 +1,631 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>Additional_Details</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Additional Details</shortDescription>
+        <value>Additional Details</value>
+    </labels>
+    <labels>
+        <fullName>Assigned_To</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Assigned To</shortDescription>
+        <value>Assigned To</value>
+    </labels>
+    <labels>
+        <fullName>BackUrlInCommunity_ShiftworkPage</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>BackUrlInCommunity(ShiftworkPage)</shortDescription>
+        <value>https://thmedstaffing.force.com</value>
+    </labels>
+    <labels>
+        <fullName>Bi_Weekly</fullName>
+        <categories>Timesheet</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Bi-Weekly</shortDescription>
+        <value>Bi-Weekly</value>
+    </labels>
+    <labels>
+        <fullName>CR_RecordTypes_for_Timesheets</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CR RecordTypes for Timesheets</shortDescription>
+        <value>Medestar Locums; Consulting; Travelers</value>
+    </labels>
+    <labels>
+        <fullName>Call_List</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Call List</shortDescription>
+        <value>Call List</value>
+    </labels>
+    <labels>
+        <fullName>Call_List_Already_Exists</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Call List Already Exists</shortDescription>
+        <value>You have already created the Call List of &lt;&lt;CALL_LIST_TYPE&gt;&gt; type. Please click Update to update the Call List with new Members.</value>
+    </labels>
+    <labels>
+        <fullName>Call_List_Generation_Progress_Batch_Status</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Call List Generation Progress Batch Status</shortDescription>
+        <value>Your request has been queued.</value>
+    </labels>
+    <labels>
+        <fullName>Call_List_Members</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Call List Members</shortDescription>
+        <value>Call List Members</value>
+    </labels>
+    <labels>
+        <fullName>Call_List_has_been_successfully_updated</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Call List has been successfully updated!!</shortDescription>
+        <value>Call List has been successfully updated!!</value>
+    </labels>
+    <labels>
+        <fullName>Candidate_Confirmation_Success</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Candidate Confirmation Success</shortDescription>
+        <value>Confirmation Letter was sent to the Account Manager&apos;s email, please review and forward appropriately.</value>
+    </labels>
+    <labels>
+        <fullName>Candidate_Registration_Duplicate_Mail</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Candidate Registration Duplicate Mail</shortDescription>
+        <value>A Primary Contact already exists with this email address.Please select a new email address, or email the Admin to troubleshoot.</value>
+    </labels>
+    <labels>
+        <fullName>CheckEventDays</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CheckEventDays</shortDescription>
+        <value>60</value>
+    </labels>
+    <labels>
+        <fullName>Client_Confirmation_Success</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Client Confirmation Success</shortDescription>
+        <value>Client Confirmation Letter successfully sent.</value>
+    </labels>
+    <labels>
+        <fullName>Clinic_Caller_Role</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Clinic Caller</shortDescription>
+        <value>Clinic Caller</value>
+    </labels>
+    <labels>
+        <fullName>Comments</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Comments</shortDescription>
+        <value>Comments</value>
+    </labels>
+    <labels>
+        <fullName>Consulting</fullName>
+        <categories>Timesheet</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ConsultingRecType</shortDescription>
+        <value>Medestar Locums</value>
+    </labels>
+    <labels>
+        <fullName>Contact_On_Call_List</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Contact_On_Call_List</shortDescription>
+        <value>Contact_On_Call_List</value>
+    </labels>
+    <labels>
+        <fullName>Contains</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Contains</shortDescription>
+        <value>Contains</value>
+    </labels>
+    <labels>
+        <fullName>CreateTSPage_Ctrl_Constructor_catch_MSG</fullName>
+        <categories>Timesheet</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CreateTSPage_Ctrl_Constructor_catch_MSG</shortDescription>
+        <value>Timesheet Cannot be Created due to the following Reasons:&lt;br/&gt;&lt;ul&gt;&lt;li&gt;Generate Timesheet Option is Unchecked&lt;/li&gt;&lt;li&gt;Assignment Ended is not \&apos;No\&apos;&lt;/li&gt;</value>
+    </labels>
+    <labels>
+        <fullName>CreateTSPage_Ctrl_Constructor_try_MSG</fullName>
+        <categories>Timesheet</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CreateTSPage_Ctrl_Constructor_try_MSG</shortDescription>
+        <value>This Operation will create Time Sheets</value>
+    </labels>
+    <labels>
+        <fullName>CreateTSPage_Ctrl_Exception_1</fullName>
+        <categories>Timesheet</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CreateTSPage_Ctrl_Exception_1</shortDescription>
+        <value>Timesheet for selected weekend date already exists .</value>
+    </labels>
+    <labels>
+        <fullName>CreateTSPage_Ctrl_Exception_2</fullName>
+        <categories>Timesheet</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CreateTSPage_Ctrl_Exception_2</shortDescription>
+        <value>Weekending date that is selected is not between closing report start and end date.Please change the selected date to fall in that range</value>
+    </labels>
+    <labels>
+        <fullName>CreateTSPage_Ctrl_Exception_3</fullName>
+        <categories>Timesheet</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CreateTSPage_Ctrl_Exception_3</shortDescription>
+        <value>Before creating the TimeSheet please insert the Closing report schedule.</value>
+    </labels>
+    <labels>
+        <fullName>CreateTSPage_Ctrl_createts_Status</fullName>
+        <categories>Timesheet</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CreateTSPage_Ctrl_createts_Status</shortDescription>
+        <value>Unsubmitted</value>
+    </labels>
+    <labels>
+        <fullName>CreateTSPage_Note_End</fullName>
+        <categories>Timesheet</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CreateTSPage_Note_End</shortDescription>
+        <value>and Week End Day will be</value>
+    </labels>
+    <labels>
+        <fullName>CreateTSPage_Note_End_Sunday</fullName>
+        <categories>Timesheet</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CreateTSPage_Note_End_Sunday</shortDescription>
+        <value>and Week End Day will be Sunday.</value>
+    </labels>
+    <labels>
+        <fullName>CreateTSPage_Note_Start</fullName>
+        <categories>Timesheet</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CreateTSPage_Note_Start</shortDescription>
+        <value>Note : Week Start for this timesheet will be</value>
+    </labels>
+    <labels>
+        <fullName>DefaultExpenseLineItemRecordType</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>DefaultExpenseLineItemRecordType</shortDescription>
+        <value>Other</value>
+    </labels>
+    <labels>
+        <fullName>Do_Not_Contact</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Do Not Contact</shortDescription>
+        <value>Ruled Out</value>
+    </labels>
+    <labels>
+        <fullName>Does_not_contain</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Does not contain</shortDescription>
+        <value>Does not contain</value>
+    </labels>
+    <labels>
+        <fullName>Due_Date</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Due Date</shortDescription>
+        <value>Due Date</value>
+    </labels>
+    <labels>
+        <fullName>EmailParser_IncorrectNoOfParameters</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>EmailParser IncorrectNoOfParameters</shortDescription>
+        <value>Incorrect set of parameters ,</value>
+    </labels>
+    <labels>
+        <fullName>EmailParser_Job_Id_Empty</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>EmailParser Job Id Empty</shortDescription>
+        <value>Please provide valid job Reference no</value>
+    </labels>
+    <labels>
+        <fullName>Email_Success_Message</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Email_Success_Message</shortDescription>
+        <value>Contact has been Created Successfully. Click the following link:</value>
+    </labels>
+    <labels>
+        <fullName>Equals_to</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Equals to</shortDescription>
+        <value>Equals to</value>
+    </labels>
+    <labels>
+        <fullName>ErrorOnEventCreation</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ErrorOnEventCreation</shortDescription>
+        <value>You can not create new event of type Pass when existing event is not 60 days old.</value>
+    </labels>
+    <labels>
+        <fullName>Exception_in_fetching_describe_result</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Exception in fetching describe result</shortDescription>
+        <value>Exception in fetching describe result  ==</value>
+    </labels>
+    <labels>
+        <fullName>For_Applying</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>For Applying</shortDescription>
+        <value>View</value>
+    </labels>
+    <labels>
+        <fullName>GM_Tracking_Lead</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>GM Tracking Lead</shortDescription>
+        <value>Contract Lead</value>
+    </labels>
+    <labels>
+        <fullName>Greater_or_Equal</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Greater or Equal</shortDescription>
+        <value>Greater or Equal</value>
+    </labels>
+    <labels>
+        <fullName>Greater_then</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Greater then</shortDescription>
+        <value>Greater_then</value>
+    </labels>
+    <labels>
+        <fullName>JobAlreadyApplied</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>JobAlreadyApplied</shortDescription>
+        <value>Application already submitted for this Job</value>
+    </labels>
+    <labels>
+        <fullName>JobBoardThankYouPageUrl</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>JobBoardThankYouPageUrl</shortDescription>
+        <value>http://thmedstaffing.com/</value>
+    </labels>
+    <labels>
+        <fullName>JobBoard_DefaultJobBoardName</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>JobBoard_DefaultJobBoardName</shortDescription>
+        <value>THMED</value>
+    </labels>
+    <labels>
+        <fullName>JobBoard_Default_Account_Id</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>JobBoard_Default_Account_Id</shortDescription>
+        <value>0014100000J4m1Z</value>
+    </labels>
+    <labels>
+        <fullName>JobboardSearchstring</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>JobboardSearchstring</shortDescription>
+        <value>TR1__Job_Title__c</value>
+    </labels>
+    <labels>
+        <fullName>Jobboard_Enable_SubmitWithoutResume</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Jobboard_Enable_SubmitWithoutResume</shortDescription>
+        <value>true</value>
+    </labels>
+    <labels>
+        <fullName>JobsFeeds_JobBaseURL</fullName>
+        <categories>JobsFeeds</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>JobsFeeds_JobBaseURL</shortDescription>
+        <value>http://thmed.force.com/jobboard/jobRegister?Jobboard=THMED&amp;jobId=</value>
+    </labels>
+    <labels>
+        <fullName>JobsFeeds_JobDomainURL</fullName>
+        <categories>JobsFeeds</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>JobsFeeds_JobDomainURL</shortDescription>
+        <value>http://thmed.force.com/jobboard/</value>
+    </labels>
+    <labels>
+        <fullName>JobsFeeds_Publisher</fullName>
+        <categories>JobsFeeds</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>JobsFeeds_Publisher</shortDescription>
+        <value>Talent Rover</value>
+    </labels>
+    <labels>
+        <fullName>JobsFeeds_PublisherURL</fullName>
+        <categories>JobsFeeds</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>JobsFeeds_PublisherURL</shortDescription>
+        <value>http://www.softwarespecialists.com/</value>
+    </labels>
+    <labels>
+        <fullName>Less_or_Equal</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Less or Equal</shortDescription>
+        <value>Less or Equal</value>
+    </labels>
+    <labels>
+        <fullName>Less_then</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Less then</shortDescription>
+        <value>Less then</value>
+    </labels>
+    <labels>
+        <fullName>LogicMelon_API_Key</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>LogicMelon API Key</shortDescription>
+        <value>AB6D1166-2E3C-42BB-B650-471F40D82985</value>
+    </labels>
+    <labels>
+        <fullName>LogicMelon_EndpointURL</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>LogicMelon_EndpointURL</shortDescription>
+        <value>http://www.logicmelon.com/Entry/AdCourierAPIXML/TalentRover</value>
+    </labels>
+    <labels>
+        <fullName>LogicMelon_Password</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>LogicMelon_Password</shortDescription>
+        <value>THMEDrov3r</value>
+    </labels>
+    <labels>
+        <fullName>Marketer_Role</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Marketer Role</shortDescription>
+        <value>Marketer</value>
+    </labels>
+    <labels>
+        <fullName>Medestar</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Medestar</shortDescription>
+        <value>Medestar</value>
+    </labels>
+    <labels>
+        <fullName>Monthly</fullName>
+        <categories>Timesheet</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Monthly</shortDescription>
+        <value>Monthly</value>
+    </labels>
+    <labels>
+        <fullName>No_File_Attached</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>No_File_Attached</shortDescription>
+        <value>Please select file to create/update resume.</value>
+    </labels>
+    <labels>
+        <fullName>No_Matching_Contact_Found</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>No Matching Contact Found</shortDescription>
+        <value>There was no matching Contact for defined Query. Please Modify the Call List config Custom metadata to modify the Query.</value>
+    </labels>
+    <labels>
+        <fullName>NotEqual_to</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Not Equal to</shortDescription>
+        <value>Not Equal to</value>
+    </labels>
+    <labels>
+        <fullName>Not_Equal_to</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Not Equal to</shortDescription>
+        <value>Not Equal to</value>
+    </labels>
+    <labels>
+        <fullName>Query_is_not_available</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Query is not available!!</shortDescription>
+        <value>Query is not available!!</value>
+    </labels>
+    <labels>
+        <fullName>RC_Default_Portal_User_OwnerId</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>RC_Default_Portal_User_OwnerId</shortDescription>
+        <value>00541000000ophnAAA</value>
+    </labels>
+    <labels>
+        <fullName>RC_TimesheetApproveReject_Insufficient_Params</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>This custom settings is used to display insufficient parameter message</shortDescription>
+        <value>Insufficient parameters in URL</value>
+    </labels>
+    <labels>
+        <fullName>Recruiter_Role</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Recruiter Role</shortDescription>
+        <value>Recruiter</value>
+    </labels>
+    <labels>
+        <fullName>Semi_Monthly</fullName>
+        <categories>Timesheet</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Semi-Monthly</shortDescription>
+        <value>Semi-Monthly</value>
+    </labels>
+    <labels>
+        <fullName>Split_Percentage_Total</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Split Percentage Total</shortDescription>
+        <value>Percentage total should be exact 100.</value>
+    </labels>
+    <labels>
+        <fullName>Split_information_success</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Split information success</shortDescription>
+        <value>Splits information successfully created !!</value>
+    </labels>
+    <labels>
+        <fullName>Subject</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Subject</shortDescription>
+        <value>Subject</value>
+    </labels>
+    <labels>
+        <fullName>T00_00_00Z</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>T00:00:00Z</shortDescription>
+        <value>T00:00:00Z</value>
+    </labels>
+    <labels>
+        <fullName>Unknown_Error</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Unknown_Error</shortDescription>
+        <value>Unknown_Error</value>
+    </labels>
+    <labels>
+        <fullName>Update_functionality_does_not_support_this_Call_List_Type</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Update functionality does not support this Call List Type.</shortDescription>
+        <value>Update functionality does not support this Call List Type.</value>
+    </labels>
+    <labels>
+        <fullName>User_already_selected</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>User already selected</shortDescription>
+        <value>User already exists in the list.</value>
+    </labels>
+    <labels>
+        <fullName>View_More</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>View More</shortDescription>
+        <value>View More</value>
+    </labels>
+    <labels>
+        <fullName>Weekly</fullName>
+        <categories>Timesheet</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Weekly</shortDescription>
+        <value>Weekly</value>
+    </labels>
+    <labels>
+        <fullName>Work_Call_List</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Work Call List</shortDescription>
+        <value>Work Call List</value>
+    </labels>
+    <labels>
+        <fullName>You_do_not_have_proper_rights_to_Access_this_functionality</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>You do not have proper rights to Access this functionality.</shortDescription>
+        <value>You do not have proper rights to Access this functionality.</value>
+    </labels>
+    <labels>
+        <fullName>You_have_not_created_any</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>You have not created any</shortDescription>
+        <value>You have not created any</value>
+    </labels>
+    <labels>
+        <fullName>condition_in_the_query_is_improper_for</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>condition in the query is improper for</shortDescription>
+        <value>condition in the query is improper for</value>
+    </labels>
+    <labels>
+        <fullName>createtspage_please_select_weekending</fullName>
+        <categories>Timesheet</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>createtspage_please_select_weekending</shortDescription>
+        <value>Please select the weekending date for the timesheet to be created:</value>
+    </labels>
+    <labels>
+        <fullName>excludes</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>excludes</shortDescription>
+        <value>excludes</value>
+    </labels>
+    <labels>
+        <fullName>for_this_Job_Do_you_want_to_Generate_one</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>for this Job. Do you want to Generate one?</shortDescription>
+        <value>for this Job. Do you want to Generate one?</value>
+    </labels>
+    <labels>
+        <fullName>includes</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>includes</shortDescription>
+        <value>includes</value>
+    </labels>
+    <labels>
+        <fullName>upload_resume_to_apply_for_job</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>upload resume to apply for job</shortDescription>
+        <value>To apply on jobs, you need to upload a resume</value>
+    </labels>
+</CustomLabels>

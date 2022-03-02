@@ -1,0 +1,240 @@
+<apex:page controller="RC_MyQualificationDetail" showHeader="false" standardStylesheets="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false" action="{!redirectUnAuthenticatedUser}" >
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+       <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1"/>
+            <apex:stylesheet value="{!URLFOR($Resource.SLDS092, 'assets/styles/salesforce-lightning-design-system-vf.css')}" /> 
+            <apex:includeScript value="{!URLFOR($Resource.TB_JS, '/jQuery-1.11.3.min.js')}" />
+            <apex:includeScript value="{!URLFOR($Resource.TB_JS, '/jquery-ui-1.11.3.js')}" />
+            <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
+           <!-- <apex:includeScript value="{!URLFOR($Resource.TimePickerMaster, '/jquery.min.js')}" /> -->
+            <apex:includeScript value="{!URLFOR($Resource.TimePickerMaster, '/js/timepicki.js')}" />
+            <apex:stylesheet value="{!URLFOR($Resource.TimePickerMaster, '/css/timepicki.css')}" />
+            
+            <style>
+                .errorMsg{
+                    color:red;
+                }
+               
+                 #outPopUp{
+                     position:absolute; 
+                     z-index:9999999;
+                     top:50%;
+                     left:47%;
+                }
+            
+                .clsPopover
+                {
+                    z-index: 99 !important;
+                    position: absolute !important;
+                    white-space: normal;
+                }
+                
+                 .slds-table--bordered{
+                    border-left: 1px solid #d8dde6;
+                    border-right: 1px solid #d8dde6; 
+                }
+                
+                .slds-card{
+                    margin-left: 24px;
+                    margin-right: 24px;
+                }
+                
+                .timepicker_wrap{
+                    padding: 4px;
+                }
+                
+                .timepicki-input{
+                    width: 100%;
+                }
+                
+                .time, .mins, .meridian{
+                    width: 40px;
+                    float: left;
+                    margin: 0 10px;
+                    font-size: 16px;
+                    color: #2d2e2e;
+                    font-family: arial;
+                    font-weight: 700;
+                }
+                
+                .timepicki-input{
+                    width: 80% !important;
+                    height: 30px;
+                }
+                
+                .prev,
+                .next {
+                    cursor: pointer;
+                    padding: 15px;
+                    /* width: 2%; */
+                     border: none;
+                    margin: auto;
+                    border-radius: 0px;
+                }
+               
+            </style>
+            
+             <script>
+               
+                $(function() {
+                    $( ".clsdateTime" ).datepicker({dateFormat: "{!strDateFormat}"});
+                    $( ".clsdate" ).datepicker({dateFormat: "{!strDateFormat}"});
+                    
+                    
+                    $(".clsdateTime").change(function(){
+                      var className = $(this).attr('class').split(" ");
+                      var date = new Date();
+                      
+                      var hours = date.getHours();
+                      var minutes = date.getMinutes();
+						var ampm = '';
+                      if(!'{!isAmPmTime}'){
+                          console.log('{!isAmPmTime}');
+                        ampm = hours >= 12 ? 'PM' : 'AM';
+                        hours = hours % 12;
+                        hours = hours ? hours : 12; // the hour '0' should be '12'
+                      }
+                      minutes = minutes < 10 ? '0'+minutes : minutes;
+                      var strTime = hours + ':' + minutes + ' ' + ampm;
+  
+                        
+                        
+                        var DatTim = $(this).val()+' '+strTime;
+                         $(this).val(DatTim);
+                        //document.getElementsByClassName('clsdateTime')[0].value = DatTim; 
+                
+                     });
+                    
+                });
+            </script>
+            
+       </head>
+    
+    <apex:composition template="RC_CommunityTemplate">
+        <apex:define name="body">
+            <style>
+             #outPopUp{
+                 position:absolute;
+                 z-index:15;
+                 top:50%;
+                 left:50%;
+                 margin:-100px 0 0 -150px;
+            }
+            .leaveAfter{
+                width: 23%;
+            }
+            .slds .slds-badge{
+                text-transform: none;
+                font-size: 11px;
+            }
+            </style> 
+            
+            <div style="height:60px;">&nbsp;</div>
+            <div class="slds-all-elements">
+                <div id="content" class="slds-snap-content" style="z-index:100">
+                    <div class="slds-content" style="min-height:500px">
+                        <apex:form styleClass="slds">
+                            <apex:outputPanel rendered="{!!isPageLoad}">
+                                <div class="slds-notify slds-notify--alert slds-theme--error" role="alert" id="messageEmployeerBanner">
+                                     <div class="notify__content slds-grid">                         
+                                         <apex:outputPanel styleClass="slds-col slds-align-middle">
+                                             <h2 class="slds-text-heading--small msgStyle">  
+                                                  <span><apex:messages /></span>     
+                                             </h2>
+                                         </apex:outputPanel> 
+                                     </div>
+                                 </div>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!isPageLoad}">
+                                 <div class="slds-page-header" role="banner">
+                                    <div class="slds-grid slds-wrap slds-grid--align-spread">
+                                        <div class="slds-col slds-size--1-of-1 slds-small-size--1-of-1 slds-medium-size--4-of-6 slds-large-size--10-of-12">
+                                            <div class="slds-media">
+                                                <div class="slds-media__figure">
+                                                    <span class="slds-avatar slds-avatar--medium">
+                                                        <img src="{!URLFOR($Resource.SLDS092, '/assets/icons/standard/report_60.png')}" style="background-color: #8291C3;" />
+                                                    </span>
+                                                </div> 
+                                            
+                                                <div class="slds-media__body">
+                                                    <p class="slds-text-heading--label">{!$User.FirstName} {!$User.LastName}</p>
+                                                    <h1 class="slds-text-heading--medium slds-m-right--small slds-truncate slds-align-middle" title="Expense Reports">My Qualifications</h1>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="slds-col slds-no-flex slds-align-bottom">
+                                          <div class="slds-button-group" role="group">
+                                            <a href="{!$site.prefix}/MyQualificationsList" class="slds-button slds-button--neutral">Cancel</a>
+                                            <apex:commandLink action="{!saveQualifaction}" styleClass="slds-button slds-button--brand" reRender="idForm">Save &amp; Next</apex:commandLink>            
+                                          </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="slds-grid slds-wrap slds-grid--align-spread slds-page-header__detail-row">
+                                        <apex:repeat value="{!$ObjectType.Contact.Fieldsets.RC_My_Profile_Header}" var="fieldval"> 
+                                            <div class="slds-col--padded slds-size--2-of-6 slds-medium-size--2-of-6 slds-large-size--1-of-6">
+                                              <dl>
+                                                <dt>
+                                                  <p class="slds-text-heading--label slds-truncate" title="{!fieldval.label}">{!fieldval.label}</p>
+                                                </dt>
+                                                <dd>
+                                                  <p class="slds-text-body--regular slds-truncate" title="{!objCont[fieldval]}"><apex:outputField value="{!objCont[fieldval]}"/></p> 
+                                                </dd>
+                                              </dl>
+                                            </div>
+                                        </apex:repeat>
+                                     </div> 
+                                </div>
+                                <!-- Start main page -->
+                                
+                                <div class="slds-grid  slds-wrap slds-grid--align-spread slds-m-top--medium">
+                                    
+                                     <div class="slds-col slds-col--padded-large slds-size--1-of-1 slds-section-title">
+                                        <p>{!objAssociatedQualification.TR1__Qualification__r.Name}</p>
+                                     </div> 
+                                     
+                                     <br/><br/>
+                                    
+                                    <apex:variable var="varDateTime" value="{!0}" />
+                                    <apex:variable var="varDate" value="{!0}" />
+                                    <apex:repeat value="{!$ObjectType.TR1__Associated_Qualification__c.fieldsets[strFieldSetName]}" var="field">
+                                        <div class="slds-col slds-col--padded-large slds-size--1-of-1 slds-medium-size--3-of-6 slds-large-size--6-of-12">
+                                            
+                                            <label class="slds-form-element__static slds-m-top--medium" style="font-weight: bolder;" for="input{!field}">
+                                                {!field.label}
+                                            </label>
+                                            <apex:inputField styleClass="slds-input" value="{!objAssociatedQualification[field]}" rendered="{!AND(field.Type != 'date', field.Type != 'datetime')}"/> 
+                                                    
+                                            <apex:outputPanel rendered="{!field.Type == 'datetime'}" layout="block">
+                                                <apex:inputField styleClass="slds-input clsdateTime clsFieldDT{!varDateTime}" value="{!objAssociatedQualification[field]}" showDatePicker="false"/>                                         
+                                                <apex:variable var="varDateTime" value="{!varDateTime+1}"/>
+                                            </apex:outputPanel>
+                                            
+                                             <apex:outputPanel rendered="{!field.Type == 'date'}" layout="none">
+                                                <apex:inputField styleClass="slds-input clsdate clsDynamicD{!varDate}" value="{!objAssociatedQualification[field]}" showDatePicker="false" />
+                                            <apex:variable var="varDate" value="{!varDate+1}"/>
+                                            </apex:outputPanel>
+                                        </div> 
+                                    </apex:repeat> 
+                                </div>
+                                <!-- End main page -->
+                            </apex:outputPanel>
+                        </apex:form>
+                    </div>  
+                    <br/><br/>
+                    <!-- Page Footer-->
+                    <span class="nonslds">
+                        <div class="footer">
+                            <div class="footer-socials half-bottom">
+                                <a href="#" class="footer-share show-share-bottom"><i class="fa fa-share-alt"></i></a>
+                                <a href="#" class="footer-up"><i class="fa fa-angle-up"></i></a>
+                            </div>
+                            <p class="center-text">&copy; 2015 Talent Rover. All rights reserved.</p>
+                        </div>   
+                    </span>   
+                </div>
+            </div>
+        </apex:define> 
+    </apex:composition>
+    </html>    
+</apex:page>

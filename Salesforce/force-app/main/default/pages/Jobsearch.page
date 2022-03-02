@@ -1,0 +1,299 @@
+<apex:page controller="JobSearchController" showHeader="false" 
+   standardStyleSheets="false"  >
+   <apex:composition template="{!pageTemplate}">
+      <apex:define name="body" >
+                                          
+         <div id="overlay"></div>
+         <p>
+         <div id="loadingtime"></div>
+         </p>
+         <TR1:Overlay style="processing" />
+         <apex:actionStatus id="overlayStatus" onStart="showOverlay();" onstop="hideOverlay();"></apex:actionstatus>
+         <apex:outputpanel id="jobBoardTag" rendered="{!!showdescp}" >
+            <div class="atsMaster" >
+               <!--  <apex:outputPanel rendered="{!HasFatalMessages}" layout="none">
+                  <div id="atsErrorPageBox">
+                      <apex:messages styleClass="atsErrorPageMessage" layout="table"/>
+                  </div>
+                  </apex:outputPanel> -->
+               <apex:outputPanel id="searchjobPanel" >
+                  <apex:outputPanel id="errormessage" layout="block" >
+                     <!--   <p><apex:outputText styleClass="atsRedAlert" style="color:red;" 
+                        value="{!$Label.ApplicationsIncomplete}" rendered="{!HasIncompleteStatus}" /></p> -->
+                  </apex:outputPanel>
+                  <apex:outputPanel id="searchkeyPanel" layout="block">
+                     <div id="atsSearchTitle" >Search Openings</div>
+                     <apex:outputPanel id="searchtable" layout="none"  >
+                        <apex:form styleclass="atsForm">
+                           <table class="atsSearchTable table" border="0" cellspacing="0" >
+                              <tr>
+                                 <td class="atsSearchTdLeft" valign="bottom" style="height:25px" >
+                                    <apex:outputlabel for="keywordtxt" >
+                                       Keyword
+                                    </apex:outputlabel>
+                                 </td>
+                                 <td   class="atsSearchTdRight" valign="top">
+                                    <apex:inputtext id="keywordtxt" 
+                                       value="{!jobKeyword}" />
+                                 </td>
+                                 
+                                 <td class="atsSearchTdLeft" valign="bottom" style="height:25px" >
+                                    <apex:outputlabel for="functionpick" >
+                                       Function
+                                    </apex:outputlabel>
+                                 </td>
+                                 <td   class="atsSearchTdRight" valign="top">
+                                    <apex:inputField id="functionpick"
+                                       value="{!jobTemp.TR1__Division__c}" >
+                                    </apex:inputField>
+                                 </td>
+                              </tr>
+                              <tr>
+                                 <td class="atsSearchTdLeft" valign="bottom" style="height:25px;width: 14%;" >
+                                    <apex:outputlabel for="statara" >
+                                       Primary Specialty
+                                    </apex:outputlabel>
+                                 </td>
+                                  <td   class="atsSearchTdRight" valign="top">
+                                    <apex:inputField id="prmrybackpick"
+                                       value="{!jobTemp.TR1__Primary_Background__c}" >
+                                    </apex:inputField>
+                                    <!-- <apex:selectlist id="prmrybackpick" size="1"
+                                       value="{!jobTemp.TR1__Primary_Background__c}" >
+                                           <apex:selectoptions value="{!PrimaryBackgroundList}" />
+                                       </apex:selectlist>-->
+                                 </td>
+                                 <td class="atsSearchTdLeft" valign="bottom" style="height:25px;width: 16%;" >
+                                    <apex:outputlabel for="secbackpick" >
+                                       Secondary Specialty
+                                    </apex:outputlabel>
+                                 </td>
+                                 <td   class="atsSearchTdRight" valign="top">
+                                    <apex:inputField id="secbackpick"
+                                       value="{!jobTemp.TR1__Secondary_Background__c}" >
+                                    </apex:inputField>
+                                    <!--    <apex:selectlist id="secbackpick" size="1"
+                                       value="{!jobTemp.TR1__Secondary_Background__c}" >
+                                           <apex:selectoptions value="{!secBackgroundList}" />
+                                       </apex:selectlist>
+                                       -->
+                                 </td>
+                              </tr>
+                              
+                              <tr>
+                                 <!--                                <td class="atsSearchTdLeft" valign="bottom" style="height:25px" >
+                                    <apex:outputlabel for="prmrybackpick" >
+                                    Primary Background</apex:outputlabel> </td>
+                                    <td   class="atsSearchTdRight" valign="top">
+                                      <apex:selectlist id="prmrybackpick" size="1"
+                                      value="{!jobTemp.TR1__Primary_Background__c}" >
+                                          <apex:selectoptions value="{!PrimaryBackgroundList}" />
+                                      </apex:selectlist>
+                                    </td>-->
+                              </tr>
+                              <tr>
+                                 <!--<td class="atsSearchTdLeft" valign="bottom" style="height:25px" >
+                                    <apex:outputlabel for="secbackpick" >
+                                    Secondary Background</apex:outputlabel> </td>
+                                    <td   class="atsSearchTdRight" valign="top">
+                                       <apex:selectlist id="secbackpick" size="1"
+                                      value="{!jobTemp.TR1__Secondary_Background__c}" >
+                                          <apex:selectoptions value="{!secBackgroundList}" />
+                                      </apex:selectlist>
+                                     
+                                    </td>-->
+                              </tr>
+                              <tr>
+                               <!--  <td class="atsSearchTdLeft" colspan="20" valign="bottom" style="height:25px" >
+                                 </td> -->
+                                 <td   class="atsSearchTdRight" colspan="4" valign="top">
+                                    <apex:commandButton styleClass="btn btn-default atsButton" id="srchbutton"
+                                       value="Search" rerender="srchresult,srchtableform" action="{!jobsearch}" status="overlayStatus"   />
+                                 </td>
+                              </tr>
+                           </table>
+                        </apex:form>
+                     </apex:outputPanel>
+                  </apex:outputPanel>
+               </apex:outputPanel>
+            </div>
+         </apex:outputpanel>
+         <apex:outputPanel id="srchresult" layout="block" rendered="{!!showdescp}" >
+            <div id="atsSearchResultsTitle" ></div>
+            <apex:outputPanel id="atsNoResultsMessage" rendered="{!noOfRecords = 0}" layout="block">
+            We could not find jobs matching your search criteria.</apex:outputPanel>
+         <!--   <apex:outputPanel id="atsSearchResultsText" rendered="{!noOfRecords > 0}"  layout="block">
+            {!noOfrecords}</apex:outputPanel> -->
+            </apex:outputPanel>
+         <br/>
+         <br/>
+         <apex:form id="srchtableform" rendered="{!!showdescp}">
+            <apex:datatable value="{!jobs}" var="job" id="srchtable" cellspacing="2"
+               cellpadding="2"
+               headerClass="rich-table-thead" rendered="{!noOfrecords > 0}"
+               styleclass="atsSearchResultTable table table-striped" >
+               <!--apex:column headervalue="Open Date" styleclass="atsSearchResultsData " >
+                  <apex:outputText value="{0,date,MM/dd/yyyy}">
+                     <apex:param value="{!job.TR1__Open_Date__c}" />
+                  </apex:outputText>
+               </apex:column-->
+              
+               <apex:column headerclass="atsSearchResultsHead " 
+                  headervalue="Job Title"           
+                  styleclass="atsSearchResultsData " >
+                  <a href="/{!$site.name}/Jobsearch?Jobboard={!jobBoardName}&JobId={!job.Id}" style="text-decoration:underline;">{!job.TR1__External_Job_Title__c}</a>
+               </apex:column>
+               <apex:column headervalue="State Area" 
+                  styleclass="atsSearchResultsData" >
+                  {!job.tr1__state_Area__c}
+               </apex:column>
+               <!--apex:column headervalue="Regional Area" 
+                  styleclass="atsSearchResultsData " >
+                  {!job.tr1__regional_area__c}
+               </apex:column-->
+               <apex:column headervalue="Primary Specialty" styleclass="atsSearchResultsData " >
+                  {!job.tr1__primary_background__c}
+               </apex:column>
+               <apex:column headervalue="Secondary Specialty" styleclass="atsSearchResultsData " >
+                  {!job.TR1__Secondary_Background__c}
+               </apex:column>
+            </apex:datatable>
+           
+            <apex:outputpanel rendered="{!noofrecords > 0}" 
+               id="keyboolid" styleclass="ats_pagination_block" 
+               layout="block" >
+               <apex:commandLink status="overlayStatus" 
+                  reRender="srchtableform" action="{!firstjobs}" 
+                  rendered="{!hasPrevious}" >
+                  &lt;&lt;First
+               </apex:commandlink>
+               <apex:outputpanel styleclass="ats_pagination_item_inactive" 
+                  rendered="{!!hasPrevious}" >
+                  &lt;&lt;First
+               </apex:outputpanel>
+               &nbsp;|&nbsp;
+               <apex:commandLink status="overlayStatus" 
+                  reRender="srchtableform" action="{!previousjobs}" 
+                  rendered="{!hasPrevious}">
+                  &lt;Previous
+               </apex:commandlink>
+               <apex:outputpanel styleclass="ats_pagination_item_inactive" 
+                  rendered="{!!hasPrevious}" >
+                  &lt;Previous
+               </apex:outputpanel>
+               &nbsp;|&nbsp;
+               <apex:commandLink status="overlayStatus" 
+                  reRender="srchtableform" action="{!nextjobs}" 
+                  rendered="{!hasNext}">Next&gt;</apex:commandlink>
+               <apex:outputpanel styleclass="ats_pagination_item_inactive" 
+                  rendered="{!!hasnext}" >
+                  Next&gt;
+               </apex:outputpanel>
+               &nbsp;|&nbsp;
+               <apex:commandLink rendered="{!hasnext}" status="overlayStatus"
+                  reRender="srchtableform" action="{!lastjobs}" >
+                  Last&gt;&gt;
+               </apex:commandlink>
+               <apex:outputpanel styleclass="ats_pagination_item_inactive" 
+                  rendered="{!!hasnext}" >
+                  Last&gt;&gt;
+               </apex:outputpanel>
+            </apex:outputpanel>
+         </apex:form>
+         <apex:form rendered="{!showdescp}" >
+            <apex:outputpanel id="jobdescp" >
+               <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                  <tbody>
+                  
+                     <tr>
+                        <td><span id="jobDetailsPage:j_id0:j_id4"></span>
+                        <div class="atsJobDetailsAlreadyLogin">
+                     <p>
+                        <input type="button"  class= "btn btn-default continue" title="Apply" value="Apply" onclick="window.top.location = '{!$Site.CurrentSiteUrl}jobRegister?jobId={!seljob.Id}&Jobboard={!URLEncode(jobboardName)}';" />
+                     </p>
+              </div>
+                        </td>
+                        <td align="right" style="text-align:right !important;padding-right: 10px;">
+                           <a href="/{!$site.name}/Jobsearch?Jobboard={!jobBoardName}" class="btn btn-default continue" >Return To Job Search</a>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+               <br></br>
+               <apex:outputpanel rendered="{!!jobavail}" >
+                  <span id="jobnotavail">
+                  This position is no longer accepting applications
+                  </span>  
+               </apex:outputpanel>
+               <apex:outputpanel rendered="{!jobavail}" >
+                  <table class="atsJobDetailsTable table table-bordered" cellspacing="0">
+                     <tbody>
+                        <tr>
+                           <td class="atsJobDetailsTdLeft">
+                              <label for="jobName">
+                              Job Title:</label>
+                           </td>
+                           <td class="atsJobDetailsTdRight">
+                              <span id="jobName">
+                              {!seljob.TR1__External_Job_Title__c}
+                              </span>
+                           </td>
+                        </tr>
+                        
+                        <tr>
+                           <td class="atsJobDetailsTdLeft" valign="top">
+                              <label for="prmbackdescp">Primary Specialty</label>
+                           </td>
+                           <td class="atsJobDetailsTdRight" valign="top"><span id="fdescription">
+                              {!seljob.tr1__Primary_background__c}</span>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td class="atsJobDetailsTdLeft" valign="top">
+                              <label for="secbackdescp">Secondary Specialty</label>
+                           </td>
+                           <td class="atsJobDetailsTdRight" valign="top"><span id="secbackdescp">
+                              {!seljob.tr1__Secondary_background__c}</span>
+                           </td>
+                        </tr>
+                        
+                    <!--    <tr>
+                           <td colspan="2"><span id="j_id81" 
+                              style="display: none;"></span></td>
+                        </tr> -->
+                        <tr>
+                           <td class="atsJobDetailsTdTwoColumn" colspan="2">
+                              <p>
+                                 <apex:outputPanel rendered="{!seljob.tr1__Client_description__c != null}">
+                                    <apex:outputtext escape="false" value="{!seljob.tr1__Client_description__c}" />
+                                    <br/>
+                               </apex:outputPanel>
+                              <!--    <apex:outputPanel rendered="{!seljob.TR1__Responsibilities__c != null}">
+                                    <apex:outputtext escape="false" value="{!seljob.TR1__Responsibilities__c}" />
+                                    <br/>
+                                 </apex:outputPanel>
+                                 <apex:outputPanel rendered="{!seljob.tr1__Experience_Requirements__c != null}">
+                                    <apex:outputtext escape="false" value="{!seljob.tr1__Experience_Requirements__c}" />
+                                    <br/>
+                                 </apex:outputPanel>
+                                 <apex:outputPanel rendered="{!seljob.tr1__Education_Requirements__c != null}">
+                                    <apex:outputtext escape="false" value="{!seljob.tr1__Education_Requirements__c}" />
+                                 </apex:outputPanel> -->
+                              </p>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+                  <div class="atsJobDetailsAlreadyLogin">
+                     <p>
+                        <input type="button"  class= "btn btn-default continue" title="Apply" value="Apply" onclick="window.top.location = '{!$Site.CurrentSiteUrl}jobRegister?jobId={!seljob.Id}&Jobboard={!URLEncode(jobboardName)}';" />
+                     </p>
+              </div>
+                  
+                
+               </apex:outputpanel>
+            </apex:outputpanel>
+         </apex:form>
+      </apex:define>
+   </apex:composition>
+</apex:page>

@@ -1,0 +1,323 @@
+<apex:page controller="RC_CandidateRegistration" showHeader="false" standardStylesheets="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false">
+    
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <head>
+            <c:RC_JSnCSS />
+            <apex:stylesheet value="{!URLFOR($Resource.SLDS092, '/assets/styles/salesforce-lightning-design-system-vf.css')}" />
+            <apex:includeScript value="{!URLFOR($Resource.TB_JS, '/jQuery-1.11.3.min.js')}" />
+            <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
+            <apex:includeScript value="{!URLFOR($Resource.TB_JS, '/jquery-ui-1.11.3.js')}" />
+            <style>
+                #outPopUp{
+                 position:absolute;
+                 z-index:9999999;
+                 top:47%;
+                 left:47%;
+                }
+                .outputText{
+                    border: 1px solid rgba(129, 129, 129, 0.19);
+                    padding: 5px 5px 5px 10px;
+                }
+                
+                .multiSelectPicklistTable td{
+                    width:45%;
+                }
+                
+                .multiSelectPicklistCell{
+                    width:10% !important;
+                    padding:3% !important;
+                }
+                
+                .multiSelectPicklistTable .slds-input{
+                    width: 100% !important;
+                }
+                
+                .multiSelectPicklistCell img{
+                    border-left: 0px !important;
+                }
+                .sfdc_richtext ol,.sfdc_richtext ul{
+                    list-style: inherit;
+                    margin: inherit;
+                    padding: inherit;
+                } 
+                textarea {
+                    resize:none;
+                }
+                .requiredCheck{
+                    border-left:3px solid red !important;
+                }
+                
+                .errorMsg{
+                    color:red;
+                }
+                
+            </style>
+        </head>
+        
+        <body>
+            <div class = "slds">
+                
+                <apex:form >
+                    
+                    <div id="outPopUp" style="display:none;"> 
+                        <div class="slds-spinner--medium" >
+                            <img src="{!URLFOR($Resource.SLDS092, 'assets/images/spinners/slds_spinner_inverse.gif')}">  
+                                <span class="slds-m-right--medium" style="color: #081BDE; font-weight:bolder;">Loading...</span>
+                            </img>
+                        </div>
+                    </div> 
+                    <div class="slds-modal-backdrop slds-modal-backdrop--close"  id="idBackDrop"></div>
+                               
+                    
+                    <!--Section to display any type of errors, exception, notification msgs-->  
+                    <apex:outputPanel id="errors">
+                        <apex:outputPanel rendered="{!userPassword}"> 
+                            <div id = "exceptionMsg" class="slds-notify slds-notify--alert slds-theme--{!if(contactOnly, 'success','error' )} slds-theme--alert-texture" role="alert">
+        						<button class="slds-button slds-notify__close">
+        							<svg aria-hidden="true" class="slds-button__icon slds-button__icon--inverse">
+        								<use xlink:href="{!URLFOR($Resource.SLDS092, '/assets/icons/action-sprite/svg/symbols.svg#close')}"></use>
+        							</svg>
+        							<span class="slds-assistive-text">Close</span>
+        						</button>
+        						<div class="notify__content slds-grid">
+        							<div id = "msgId" class="slds-col slds-align-middle">
+        								<h2  class="slds-text-heading--small "> 
+        									<apex:messages />    
+        								</h2>
+        							</div>
+        						</div> 
+        					</div>
+        				</apex:outputPanel>
+        				
+        				<apex:outputPanel rendered="{!strMessage != ''}"> 
+                            <div class="slds-notify slds-notify--alert slds-theme--error slds-theme--alert-texture" role="alert">
+        						<button class="slds-button slds-notify__close">
+        							<svg aria-hidden="true" class="slds-button__icon slds-button__icon--inverse">
+        								<use xlink:href="{!URLFOR($Resource.SLDS092, '/assets/icons/action-sprite/svg/symbols.svg#close')}"></use>
+        							</svg>
+        							<span class="slds-assistive-text">Close</span>
+        						</button>
+        						<div class="notify__content slds-grid">
+        							<div id = "msgId" class="slds-col slds-align-middle">
+        								<h2 class="slds-text-heading--small "> 
+        									{!strMessage}
+        								</h2>
+        							</div>
+        						</div> 
+        					</div>
+        				</apex:outputPanel>
+    					
+    					<script>
+    					    if($('#msgId').children().length <= 1)
+    					        $('#exceptionMsg').remove();
+					        
+    					</script>
+                    </apex:outputPanel>
+                    
+                	<!--For Already user Exist-->
+					<div id = "alreadyUser" class="slds-notify slds-notify--inverse slds-theme--error slds-theme--alert-texture slds-hide" role="alert">
+						<button class="slds-button slds-notify__close">
+							<svg aria-hidden="true" class="slds-button__icon slds-button__icon--inverse">
+								<use xlink:href="{!URLFOR($Resource.SLDS092, '/assets/icons/action-sprite/svg/symbols.svg#close')}"></use>
+							</svg>
+							<span class="slds-assistive-text">Close</span>
+						</button>
+						<div class="notify__content slds-grid">
+							<div id = "msgId" class="slds-col slds-align-middle">
+								<h2  class="slds-text-heading--small "> 
+									You are already a registered user, Please login through <a href="{!$Site.Prefix}/SignIn">SignIn</a> page.
+								</h2>
+							</div>
+						</div> 
+					</div>
+                     
+                    
+                    <apex:outputPanel id="dummy"/>
+                    <apex:actionFunction name="register" action="{!registerCandidateUser}"  onComplete="closeLoading();" rerender="errors, wholeForm, scriptReRun" /> 
+                    
+                    <apex:actionFunction name="createUser" action="{!resumeSkip}" rerender="scriptReRun, errors, wholeForm" onComplete="closeLoading();" />
+                    
+                    <apex:actionFunction name="contactCreated" action="{!getContact}" rerender="scriptReRun,wholeForm" onComplete="closeLoading();">
+                        <apex:param name="cId" value="" />
+                    </apex:actionFunction>
+                    
+                    <!-- Form section starts here -->
+                    <div class="slds-container--center slds-container--small slds-p-around--large"> 
+                        
+                        <apex:outputPanel id="wholeForm" layout="block">
+                            <c:ArticleDetail artId="{!objCustomSettingForCandidate.LogoDocumentId__c}" order="0" rendered="{!!stage2 && !contactOnly}" />
+                            <c:ArticleDetail artId="{!objCustomSettingForCandidate.LogoDocumentId__c}" order="1" rendered="{!stage2 && !contactOnly}"/>
+                            <c:ArticleDetail artId="{!objCustomSettingForCandidate.LogoDocumentId__c}" order="2" rendered="{!contactOnly}"/> 
+                            
+                            <apex:outputPanel rendered="{!!contactOnly}"> 
+                                <apex:outputPanel rendered="{!OR(NOT(objCustomSettingForCandidate.Resume_parsing__c),OR(objContact.Id != null,objContact.Id !=''), stage2)}" layout="none">
+                                    <apex:repeat value="{!$ObjectType.Contact.Fieldsets.CandidateRegMand}" var="field">
+                                        <div class="slds-form-element slds-m-top--medium" >
+                                            <apex:outputPanel styleClass="slds-form-element__control" layout="block">
+                                                <label class="slds-form-element__label" for="input{!field.FieldPath}">
+                                                   <apex:outputPanel rendered="{!field != 'Phone'}" layout="none">{!field.Label}</apex:outputPanel>
+                                                   <apex:outputPanel rendered="{!field == 'Phone'}" layout="none">Phone </apex:outputPanel>
+                                                   <apex:outputPanel rendered="{!field == 'I_agree_to_Capability_Jane_s__c'}" layout="none">
+                                                        <a href="{!objCustomSettingForCandidate.Terms_and_Condition_Url__c}" target="_blank"> terms of engagement</a>
+                                                   </apex:outputPanel>
+                                                   
+                                                </label> 
+                                                
+                                                <apex:outputPanel rendered="{!OR(field == 'FirstName', field == 'LastName')}" layout="none">
+                                            		<apex:inputField value="{!objContact[field]}" required="{!field.required}" styleClass="slds-input {!IF(field.Required == true,'requiredCheck','')}"  />
+                                            	</apex:outputPanel>
+                                                <apex:outputPanel rendered="{!AND(field.Type != 'boolean', field.Type !='date',field.Type !='datetime',  field != 'LastName', field != 'FirstName')}" layout="none">
+                                                    <apex:inputField value="{!objContact[field]}" required="{!field.required}" styleClass="slds-input {!field.Type} {!IF(field.Required == true,'requiredCheck','')}" />
+                                                </apex:outputPanel>
+                                                <apex:outputPanel rendered="{!OR(field.Type == 'date',field.Type =='datetime')}" styleClass="nonslds" layout="none">
+                                                    <apex:inputField value="{!objContact[field]}" required="{!field.required}" styleClass="slds-input clsdateTime {!IF(field.Required == true,'requiredCheck','')}" showDatePicker="false" />
+                                                </apex:outputPanel>
+                                                <apex:outputPanel rendered="{!field.Type == 'boolean'}" layout="none">
+                                                    <apex:outputPanel rendered="{!field.required}" layout="" style="border-left: 2px solid #F00; height: 13px; display: inline-block;" />
+                                                    <apex:inputField value="{!objContact[field]}" styleClass="{!IF(field.required,'requiredCheckBox', '')}" />
+                                                    
+                                                </apex:outputPanel>
+                                            </apex:outputPanel>
+                                        </div>   
+                                    </apex:repeat>
+                                
+                                    <apex:outputPanel rendered="{!objCustomSettingForCandidate.Auto_Create_Community_Login__c}" styleClass="slds-form-element slds-m-top--medium" layout="block">
+                                        <label class="slds-form-element__label" for="inputPassword">Password</label>
+                                        <div class="slds-form-element__control">
+                                            <apex:inputSecret styleClass="slds-input requiredCheck" value="{!password}" id="Password"/> 
+                                        </div>
+                                    </apex:outputPanel>
+                                   
+                                    <center>
+                                        <apex:commandButton rerender="testt" styleClass="slds-m-top--medium slds-button slds-button--brand" onclick="showLoading();if(!CheckBoxError()) return false;register();" value="Register"/>
+                                        <input type="button" class="slds-m-top--medium slds-button slds-button--neutral" onclick="javascript: window.location.href = '{!$Site.Prefix}/CandidateRegistration';" value="Back"/>
+                                    </center>
+                                </apex:outputPanel>
+                            
+                                <apex:outputPanel rendered="{!AND(objCustomSettingForCandidate.Resume_parsing__c,OR(contactId == '' ,contactId == null),!stage2)}" layout="none">
+                                    <div class="slds-form-element">
+                                        <apex:outputLabel styleClass="slds-form-element__label" for="inputUpload" value="Upload CV" />
+                                        <div class="slds-form-element__control">
+                                            <iframe src="ResumeUpload" id="uploadFileIframe" name="targetframe"  allowtransparency="true" scrolling="no" frameborder="0" height="25" ></iframe>
+                                        </div>
+                                    </div>
+                                    <input type="button" class="slds-m-top--medium slds-button slds-button--neutral" onclick="showLoading();uploadResume();" value="Next"/>
+                                </apex:outputPanel>
+                            </apex:outputPanel>
+                        </apex:outputPanel>
+                        </div>
+                   <apex:outputPanel id="afterOnCom">
+                       
+                       <script>
+                           //contactId = '{!contactId}';
+                           
+                           if($('.errorMsg').length != 0){  
+				                $('.errorMsg').remove();
+				            }
+				        
+    				        function uploadResume(){
+    				            
+    				            var isFileUpload = false;
+    				            if($('#uploadFileIframe').contents().find('[id$=inputUpload]').val() != undefined && $('#uploadFileIframe').contents().find('[id$=inputUpload]').val() != '')
+                        		{
+                        			isFileUpload = true;
+                    			    document.getElementById('uploadFileIframe').contentWindow.upload();
+                        		}
+                        		else
+                        		{
+                        		    console.log(' not uploadResume');
+                        		    createUser();
+                        		}
+                        	
+    				        }
+
+                        	function sendDocId(contactId, userExist)
+                        	{
+                        	    console.log('--- sendDocId---'+contactId);
+                        	    console.log('--- userExist---'+userExist);
+                        		isFileUpload = false;
+                        		if(userExist == 'true'){
+                        		   $('#alreadyUser').toggleClass('slds-hide','slds-show');
+                        		   closeLoading();
+                        		    
+                        		}
+                        		else
+                        		    contactCreated(contactId);
+                        	}
+                           /*
+                            if($('#msgId').children().length <= 1 && contactId != '' ) 
+                            {
+                                console.log('testtttt');
+                                uploadResume();
+                            }
+                           */
+                            function showLoading()
+                    	    {
+                        		document.getElementById("idBackDrop").className = document.getElementById("idBackDrop").className.replace( /(?:^|\s)slds-modal-backdrop--close(?!\S)/g , ' slds-modal-backdrop--open');
+                        		document.getElementById("outPopUp").style.display = '';
+                    	    }
+                    	    
+                    	    function closeLoading()
+                    	    {
+                    	        document.getElementById("outPopUp").style.display = 'none';
+                                document.getElementById("idBackDrop").className = document.getElementById("idBackDrop").className.replace( /(?:^|\s)slds-modal-backdrop--open(?!\S)/g , ' slds-modal-backdrop--close');
+                    	    }
+                    	    
+                    	    function CheckBoxError()
+                            {
+                                $('.required').remove();
+                                
+                                var flag = 0;
+                                var countError = 0;
+                                $('.requiredCheck:not(.multipicklist)').each(function(){
+                                    if(this.value=='')countError++;
+                                });
+                                if(countError == 0){
+                                    console.log('IN2--');
+                                    $("input[type='checkbox']").each(function(){
+                                        console.log('IN3--'+$(this).is(":checked"));
+                                        if($(this).attr('class') == 'requiredCheckBox' && !$(this).is(":checked"))
+                                        {
+                                           console.log('IN4--');
+                                           closeLoading();
+                                           console.log('IN5--');
+                                           $(".requiredCheckBox").after( $( "<span class='required' style='color:red;'> You need to check this.</span>" ));
+                                           flag = 1;
+                                           return false;
+                                           
+                                        }
+                                    });
+                                    
+                                    if(flag == 0)
+                                        return true;
+                                }
+                                else
+                                    return true;
+                            }
+                    	   
+                    	    
+                       </script>
+                   </apex:outputPanel>
+                   <apex:outputPanel id="scriptReRun">
+                       <script>
+                            $('.multiSelectPicklistCell img').each(function(){
+                            	$(this).removeClass('slds-input');
+                            });
+                            
+                            $( ".clsdateTime" ).datepicker();
+                            
+                           
+                            
+                            
+                        </script>
+                   </apex:outputPanel> 
+                    
+                </apex:form>
+                
+            </div>
+            
+        </body>
+    </html>
+
+
+</apex:page>

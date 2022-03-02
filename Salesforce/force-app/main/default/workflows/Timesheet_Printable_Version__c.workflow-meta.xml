@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fieldUpdates>
+        <fullName>Update_Timesheet_Printable_Version</fullName>
+        <field>Timesheet_Print_Version__c</field>
+        <formula>Name</formula>
+        <name>Update Timesheet Printable Version</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+        <targetObject>Timesheet__c</targetObject>
+    </fieldUpdates>
+    <rules>
+        <fullName>Update Timesheet - Timesheet PV</fullName>
+        <actions>
+            <name>Update_Timesheet_Printable_Version</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>false</active>
+        <formula>True</formula>
+        <triggerType>onCreateOnly</triggerType>
+    </rules>
+</Workflow>

@@ -1,0 +1,21 @@
+<apex:page standardStyleSheets="false" showHeader="false" sidebar="false" controller="RC_CommunityTemplateController">
+    <head>
+        <!-- Included all script and CSS -->
+        <c:RC_JSnCSS />
+        
+        <!-- Header Component -->
+        <apex:insert name="header">
+            <apex:outputpanel >
+                 <c:RC_CommunityHeaderComponent />
+            </apex:outputpanel>
+        </apex:insert>
+        
+        <!-- body -->
+        <apex:insert name="body"/>
+        
+        <!-- Footer Component -->
+        <apex:insert name="footer">
+            
+        </apex:insert>
+    </head>
+</apex:page>
