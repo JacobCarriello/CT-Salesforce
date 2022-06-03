@@ -1,0 +1,132 @@
+<apex:component controller="MedestarTemplateController" access="global">
+    <apex:attribute name="crId" description="Id of Closing Report" 
+                    type="String" access="global" assignTo="{!closingReportId}"/>
+  <html>
+    <body>
+        <style>
+            .headerCss{float:right;width:100%;text-align: right;font-weight:bold;}
+            .sectionHeaderClass{font-weight:bold;text-decoration: underline;}
+            .checkBoxClass{vertical-align: -webkit-baseline-middle;}
+        </style>
+        <br/>
+        <!--<div class="headerCss">Curative Candidate Confirmation Letter</div>
+        <div class="headerCss">{!crRecord.TR1__Person_Placed__r.FirstName} {!crRecord.TR1__Person_Placed__r.LastName} - {!crRecord.TR1__Account__r.Name}</div>-->
+        <br/>
+        <apex:outputText value="{0,date,MMMMM dd, YYYY}">
+             <apex:param value="{!TODAY()}" /> 
+        </apex:outputText>
+        <br/><br/> 
+        <!--
+        {!crRecord.TR1__Person_Placed__r.FirstName} {!crRecord.TR1__Person_Placed__r.LastName}<br/>
+        {!crRecord.TR1__Person_Placed__r.MailingStreet}, <br/>
+        {!crRecord.TR1__Person_Placed__r.MailingCity}, {!crRecord.TR1__Person_Placed__r.MailingState}, {!crRecord.TR1__Person_Placed__r.MailingPostalCode}<br/>
+        <br/><br/> -->
+        Dear {!crRecord.TR1__Person_Placed__r.Salutation} {!crRecord.TR1__Person_Placed__r.FirstName} {!crRecord.TR1__Person_Placed__r.LastName},
+        <br/> 
+        <p>This letter is to confirm your acceptance to provide locum tenens coverage at {!crRecord.TR1__Account__r.Name}. The assignment set forth herein and payment for professional services rendered are contingent upon your completing the Curative quality assurance process, approval of malpractice coverage, and completion of {!crRecord.TR1__Account__r.Name}’s credentialing process. To ensure proper reporting enrollment under State Patient Compensation Fund rules and regulations, Curative must be notified 24 hours prior to your providing professional services on any dates not listed below.</p>
+         
+        <p>Curative will be assisting you with your travel and lodging arrangements, if applicable. Under no circumstances is Curative liable to reimburse travel expenses that are not arranged through Curative or approved by {!crRecord.TR1__Account__r.Name}. Personal expenses such as long distance phone calls, meals, gasoline, entertainment, laundry, etc. will be your responsibility.</p>
+         
+        <p>We ask that you complete paperwork required for clinic and/or hospital privileges in a timely manner to ensure adequate time for processing.</p>
+         
+        <p>Curative agrees to pay you the following rates for the specific location and dates listed below. If holiday premium rates are applicable, please refer to the holiday call and work clause in your provider services agreement.</p>
+         
+        <span class="sectionHeaderClass" style="font-weight:bold;">CLIENT: </span> {!crRecord.TR1__Account__r.Name}
+        <br/> <br/>
+        <span class="sectionHeaderClass" style="font-weight:bold;">SPECIALTY: </span>{!crRecord.TR1__Job__r.TR1__Primary_Background__c}
+        <br/> <br/>
+        <div class="sectionHeaderClass" style="font-weight:bold;">PAY RATES:</div>
+        <ui>
+            <apex:repeat value="{!crRecord.TR1__Rates__r}" var="rate">
+                <li>  {!rate.TR1__TimeType__r.Name}: ${!rate.TR1__RatePay__c} {!rate.Rate_Definition__c}</li>
+            </apex:repeat>
+            <!--<apex:outputPanel rendered="{!crRecord.Medestar_Daily_Admin_Fee__c != null}" layout="none">
+                <li>${!crRecord.Medestar_Daily_Admin_Fee__c}</li>
+            </apex:outputPanel>-->    
+        </ui>
+        <br/> <br/>
+        
+        <div class="sectionHeaderClass" style="font-weight:bold;">TRAVEL / LODGING:</div>
+        <ui>
+        <li>Mileage Reimbursement:&nbsp;<apex:outputText value="{!IF(crRecord.Mileage_Required__c, 'Provided', 'Not Provided')}" /> ($0.56)/mile</li>
+        <li>Lodging:&nbsp;<apex:outputText value="{!IF(crRecord.Lodging_Required__c, 'Provided', 'Not Provided')}" /></li>
+        <li>Rental Car:&nbsp;<apex:outputText value="{!IF(crRecord.Rental_Car_Required__c, 'Provided', 'Not Provided')}" /></li>
+        <li>Airfare:&nbsp;<apex:outputText value="{!IF(crRecord.Airfare_Required__c, 'Provided', 'Not Provided')}" /></li>
+        </ui>
+        <br/> <br/>
+        <div class="sectionHeaderClass" style="font-weight:bold;">ASSIGNMENT DATES:</div>
+        <!--<apex:repeat value="{!closingReportScheduleWrapper}" var="crs">
+         {!DAY(crs.startDate)}-{!MONTH(crs.startDate)}-{!YEAR(crs.startDate)}&nbsp;&nbsp;
+         <apex:outputText value="{0,date,hh:mm a} - {1,date,hh:mm a}">
+             <apex:param value="{!crs.localStartDate}" /> 
+             <apex:param value="{!crs.localEndDate}" />
+        </apex:outputText>   &nbsp;&nbsp;  {!crs.crs.Workshift_Location__c}  <br/>
+        </apex:repeat>-->
+        You are required to take a {!IF(crRecord.Break_Time_Mins__c != null, crRecord.Break_Time_Mins__c, '0')} minute lunch break during each of the shifts listed below, unless otherwise stated.
+        <table border="1" style="border-collapse: collapse;width:80%;">
+            <thead>
+                <th>Status</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Location</th>
+                <th>Address</th>
+            </thead>
+            <tbody style="text-align:center;">
+                <apex:repeat value="{!closingReportScheduleWrapper}" var="crs">
+                     <tr>
+                     <td>
+                         <apex:outputText value="{!crs.crs.Tentative_or_Confirmed__c}" />
+                     </td>
+                     <td>
+                         <apex:outputText value="{!crs.formattedStartDate}" />
+                     </td>    
+                     <td>
+                         <apex:outputText value="{!crs.formattedEndDate}" />
+                     </td>
+                     <td>{!crs.crs.TRSCHED__Work_Shift_Location_lkId__r.Name}</td>
+                     <td>{!crs.crs.TRSCHED__Work_Shift_Location_lkId__r.ShippingStreet},<br/>{!crs.crs.TRSCHED__Work_Shift_Location_lkId__r.ShippingCity},&nbsp;{!crs.crs.TRSCHED__Work_Shift_Location_lkId__r.ShippingState},&nbsp;{!crs.crs.TRSCHED__Work_Shift_Location_lkId__r.ShippingCountry},&nbsp;{!crs.crs.TRSCHED__Work_Shift_Location_lkId__r.ShippingPostalCode}</td>
+                     </tr>
+                </apex:repeat>
+            </tbody>
+        </table>
+        
+        <br/>
+        
+        <!--
+        <div class="sectionHeaderClass" style="font-weight:bold;">PAYMENT / TIMESHEET PROCESS:</div>
+        <p>Payment for your services will be made to {!crRecord.Name_on_W_9__c}. If this information is not correct, please note any changes on this document. It is your responsibility to verify that your payments are made out to the proper entity. Curative is not able to change the payee information once a check has been cashed. If you do not make any changes, Curative will assume this information is correct.</p>
+        
+        <p>At the conclusion of each week please visit <a href="www.medestar.com/online-timesheet/">www.medestar.com/online-timesheet/</a> to complete your timesheet online. The Curative work week is Monday – Sunday. Timesheets must be approved by your timesheet approver by Tuesday at 3:00PM CST to receive payment the following Monday*.</p> 
+        
+        <p>*Direct deposits typically show on Mondays, however, if you are receiving a paper check, processing may take 7-10 business days.</p>
+        
+        <div class="sectionHeaderClass" style="font-weight:bold;margin-left:20px">Important Information for your Online Timesheet:</div>
+        <div style="margin-left:30px">
+            <ui> 
+                <li>  You will be prompted to enter your Timesheet Approver’s Email Address when filling out your timesheet. If you do not enter anything, the timesheet will be sent to Medestar’s Operations team who will then forward it on for approval.</li> 
+                <li>  <span style="font-weight:bold;">Timesheet Approver Email Address: </span>{!crRecord.TR1__Timesheet_Approver__r.Email}</li> 
+                <li>  Please use the Timesheet Approver email address listed above for any shifts worked at this facility.</li> 
+            </ui>
+        </div>
+        <br/>-->
+        <apex:outputPanel rendered="{!crRecord.TR1__Account__r.ShippingState == 'WI' || crRecord.TR1__Account__r.ShippingState == 'KS' || crRecord.TR1__Account__r.ShippingState == 'PA'}">
+            <div class="sectionHeaderClass" style="font-weight:bold;">WISCONSIN STATE PATIENTCOMPENSATION FUND:</div>
+            If you are scheduled to provide professional services in the state of Wisconsin, all assignment dates will be reported to the Wisconsin state patient’s compensation fund. The fund will send an invoice/exemption form to your home address and it is your sole responsibility to either bind coverage with the fund by paying the invoice accordingly or claim an exemption. You may view the list of exemption factors by accessing the following link (http://oci.wi.gov/pcf.htm) and clicking on exemptions from fund coverage. Please note that fund participation is mandatory if you do not qualify for an exemption and failure to comply with the fund may result in actions being taken against your Wisconsin state medical license.
+            <br/> <br/>
+         </apex:outputPanel>
+        <div class="sectionHeaderClass" style="font-weight:bold;">CANCELLATION:</div>
+        Should you decide to cancel any portion of this assignment, Curative requires a 30-day written notification. You also must notify your recruiter or account manager 30 days in advance of taking any unscheduled time off during this assignment. You may be held responsible for the payment of any travel and lodging expenses incurred in relation to this assignment if you fail to give the required notice. These expenses may be deducted from any payment due to you under your provider services agreement.
+        <p>If any concerns arise during your during the course of your assignment, you should contact your Account Manager or Recruiter.</p>
+<!--        <ui> 
+                <li>  The scope of the practice you are being asked to perform;</li> 
+                <li>  Workplace accidents, including damage to client facilities;</li> 
+                <li>  Malpractice concerns, or potential malpractice claims;</li> 
+                <li>  Patient safety concerns, including unexpected patient events (Curative does not want, and will not accept PHI); or</li>  
+                <li>  OSHA violations, including potential workplace safety hazards</li> 
+            </ui> -->
+        <br/>  
+        <div class="sectionHeaderClass" style="font-weight:bold;">ASSIGNMENT ACCEPTANCE:</div>
+        You agree that the terms set forth herein are confidential and shall not be disclosed to third parties. If for any reason you cannot accept this assignment or do not agree with the terms set forth herein, you must notify Curative within 24 hours of receipt of this confirmation letter. This confirmation letter is part of your provider services agreement. By accepting this assignment, you acknowledge that you are not an employee of Curative and that Curative is acting as a staffing agency for {!crRecord.TR1__Account__r.Name}.
+    </body>
+</html>
+</apex:component>

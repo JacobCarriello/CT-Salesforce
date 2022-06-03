@@ -1,0 +1,791 @@
+
+/*========================================================/
+            Talent Rover Job Board Responsive + Branding Stylesheet
+=========================================================*/
+                /* Kuno Creative for SelectOne, 2015-04-01 */
+/*========================================================*/
+
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400);
+
+
+/* Reset */ 
+body,html
+{
+    margin: 0;
+    padding: 0;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+/* Page Structure */
+
+html body .row{margin-left: 0;margin-right:0;}
+
+a{color:#a4bd39;}
+body #BodyWrapper a:hover{color:#a4bd39;}
+
+.fullWrap
+{
+    width: 100%;
+}
+
+.innerWrap
+{
+    max-width: 1140px;
+    margin: 0 auto;
+}
+
+body .contentWrap{padding:20px;}
+
+body,td{font-weight: 300;color:#222;}
+label,table thead th{font-weight:400;}
+
+img {
+    border: 0 none;
+    max-width: 100%;
+    vertical-align: bottom;
+}
+
+/* Job List */ 
+
+.atsSearchTable.table td.atsSearchTdRight.searchWrap{width:100%;}
+
+.btn.btn-default.atsButton
+{
+    background-color: #a4bd39;
+    background-image: url("http://cdn2.hubspot.net/hub/436003/file-2581685209-png/cos-assets/job-board-assets/search-icon.png");
+    background-position: 14px 3px;
+    background-repeat: no-repeat;
+    border: 2px solid #a4bd39;
+    border-radius: 0;
+    color: #fff;
+    float: right;
+    font-size: 14px;
+    font-weight: 300;
+    padding: 8px 24px 8px 45px;
+    text-shadow: none;
+}
+
+.btn.btn-default.atsButton:hover{
+    background-color:#fff;color:#a4bd39;background-position: 14px 3px;text-shadow: none;
+}
+
+.btn.btn-default.continue
+{
+    background-color: #a4bd39;
+    background-image: none;
+    background-position: 0px 0px;
+    background-repeat: no-repeat;
+    border: 2px solid #a4bd39;
+    border-radius: 0;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 300;
+    padding: 8px 24px 8px 24px;
+    text-shadow: none;
+	width: 200px;
+}
+
+.btn.btn-default.continue:hover{background-color:#fff;color:#a4bd39;background-position: 0px 0px;text-shadow: none;}
+
+.btn.btn-default.jobreg
+{
+    background-color: #a4bd39;
+    background-image: none;
+    background-position: 0px 0px;
+    background-repeat: no-repeat;
+    border: 2px solid #a4bd39;
+    border-radius: 0;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 300;
+    padding: 8px 24px 8px 24px;
+    text-shadow: none;
+}
+
+.btn.btn-default.jobreg:hover{background-color:#fff;color:#a4bd39;background-position: 0px 0px;text-shadow: none;}
+
+
+
+#BodyWrapper{max-width:1140px;padding:0 20px 0 20px;}
+
+.atsSearchTable.table td.atsSearchTdRight,.atsSearchTable.table td.atsSearchTdLeft{width:25%;}
+
+	.atsSearchTable.table select{font-size: 12px;
+    max-width: 100%;
+    width: 100%;}
+
+/* Job Detail*/
+
+.atsJobDetailsTable .atsJobDetailsTdLeft{width:20%}
+
+.btn.returnToJobSearch,.btn.btn-default.applyButton {
+    background-color: #a4bd39;
+    border: 2px solid #a4bd39;
+    border-radius: 0;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 300;
+    padding: 8px 24px;
+    text-shadow: none;
+    min-width: 200px;
+    margin-bottom:26px;
+}
+
+.btn.returnToJobSearch:hover,.btn.btn-default.applyButton:hover {background-color:#fff;color:#a4bd39;text-shadow: none;}
+.btn.btn-primary.applyButton {float:left;}
+
+
+/* Job Apply */
+
+body table.atsFormTable  td.atsFormTdError{border:1px solid #fff;border-bottom:1px solid #ddd;	
+}
+
+table.atsFormTable .atsFormTdTitle{font-size: 18px;}
+
+table.atsFormTable{max-width: 700px;margin:0 auto;}
+table.atsFormTable .atsFormTdLeft{width:40%;text-align: right;}
+table.atsFormTable .atsFormTdRight{width:60%; text-align:left;}
+
+.btn.continueButton.btn{
+    background-color: #a4bd39;
+    border: 2px solid #a4bd39;
+    border-radius: 0;
+    color: #fff;
+    float: left;
+    font-size: 14px;
+    font-weight: 300;
+    padding: 8px 24px;
+    text-shadow: none;
+    min-width: 200px;
+   
+}
+
+.btn.continueButton.btn:hover{background-color:#fff;color:#a4bd39;text-shadow: none;}
+
+
+
+/* Upload */
+
+.atsFormTdTwoColumnUpload input{margin-right: 10px;}
+
+.btn.backButton,.btn.submitButton,.btn.submitWithoutButton,.btn.submitButton.btn.continueButton{   background-color: #a4bd39;
+    border: 2px solid #a4bd39;
+    border-radius: 0;
+    color: #fff;
+    float: left;
+    font-size: 14px;
+    font-weight: 300;
+    padding: 8px 24px;
+    text-shadow: none;
+    min-width: 150px;
+    margin-bottom: 8px;
+   
+}
+
+.btn.backButton:hover,.btn.submitButton:hover,.btn.submitWithoutButton:hover,.btn.submitButton.btn.continueButton:hover{background-color:#fff;color:#a4bd39;text-shadow: none;}
+
+
+@media(max-width:768px){
+
+#BodyWrapper{padding:0 20px 0 20px;}
+    
+/* Job List */
+	.btn.btn-default.atsButton{float:none;display:block;margin:0 auto; width:200px;}
+	.btn.btn-default.continue{float:none;display:block;margin:0 auto; width:200px;}
+	.btn.btn-default.jobreg{float:none;display:block;margin:0 auto;}
+	.table td, .table th{float:left; width:100%;}
+	.atsSearchTable.table td{border-top:0px;}
+	.atsSearchResultsTable.table thead{display:none}
+	.atsSearchResultsTable.table td{border-top:0px;}
+	.atsSearchResultsTable.table tr td.atsSearchResultsData:first-child{border-top:1px solid #ccc;}
+	.atsSearchTable.table td.atsSearchTdRight,.atsSearchTable.table td.atsSearchTdLeft{width:100%;}
+
+
+/* Job Detail*/
+
+.atsJobDetailsTable .atsJobDetailsTdLeft{width:100%}
+.atsJobDetailsTable .atsJobDetailsTdRight{border-top:0px;}
+.atsJobDetailsTable .atsJobDetailsTdLeft{border-top:1px solid #ccc;}
+
+    .btn.returnToJobSearch,.btn.btn-default.applyButton{float:none;display:block;margin:0 auto 10px; width:200px;}
+    
+/* Job Apply */
+
+table.atsFormTable{max-width: 100%;margin:0 auto;}
+table.atsFormTable .atsFormTdLeft,table.atsFormTable .atsFormTdRight{width:100%;text-align: left;}
+
+
+
+
+}
+
+
+
+@media(max-width:1139px){
+	
+	
+}
+
+
+
+/******************* Header + Navigation *****************/
+
+
+/* Drop Down */
+
+.fullWrap.headerDD .headerTop
+{
+    display: inline-block;
+    overflow: visible;
+    padding: 0 0 20px;
+    width: 100%;
+    margin-left: -7px;
+}
+
+.fullWrap.headerDD .headerMenu ul ul
+{
+    background-color: #fff;
+    max-width: 112px;
+    padding-top: 24px;
+}
+
+.fullWrap.headerDD .headerMenu ul ul li
+{
+    float: left;
+    padding: 0;
+    width: 100%;
+}
+
+@media(max-width:1090px)
+{
+    
+     body #loginButton a
+    {
+        margin-bottom:14px;
+    }
+    
+    .fullWrap.headerDD .headerMenu ul ul
+    {
+        display: none;
+    }
+    
+   
+        
+}
+
+@media(max-width:1140px)
+{
+    
+    .innerWrap
+    {
+        padding: 0 20px;
+    }
+
+    .fullWrap.headerDD .headerMenu ul ul
+    {
+        background-color: #fff;
+        margin-left: 13px;
+        max-width: 112px;
+        padding-top: 36px;
+    };
+}
+
+.fullWrap.headerDD .headerMenu ul ul li a
+{
+    font-size: 14px;
+    color: #333333;
+    padding: 10px 24px 10px 20px;
+    margin: 0;
+    text-transform: none;
+}
+
+.fullWrap.headerDD .headerMenu ul ul li a:hover
+{
+    border-bottom: 2px solid #f3f3f3;
+    background-color: #f3f3f3;
+}
+
+.fullWrap.headerDD .hs-menu-wrapper.hs-menu-flow-horizontal > ul li.hs-item-has-children ul.hs-menu-children-wrapper li a
+{
+    width: auto;
+}
+
+/* Header Containers */
+
+.headerTop
+{
+    display: inline-block;
+    overflow: auto;
+    padding: 0 0 20px;
+    width: 100%;
+}
+
+.headerWrap
+{
+    background-repeat: repeat-x;
+    background-position: bottom center;
+    background-color: #fff;
+   background-image:url(http://cdn2.hubspot.net/hub/436003/file-2570131518-jpg/cos-assets/job-board-assets/header-bottom-bg.jpg);
+   background-repeat:repeat-x;
+   z-index:990;
+}
+
+
+/* Courtesy Button*/
+
+#loginButton
+{
+    width: 100%;
+    text-align: right;
+}
+
+#loginButton a {
+    background-color: #939598;
+    color: #fff;
+    display: inline-block;
+    font-size: 12px;
+    margin-bottom: 0;
+    margin-left: 6px;
+    padding: 4px 20px;
+    text-decoration: none;
+    line-height: 20px;
+}   
+
+#loginButton a:hover
+{
+    background-color:#3cbfae;
+}
+
+.loginWrap
+{
+    float: left;
+    padding-top: 20px;
+}
+
+.loginWrap a:first-child
+{
+}
+
+#logo
+{
+    float: left;
+}
+
+/**** Header Menu ****/
+
+#navWrap
+{
+    float: right;
+    margin-top:25px;
+}
+
+.headerMenu
+{
+    color: #222;
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+
+.headerMenu li
+{
+    float: left;
+    padding: 0 0 0 100px;
+}
+
+.headerMenu li:first-child
+{
+padding-left: 0;
+}
+
+.headerMenu li,.headerMenu ul
+{
+    list-style: none;
+    
+}
+
+.headerMenu ul
+{
+
+margin-top:3px;
+  display:inline-block;
+}
+.headerMenu a
+{
+    color: #222;
+    font-weight: 300;
+    font-size: 16px;
+    text-decoration: none;
+    text-transform: none;
+    padding: 0 0px;
+    border-bottom: 2px solid #fff;
+}
+
+.headerMenu a:hover
+{
+    text-decoration: none;
+    color: #222;
+    border-bottom: 2px solid #35bfae;
+}
+
+.hs_cos_wrapper.hs_cos_wrapper_widget.hs_cos_wrapper_type_menu
+{
+    float: left;
+}
+
+.hs-menu-wrapper.hs-menu-flow-horizontal > ul li a
+{
+    padding: 0 0px;
+}
+
+/* Header Buttons */
+
+.loginWrap a.headerButton
+{
+    border-radius: 5px;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 18px;
+    padding: 9px 38px;
+    text-decoration: none;
+    text-transform: uppercase;
+    box-shadow: 3px 4px 4px 2px #ddd;
+}
+
+a.headerButton.freeTrialButton
+{
+    background-color: #4699b5;
+    border: 2px solid #4699b5;
+}
+
+a.headerButton.freeTrialButton:hover
+{
+    background-color: #fff;
+    text-decoration: none;
+    color: #4699b5;
+}
+
+a.loginButton
+{
+    color: #fff;
+    font-size: 12px;
+    font-weight: light;
+    text-decoration: none;
+    padding: 7px 24px;
+    background-color:#939598;
+}
+
+a.loginButton:hover
+{
+    text-decoration: none;
+    color: #4d6d96;
+}
+
+
+
+#customToggle
+{
+    display: none;
+}
+
+@media (max-width:360px)
+{
+
+    
+    body #customToggle
+    {
+        margin-top: 14px;
+    }
+}
+
+@media (max-width:480px)
+{
+    
+    #navWrap
+    {
+        margin-top:16px;    
+    }
+    
+    #loginButton
+    {
+        text-align: center;
+        width: 100%;
+        
+    }
+
+/* Logo + Toggle */
+
+    a#logo
+    {
+        float: left;
+        margin-bottom: 10px;
+        margin-left: 10px;
+        max-width: 70%;
+        padding-left: 0;
+        text-align: left;
+    }
+
+    a#logo img
+    {
+    }
+
+    #customToggle
+    {
+        display: block;
+        float: right;
+        margin-right: 20px;
+        margin-top: 20px;
+    }
+
+    #navWrap.closed
+    {
+        display: none;
+    }
+
+    #navWrap.opened
+    {
+        float: none;
+    }
+    
+    #navWrap.headerMenu.opened
+    {
+        max-height:350px;    
+    }
+    
+    
+/* Main Nav */
+    ul.headerMenu li, ul.headerMenu li:first-child
+    {
+        background-image: none;
+        border-bottom: 1px solid #cecece;
+        float: left;
+        padding: 10px -10px;
+        text-align: center;
+        width: 100%;
+    }
+
+    ul.headerMenu li:first-child
+    {
+        border-top: 1px solid #cecece;
+    }
+
+    ul.headerMenu
+    {
+        width: 100%;
+    }
+    
+    .headerMenu li{margin-left: 0;}
+
+/* Header Buttons */
+    .loginWrap a.headerButton
+    {
+        display: inline-block;
+    }
+
+    .loginWrap
+    {
+        float: left;
+        margin-top: 16px;
+        text-align: center;
+        width: 100%;
+    }
+
+    .headerTop
+    {
+        padding: 0 0 32px;
+    }
+
+    .hs-menu-wrapper.hs-menu-flow-horizontal > ul li.hs-menu-depth-1
+    {
+        float: left;
+        padding: 11px 0;
+        text-align: center;
+        width: 100%;
+    };
+}
+
+@media (min-width:481px) and (max-width:1110px)
+{
+
+    .loginWrap a
+    {
+        margin-right: 1px;
+    }
+
+    #logo
+    {
+        margin-left: 20px;
+    };
+}
+
+@media (min-width:1110px) and (max-width:1150px)
+{
+    #logo
+    {
+        padding-left: 20px;
+    };
+}
+
+/* HubSpot Single Column Breakpoint*/
+@media (min-width:481px) and (max-width:1090px)
+{
+    #navWrap
+    {
+        width: 100%;
+    }
+
+    .hs_cos_wrapper.hs_cos_wrapper_widget.hs_cos_wrapper_type_menu
+    {
+        float: none;
+    }
+
+    #logo
+    {
+        display: block;
+        float: none;
+        max-width: 100%;
+        text-align: center;
+    }
+
+    .loginWrap
+    {
+        float: none;
+        margin: 0 auto;
+        padding: 5px 0 0;
+        text-align: center;
+        width: 65%;
+    }
+
+/* Center Nav Menu and Buttons */
+
+    #navWrap
+    {
+        text-align: center;
+        margin-top: 28px;
+        float: none;
+    }
+
+    .headerWrap #loginButton
+    {
+        text-align: center;
+        width: 100%;
+        padding-right: 0;
+    }
+
+    .loginWrap
+    {
+        display: inline-block;
+        float: none;
+        margin: 10px auto 0;
+        padding: 5px 0 0;
+        text-align: center;
+        width: auto;
+    }
+
+
+/* Adjust nav items to display centered*/
+    #navWrap .headerMenu li
+    {
+        display: inline-block;
+        float: none;
+    }
+
+    .headerMenu
+    {
+        float: none;
+        text-align: center;
+        width: auto;
+    }
+
+    .headerMenu
+    {
+        color: #716d6d;
+        display: inline-block;
+        font-size: 19px;
+        margin: 0;
+        padding: 0;
+    };
+}
+
+@media(max-width:568px)
+{
+    .hs-menu-wrapper.hs-menu-flow-horizontal > ul li a
+    {
+        display: inline-block;
+        float: none;
+        max-width: 200px;
+        padding: 0 6px;
+        width: auto;
+    };
+    
+    body .hs-menu-wrapper.hs-menu-flow-horizontal > ul li.hs-menu-depth-1
+    {
+        float: left;
+        padding: 11px 0;
+        text-align: center;
+        width: 100%;
+        margin-left: 0px;
+    };
+}
+
+@media (min-width:481px) and (max-width:1140px)
+{
+    
+    .headerMenu li
+    {
+        float: left;
+         padding: 11px 16px;
+    } 
+
+    body .loginWrap a.loginButton
+    {
+        color: #939599;
+        font-weight: 300;
+        font-size: 14px;
+        padding: 10px 11px;
+        text-decoration: none;
+    }
+
+    #loginButton
+    {
+       
+    }
+
+    #navWrap
+    {
+        text-align: center;
+        margin-top: 28px;
+    };
+}
+
+
+@media (min-width:481px) and (max-width:550px)
+{
+    
+    .headerMenu li
+    {
+        float: left;
+         padding: 11px 6px;
+        margin:0;
+    }
+}
+
+@media (min-width:551px) and (max-width:650px)
+{
+    
+    .headerMenu li
+    {
+        float: left;
+         padding: 11px 14px;
+        margin:0;
+    }
+}
+/***************************************************** Simple Footer *********************************************************/
+
+
+.simpleFooter  { text-align:center; }
+.simpleFooter .innerWrap { max-width:1140px; margin:0 auto; padding:60px 0; border-top:1px solid #dddddd;  }
+.simpleFooter p { font-size:12px; margin:20px 0; }
+.simpleFooter  p a { color:#222;display:inline-block; margin:0 12px; text-decoration:none; }
+.simpleFooter  p a:hover { text-decoration:underline; }

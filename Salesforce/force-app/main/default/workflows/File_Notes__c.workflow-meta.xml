@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <alerts>
+        <fullName>New_File_Notes_Created</fullName>
+        <description>New File Notes Created</description>
+        <protected>false</protected>
+        <recipients>
+            <type>creator</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>Fidelis_Marketer/File_Notes_Created</template>
+    </alerts>
+    <rules>
+        <fullName>New File Note Created</fullName>
+        <actions>
+            <name>New_File_Notes_Created</name>
+            <type>Alert</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>File_Notes__c.CreatedDate</field>
+            <operation>equals</operation>
+            <value>TODAY</value>
+        </criteriaItems>
+        <description>an email sent to the marketer when a new file note is created.</description>
+        <triggerType>onCreateOnly</triggerType>
+    </rules>
+</Workflow>

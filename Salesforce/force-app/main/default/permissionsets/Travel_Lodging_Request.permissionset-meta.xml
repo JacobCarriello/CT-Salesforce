@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Grants permission to this Task record type</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Travel / Lodging Request</label>
+    <recordTypeVisibilities>
+        <recordType>Task.Travel_Lodging_Request</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
+</PermissionSet>

@@ -1,0 +1,2 @@
+<apex:page controller="ExternalJobFeedsController" sidebar="false"
+showHeader="false" contenttype="application/xml"  >{!w.XmlString}</apex:page>

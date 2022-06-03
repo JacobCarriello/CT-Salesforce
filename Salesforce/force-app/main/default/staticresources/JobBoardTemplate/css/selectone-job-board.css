@@ -1,0 +1,72 @@
+
+/*========================================================/
+            Talent Rover Job Board Responsive Stylesheet
+=========================================================*/
+                /* Kuno Creative for SelectOne, 2015-02-06 */
+/*========================================================*/
+
+/* Job List */ 
+
+.atsSearchTable.table td.atsSearchTdRight.searchWrap{width:100%;}
+.btn.btn-primary.atsButton{float:right;padding:8px 15px;}
+#BodyWrapper{max-width:1140px;margin:0 auto;}
+
+.atsSearchTable.table td.atsSearchTdRight,.atsSearchTable.table td.atsSearchTdLeft{width:25%;}
+
+	.atsSearchTable.table select{font-size: 12px;
+    max-width: 100%;
+    width: 100%;}
+
+/* Job Detail*/
+
+.atsJobDetailsTable .atsJobDetailsTdLeft{width:20%}
+
+/* Job Apply */
+
+body table.atsFormTable  td.atsFormTdError{border:1px solid #fff;border-bottom:1px solid #ddd;	
+}
+
+table.atsFormTable .atsFormTdTitle{font-size: 18px;}
+
+table.atsFormTable{max-width: 700px;margin:0 auto;}
+table.atsFormTable .atsFormTdLeft{width:40%;text-align: right;}
+table.atsFormTable .atsFormTdRight{width:60%; text-align:left;}
+
+/* Upload */
+
+.atsFormTdTwoColumnUpload input{margin-right: 10px;}
+
+@media(max-width:768px){
+
+/* Job List */
+	.btn.btn-primary.atsButton{float:none;display:block;margin:0 auto; width:200px;}
+	.table td, .table th{float:left; width:100%;}
+	.atsSearchTable.table td{border-top:0px;}
+	.atsSearchResultsTable.table thead{display:none}
+	.atsSearchResultsTable.table td{border-top:0px;}
+	.atsSearchResultsTable.table tr td.atsSearchResultsData:first-child{border-top:1px solid #ccc;}
+	.atsSearchTable.table td.atsSearchTdRight,.atsSearchTable.table td.atsSearchTdLeft{width:100%;}
+
+
+/* Job Detail*/
+
+.atsJobDetailsTable .atsJobDetailsTdLeft{width:100%}
+.atsJobDetailsTable .atsJobDetailsTdRight{border-top:0px;}
+.atsJobDetailsTable .atsJobDetailsTdLeft{border-top:1px solid #ccc;}
+
+/* Job Apply */
+
+table.atsFormTable{max-width: 100%;margin:0 auto;}
+table.atsFormTable .atsFormTdLeft,table.atsFormTable .atsFormTdRight{width:100%;text-align: left;}
+
+
+
+
+}
+
+
+
+@media(max-width:1139px){
+	
+	body{padding:0 20px;}
+}

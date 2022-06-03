@@ -1,0 +1,1275 @@
+<apex:page id="idMyPage" standardStyleSheets="false" showHeader="false" sidebar="false" action="{!redirectUnAuthenticatedUser}" standardStylesheets="true" controller="RC_CandidateExpenseReportDetail">
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+       <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1"/>
+            <apex:stylesheet value="{!URLFOR($Resource.SLDS092, 'assets/styles/salesforce-lightning-design-system-vf.css')}" /> 
+            <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
+            <apex:includeScript value="{!URLFOR($Resource.TB_JS, '/jQuery-1.11.3.min.js')}" />
+            <apex:includeScript value="{!URLFOR($Resource.TB_JS, '/jquery-ui-1.11.3.js')}" />  
+            <script>
+                function closeBanner() 
+                {
+                   document.getElementById('messageUploadBannerEmpty').style.display = 'none'; 
+                }
+                
+                 var newWin=null;
+                function openLookupPopup(name,id, expTypeId, crId, conId,rowNum,exid)
+                {
+                    console.log('name>>'+name);
+                    console.log('id>>>'+id);
+                    console.log('expTypeId>>>>'+expTypeId); 
+                    console.log('crId>>>>'+crId);//idMyPage:j_id6:formid:expRec:0:expRecFlds:1:inputname
+                    //var inid1=$("[id='{!$Component.idMyPage.j_id6.formid.expRec.expRecFlds.inputid}']").val();//document.getElementById("{!$Component.idMyPage.j_id6.formid.expRec.expRecFlds.inputid}").value;
+                    //var inname=$("[id='{!$Component.idMyPage.j_id6.formid.expRec.expRecFlds.inputname}']").val();//document.getElementById("{!$Component.idMyPage.j_id6.formid.expRec.expRecFlds.inputname}").value;
+                    console.log('conId>>>'+conId);
+                    
+                    //var siteP = {!$Site.Prefix} ;
+                    //console.log('siteP>>>>'+siteP);trratescommunity
+                    var url="/LookupPage?namefield=" + name + "&idfield=" +id+"&expTypeId="+expTypeId+"&crId="+crId+"&contId="+conId+"&rowNum="+rowNum+"&expid="+exid;
+                    newWin=window.open(url, 'Popup','height=500,width=600,left=100,top=100,resizable=no,scrollbars=yes,toolbar=no,status=no');
+                    if (window.focus)
+                    {
+                        newWin.focus();
+                    }
+                    return false;
+                }
+                function closeLookupPopup()
+                {
+                    if (null!=newWin)
+                    {
+                        newWin.close();
+                    }
+                }
+            </script>
+            <style>
+                .errorMsg{
+                    color:red; 
+                } 
+               
+                #outPopUp{
+                 position:absolute;
+                 z-index:9999999;
+                 top:50%;
+                 left:47%;
+                }  
+                
+                #outPopUpAction{
+                    position:absolute;
+                    z-index:9999999;
+                    top:50%;
+                    left:47%;
+                }
+                
+                .clsPopover
+                {
+                    z-index: 99 !important;
+                    position: absolute !important;
+                    white-space: normal;
+                }
+                
+                .out{
+                    display:none;
+                }
+                
+                .in{
+                    display:'';
+                }
+                
+                .slds fieldset {
+                    border: 1px solid #c0c0c0;
+                    margin: 0 2px;
+                    padding: 0.35em 0.625em 0.75em;
+                }
+                
+                .closeButton{
+                    font-size: 18px;
+                    FONT-WEIGHT: 600;
+                }
+                
+                .msgStyle{
+                    color:white;
+                }
+                
+                .commentStyle{
+                    min-height: 50px; 
+                    max-height:50px
+                }
+                
+                .slds-table--bordered{
+                    border-left: 1px solid #d8dde6;
+                    border-right: 1px solid #d8dde6;
+                }
+                
+                .slds .slds-button-group {
+                    display: -webkit-box;
+                    }
+                    
+                 .lookupInput a { 
+                       width: 25px !important;
+                       margin-left: -5%;
+                       padding: 18px 1px 7px 1px !important;
+
+                    }
+                    
+                    li {
+                        margin-bottom:1%;
+                    }
+        </style>
+       </head>
+    
+    <apex:composition template="RC_CommunityTemplate">
+        
+      
+        <apex:define name="body">
+            <div style="height:60px;">&nbsp;</div>
+            <div class="slds-all-elements">
+                <div id="content" class="slds-snap-content" style="z-index:100">
+                    <div class="slds-content"> 
+                            <div class="slds">
+                            <!-- Start Loading Status -->
+                           <apex:actionstatus id="processingImg">
+                                 <apex:facet name="start">
+                                    <div id="outPopUpAction"> 
+                                        <div class="slds-spinner--medium" >
+                                            <img src="{!URLFOR($Resource.SLDS092, 'assets/images/spinners/slds_spinner_inverse.gif')}">  
+                                                <span class="slds-m-right--medium" style="color: #081BDE; font-weight:bolder;">Loading...</span>
+                                            </img>
+                                        </div>
+                                    </div> 
+                                    <div class="slds-modal-backdrop slds-modal-backdrop--open"  id="idBackDropAction"></div>
+                                </apex:facet>
+                            </apex:actionstatus>  
+                            <!-- End Loading Status -->
+                            
+                            <!-- Start apex form -->
+                            <apex:form id="formid">  
+                                
+                                <apex:pageMessages id="test" />
+                                
+                                <!-- Start Loading for Upload document -->
+                                <div id="outPopUp" style="display:none;"> 
+                                    <div class="slds-spinner--medium" >
+                                        <img src="{!URLFOR($Resource.SLDS092, 'assets/images/spinners/slds_spinner_inverse.gif')}">  
+                                            <span class="slds-m-right--medium" style="color: #081BDE; font-weight:bolder;">Uploading...</span>
+                                        </img>
+                                    </div>
+                                </div> 
+                                <div class="slds-modal-backdrop slds-modal-backdrop--close"  id="idBackDrop"></div>
+                                <!-- End Loading for Upload document -->
+                                
+                                <!-- Start Call back from IFrame upload page -->
+                                <apex:actionFunction name="getUploadDetails" action="{!getUploadDetails}" reRender="Document, uploadMessage" onComplete="closeLoading();">
+                                    <apex:param name="strMessage" assignTo="{!strUploadMessage}" value="" /> 
+                                    <apex:param name="isUploadSuccess" assignTo="{!isUploadSuccess}" value="" /> 
+                                </apex:actionFunction> 
+                                <apex:actionFunction name="deleteItem" action="{!deleteLineItem}" rerender="idLineItem, editLineItem, scripts, test" status="processingImg">
+                                    <apex:param name="index" value="" />
+                                </apex:actionFunction>
+                                 
+                                <apex:actionFunction name="DummyFunction" action="{!DummyFunction}" reRender="idExpenseDetails, scripts, test, idLineItem"  onComplete="removeError();" status="processingImg">
+                                    <apex:param name="rowNum" value="" />
+                                    <apex:param name="RecordTypeId" value="" />
+                                </apex:actionFunction>
+                                
+                                  <apex:actionFunction name="updateELRecordType" action="{!updateELRecordType}" reRender=" idExpenseDetails,scripts, test, idLineItem"  onComplete="removeError();ExpandAndCollapse({!rowNum});" status="processingImg" immediate="true">
+                                    <apex:param name="rowNum" value="" />
+                                    <apex:param name="rateId" value="" />
+                                  </apex:actionFunction>
+                                
+                                <apex:actionFunction name="dummyRerenderFunction" action="{!dummyRerenderFunction}" reRender="idExpenseDetails, scripts, test, idLineItem"  onComplete="removeError();" status="processingImg">
+                                </apex:actionFunction>
+                                
+                                
+                                <!-- End Call back from IFrame upload page -->
+                                
+                                <!-- Start DML Operation error Message and URL Hacking -->
+                                <apex:outputPanel styleClass="slds-col slds-align-middle" id="idShowErrorMessage">
+                                    <div class="slds-notify slds-notify--alert slds-theme--{!IF(lstClosingReports.size == 0, 'inverse', 'error')} slds-theme--alert-texture" role="alert" id="showErrorMessage" style="display:{!IF(strShowErrorMessage != '', '','none')}">
+                                        <h2 class="slds-text-heading--small">  
+                                             <span>{!strShowErrorMessage}</span>     
+                                        </h2>
+                                    </div>
+                                </apex:outputPanel>
+                                <!-- End DML Operation error Message and URL Hacking -->
+                                
+                                <apex:outputPanel rendered="{!isPageLoad}">
+                                    
+                                    <!-- Start Header Section -->
+                                    <div class="slds-page-header" role="banner">
+                                        <div class="slds-grid slds-wrap slds-grid--align-spread">
+                                            <div class="slds-col">
+                                                <div class="slds-media">
+                                                    <div class="slds-media__figure">
+                                                        <span class="slds-avatar slds-avatar--medium">
+                                                           <img src="{!URLFOR($Resource.SLDS092, '/assets/icons/standard/report_60.png')}" style="background-color: #8291C3;" />
+                                                        </span>
+                                                    </div> 
+                                                     <div class="slds-media__body">
+                                                      <p class="slds-text-heading--label">{!$User.FirstName} {!$User.LastName}</p>
+                                                        <div class="slds-grid">
+                                                            <apex:outputPanel rendered="{!expRepId == ''}">
+                                                                <h1 class="slds-text-heading--medium slds-m-right--small slds-truncate slds-align-middle" title="New Expense Report">New Expense Report</h1>
+                                                            </apex:outputPanel>
+                                                            <apex:outputPanel rendered="{!expRepId != ''}">
+                                                                <h1 class="slds-text-heading--medium slds-m-right--small slds-truncate slds-align-middle" title="Expense Report Detail">Expense Report Detail</h1>
+                                                            </apex:outputPanel>
+                                                        </div>
+                                                     </div>
+                                                </div>
+                                            </div>
+                                            <apex:outputPanel id="btnGroup" layout="block" styleClass="slds-col"> 
+                                                <div class="slds-button-group slds-m-top--medium " role="group">
+                                                    
+                                                    <apex:commandButton styleclass="slds-button slds-button--neutral" onclick="redirectFunct();"  value="Cancel"  status="processingImg" rendered="{!!isReadOnly}" rerender="dummy"/><!-- rerender="dummyDiv" -->
+                                                    
+                                                    <apex:commandButton styleclass="slds-button slds-button--neutral" action="/ExpenseReports" value="Cancel"  rendered="{!isReadOnly}"/>
+                                                    
+                                                    <apex:commandButton styleClass="slds-button slds-button--neutral" value="Add or Edit Expenses"  
+                                                         action="{!enableEditMode}"  rerender="expRep,btnGroup, scripts, tabs, idLineItem" status="processingImg" rendered="{!AND(isReadOnly,OR(objExpRep.TR1__Status__c == 'Unsubmitted', objExpRep.TR1__Status__c == 'Rejected'))}" oncomplete="ExpandAndCollapse(0);"/>
+                                                        
+                                                <!--    <apex:commandButton styleClass="slds-button slds-button--neutral" value="Delete"  
+                                                         action="{!deleteExpenseReports}" status="processingImg" rendered="{!AND(isReadOnly,OR(objExpRep.TR1__Status__c == 'Unsubmitted', objExpRep.TR1__Status__c == 'Rejected'))}"/>
+                                                    -->
+                                                    
+                                                    <apex:commandButton styleClass="slds-button slds-button--brand" value="Save"  action="{!updateExpenseReport}" status="processingImg" onClick="if(!removeLineItem()) return false;" rerender="expRep, idShowErrorMessage, editLineItem,scripts" rendered="{!AND(objExpRep.TR1__Status__c != 'Submitted',!OR(isNewExp,isReadOnly))}" onComplete="ShowErrorMessage('{!strShowErrorMessage}');" > 
+                                                        <apex:param name="isSubmitted" value="false" />
+                                                    </apex:commandButton>
+                                                    <apex:commandButton styleClass="slds-button slds-button--brand"  value="Save and Submit" action="{!updateExpenseReport}" onClick="if(!removeLineItem()) return false;" status="processingImg" rerender="expRep,idShowErrorMessage, editLineItem,scripts" oncomplete="checkErrorSection()" rendered="{!AND(objExpRep.TR1__Status__c != 'Submitted',!OR(isNewExp,isReadOnly))}" style="border-left: 1px solid white;">
+                                                        <apex:param name="isSubmitted" value="true" />
+                                                    </apex:commandButton>
+                                                    
+                                                   
+                                                     
+                                                    <apex:commandButton styleClass="slds-button slds-button--brand" value="Save"  action="{!saveExpenseReport}" onClick="if(!removeLineItem()) return false;" status="processingImg" rerender="idShowErrorMessage, idLineItem, scripts, expRep"  onComplete="ShowErrorMessage('{!strShowErrorMessage}');" rendered="{!isNewExp}"> 
+                                                        <apex:param name="isSubmitted" value="false" />
+                                                    </apex:commandButton>
+                                                    <apex:commandButton styleClass="slds-button slds-button--brand" value="Save & Submit"  action="{!saveExpenseReport}" onClick="if(!removeLineItem()) return false;" status="processingImg" rerender="idShowErrorMessage, idLineItem, scripts, expRep"  onComplete="ShowErrorMessage('{!strShowErrorMessage}');" rendered="{!isNewExp}" style="border-left: 1px solid white;"> 
+                                                        <apex:param name="isSubmitted" value="true" />
+                                                    </apex:commandButton>
+                                                   
+                                                </div>
+                                            </apex:outputPanel>
+                                        </div>
+                                        
+                                        <div class="slds-grid slds-wrap slds-grid--align-spread slds-page-header__detail-row">
+                                            <apex:repeat value="{!$ObjectType.Contact.Fieldsets.RC_My_Profile_Header}" var="field">
+                                                <div class="slds-col--padded slds-size--2-of-6 slds-medium-size--2-of-6 slds-large-size--1-of-6">
+                                                  <dl>
+                                                    <dt>
+                                                      <p class="slds-text-heading--label slds-truncate" title="{!field.label}">{!field.label}</p>
+                                                    </dt>
+                                                    <dd>
+                                                      <p class="slds-text-body--regular slds-truncate" title="{!objContact[field]}"><apex:outputField value="{!objContact[field]}"/></p>
+                                                    </dd>
+                                                  </dl>
+                                                </div>
+                                            </apex:repeat>
+                                         </div>
+                                    </div>
+                                    <!-- End Header Section -->
+                                    <apex:variable value="{!fieldSetExpenseDetail.size+1}" var="columnCount" />
+                                    
+                                    <!-- Start Expense Report details -->
+                                    <apex:outputPanel id="expRep"  layout="block" styleClass="slds-m-top--medium">
+                                        <div class="slds-grid slds-wrap slds-grid--align-spread slds-col--padded-large">
+                                            <apex:variable var="varDate" value="{!0}" />
+                                            <apex:repeat value="{!$ObjectType.TR1__Expense_Report__c.Fieldsets.RC_CandidateExpRepEdit}" var="field">
+                                                <div class="slds-col  slds-col--padded slds-size--1-of-1 slds-medium-size--3-of-6 slds-large-size--6-of-12">
+                                                    
+                                                    
+                                                    <apex:outputPanel rendered="{!!isReadOnly}" >
+                                                        <label class="slds-form-element__label slds-m-top--medium" for="input{!field.FieldPath}">{!field.label}</label>
+                                                        <apex:outputPanel rendered="{!IF(field.Type == 'date', false, IF(field.Type == 'reference', false, IF(field.FieldPath == 'TR1__Closing_Report__c',false, true)))}" >
+                                                            <apex:inputField styleClass="slds-input {!IF(field.Required == true, 'requiredField', '')}" value="{!objExpRep[field.FieldPath]}" style="resize:{!IF(field.Type == 'textarea', 'none', '' )}; border-left:{!IF(field.Required == true, '4px solid red', '' )}"/>
+                                                             
+                                                        </apex:outputPanel>
+
+                                                        <apex:outputPanel rendered="{!field.FieldPath == 'TR1__Closing_Report__c'}" >
+                                                            <apex:selectList value="{!strClosingReport}" styleClass="slds-input crChange {!IF(field.Required == true, 'requiredField', '')}" multiselect="false" size="1" style="border-left:{!IF(field.Required == true, '4px solid red', '' )}"> 
+                                                                <apex:selectOptions value="{!ClosingReports}"/>
+                                                            </apex:selectList>
+                                                        </apex:outputPanel> 
+                                                        <apex:outputPanel rendered="{!field.Type == 'date'}" >
+                                                            <apex:inputField styleClass="slds-input clsdateTime clsDynamicD{!varDate} {!IF(field.Required == true, 'requiredField', '')}" value="{!objExpRep[field.FieldPath]}" showDatePicker="false" style="border-left:{!IF(field.Required == true, '4px solid red', '' )}" html-placeholder="MM/DD/YYYY"/>
+                                                            <script>
+                                                                if('{!objExpRep[field]}' != '')
+                                                                {
+                                                                    var DateConverts = convertUTCDateToLocalDate(new Date('{!objExpRep[field.FieldPath]}'));
+                                                                        
+                                                                    DateConverts = DateConverts.getMonth()+1+'/'+DateConverts.getDate()+'/'+DateConverts.getFullYear();                                 
+                                                                    document.getElementsByClassName("clsDynamicD{!varDate}")[0].value = DateConverts;
+                                                                } 
+                                                            </script>
+                                                            <apex:variable var="varDate" value="{!varDate+1}"/>
+                                                        </apex:outputPanel>
+                                                    </apex:outputPanel>
+                                                        
+                                                    <apex:outputPanel rendered="{!isReadOnly}">
+                                                        <label class="slds-form-element__label slds-m-top--medium" for="input{!field.FieldPath}">{!field.label}</label>
+                                                        <apex:outputPanel rendered="{!field.Type != 'reference'}" >
+                                                            <apex:outputField styleClass="slds-form-element__static" value="{!objExpRep[field.FieldPath]}" />
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel rendered="{!field.FieldPath == 'TR1__Closing_Report__c'}">
+                                                            <apex:outputLabel styleClass="slds-form-element__static" value="{!objExpRep.TR1__Closing_Report__r.TR1__Start_Date__c} - {!objExpRep.TR1__Closing_Report__r.TR1__Job__r.Name}" />
+                                                        </apex:outputPanel>
+                                                    </apex:outputPanel>
+                                                </div>
+                                            </apex:repeat>
+                                        </div>
+                                    </apex:outputPanel> 
+                                    <!-- End Expense Report details -->
+                                    <br/>
+                                
+                                    <!-- Start New Expense Line Item -->
+                                    <apex:outputPanel layout="block" rendered="{!isNewExp}" style="slds-m-top--medium">   
+                                        <div class="slds-tabs--scoped">
+                                            <ul class="slds-tabs--scoped__nav" role="tablist">
+                                                <li class="slds-tabs__item slds-text-heading--label slds-active" title="Expenses Line Item" role="presentation" style="list-style: none;">
+                                                    <a href="#" role="tab" tabindex="0" aria-selected="true" aria-controls="tab-scoped-1">Expenses Line Item</a>
+                                                </li>
+                                            </ul>
+                                            
+                                            <!-- Expense Line Item tabs -->
+                                            <div id="tab-scoped-1" class="slds-tabs__content slds-show" role="tabpanel">
+                                                <div class="slds-grid slds-wrap slds-grid--align-spread">
+                                                    <div class="slds-col  slds-size--1-of-1 slds-medium-size--6-of-6 slds-large-size--10-of-12">    
+                                                        <apex:outputPanel styleClass="slds-grid slds-wrap slds-grid--align-spread" id="idLineItem">
+                                                        <div class="slds-small-show-only slds-float--right" >
+                                                             <apex:commandButton styleClass="slds-float--right slds-button slds-button--brand slds-m-bottom--small " value="Add Line Item" action="{!addLineItem}" reRender="idLineItem, scripts, expRep" onClick="if(!removeLineItem()) return false;" status="processingImg" oncomplete="checkErrorSection();" />
+                                                        </div>
+                                                        <div class="slds-x-small-show-only slds-float--right" > 
+                                                            <apex:commandButton styleClass=" slds-float--right slds-button slds-button--brand slds-m-bottom--small" value="Add Line Item" action="{!addLineItem}" reRender="idLineItem, scripts, expRep" onClick="if(!removeLineItem()) return false;" status="processingImg" oncomplete="checkErrorSection();" />
+                                                        </div> 
+                                                        <div class="slds-medium-show-only slds-float--right" >
+                                                            <apex:commandButton styleClass="slds-float--right slds-button slds-button--brand slds-m-bottom--small" value="Add Line Item" action="{!addLineItem}" reRender="idLineItem, scripts, expRep" onClick="if(!removeLineItem()) return false;" status="processingImg" oncomplete="checkErrorSection();" />
+                                                        </div>
+                                                         <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal"> 
+                                                            <thead>
+                                                                <tr class="slds-text-heading--label">
+                                                                    <apex:repeat value="{!fieldSetExpenseDetail}" var="field">
+                                                                        <th data-label="{!field.Label}" class="slds-text-heading--label slds-size--1-of-{!columnCount}" scope="col"><b>{!IF(CONTAINS(field.FieldPath, 'RecordTypeId'), '',field.Label)}</b></th>
+                                                                    </apex:repeat>
+                                                                    <th data-label="" class="slds-text-heading--label slds-size--1-of-{!columnCount}" scope="col"></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody> 
+                                                               <apex:variable var="varLineDate" value="{!0}" />
+                                                               <apex:repeat value="{!lstExpenseDetailItems}" var="objExpItem" id="expRecNew"> 
+                                                                    <tr class="slds-hint-parent" id = "newExpItem{!varLineDate}">
+                                                                        <apex:repeat value="{!fieldSetExpenseDetail}" var="field" id="expRecFldsNew">
+                                                                            <td data-label="{!field.label}" class="slds-size--1-of-{!columnCount}">
+                                                                            
+                                                                              <!--  <apex:outputPanel rendered="{!field.FieldPath == 'Rate__c'}">           
+                                                                                    <apex:inputField styleClass="slds-input clslookupChange{!varLineDate}" value="{!objExpItem[field.FieldPath]}" id="rateId">
+                                                                                    </apex:inputField> 
+                                                                                </apex:outputPanel> 
+                                                                                
+                                                                                <apex:outputPanel rendered="{!(field.FieldPath == 'Rate__c')}" >
+                                                                                    <apex:selectList value="{!strSelectedRate}" styleClass="slds-input {!IF(field.Required == true, 'requiredField', '')}" multiselect="false" size="1" style="border-left:{!IF(field.Required == true, '4px solid red', '' )}"> 
+                                                                                      <apex:selectOptions value="{!Rates}"/>
+                                                                                    </apex:selectList>
+                                                                                </apex:outputPanel>  -->
+                                                                                
+                                                                              <apex:outputPanel rendered="{!AND((field.Type != 'date'), (field.FieldPath != 'RecordTypeId'),(field.FieldPath != 'Rate__c'),(field.Type != 'boolean'))}">
+                                                                                    <apex:inputField styleClass="slds-input LineItemRow{!varLineDate} {!IF(field.Required == true, 'requiredField', '')}" value="{!objExpItem[field.FieldPath]}" required="{!field.Required}" style="border-left:{!IF(field.Required == true, '4px solid red', '' )}"/>
+                                                                                </apex:outputPanel>  
+                        
+                                                                                <apex:outputPanel rendered="{!AND(field.FieldPath == 'Rate__c',!isReadOnly)}" >
+                                                                                    <apex:inputHidden value="{!objExpItem[field.FieldPath]}" id="inputid" />
+                                                                                    <apex:inputText size="20" value="{!objExpItem.TR1__Rate__r.Name}" id="inputname" />
+                                                                                    <apex:outputLink onclick="openLookupPopup('{!$Component.inputname}', '{!$Component.inputid}','{!objExpItem.RecordTypeId}', '{!strClosingReport}','{!loggedInContact}','{!expRepId}');return false ">
+                                                                                        Find Rates
+                                                                                    </apex:outputLink>
+                                                                                </apex:outputPanel> 
+
+                                                                            <!--    <apex:outputPanel rendered="{!field.Type == 'boolean'}" >
+                                                                                  <div class="slds-form-element slds-align--absolute-center">
+                                                                                      <label class="slds-checkbox">
+                                                                                          <apex:inputfield  styleClass="slds-input" value="{!objExpItem[field.FieldPath]}" required="{!field.Required}" style="border-left:{!IF(field.Required == true, '4px solid red', '' )}"/>
+                                                                                          <span class="slds-checkbox--faux"></span>             
+                                                                                          <span class="slds-form-element__label">Checkbox Label</span>    
+                                                                                      </label>
+                                                                                  </div>
+                                                                                </apex:outputPanel>  styleClass="slds-input LineItemRow{!varLineDate} {!IF(field.Required == true, 'requiredField', '')}" 
+                                                                                             
+                                                                                <apex:outputPanel rendered="{!field.FieldPath == 'RecordTypeId'}" >
+                                                                                    <apex:inputField styleClass="clsRecordType{!varLineDate} slds-input clsSelect clsSelectChange" value="{!objExpItem[field.FieldPath]}" required="{!field.Required}" style="border-left:{!IF(field.Required == true, '4px solid red', '' )}" />
+                                                                                </apex:outputPanel> -->
+
+                                                                                <apex:outputPanel rendered="{!IF(field.Type == 'date', IF(field.FieldPath != 'RecordTypeId', true,false), false)}" >
+                                                                                    <apex:inputField html-placeholder="MM/DD/YYYY" styleClass="slds-input clsdateTime clsDynamicLineDate{!varLineDate} LineItemRow{!varLineDate} {!IF(field.Required == true, 'requiredField', '')}" value="{!objExpItem[field.FieldPath]}" showDatePicker="false" style="border-left:{!IF(field.Required == true, '4px solid red', '' )}" /> 
+                                                                                     <script>
+                                                                                        if('{!objExpItem[field]}' != '')
+                                                                                        {
+                                                                                            var DateConverts = convertUTCDateToLocalDate(new Date('{!objExpItem[field.FieldPath]}'));
+                                                                                                
+                                                                                            DateConverts = DateConverts.getMonth()+1+'/'+DateConverts.getDate()+'/'+DateConverts.getFullYear();                                 
+                                                                                            document.getElementsByClassName("clsDynamicLineDate{!varLineDate}")[0].value = DateConverts;
+                                                                                        }
+                                                                                    </script>
+                                                                                </apex:outputPanel> 
+                                                                            </td>
+                                                                        </apex:repeat>
+                                                                        <td data-label="" class="slds-size--1-of-{!columnCount}">
+                                                                            <button class="slds-button slds-button--icon-border slds-toggle-visibility header" id="{!varLineDate}" style="text-align: center;cursor:pointer;" onClick="return ExpandAndCollapse({!varLineDate});">
+                                                                                <img src="{!URLFOR($Resource.SLDS092, '/assets/icons/utility/up_60.png')}" id="img{!varLineDate}" height="24" width="24" ></img>
+                                                                                <span class="slds-assistive-text">View More</span>
+                                                                          </button>
+                                                                          <!--<a onclick="deleteItem('{!varLineDate}')">Delete</a>-->
+                                                                          <button class="slds-button slds-button--icon-border slds-toggle-visibility" id="{!varLineDate}" style="text-align: center; cursor:pointer;"  onClick="deleteRow('{!varLineDate}');">
+                                                                              <img src="{!URLFOR($Resource.SLDS092, '/assets/icons/utility/delete_60.png')}" height="24" width="24" ></img>
+                                                                            <span class="slds-assistive-text">delete</span>
+                                                                        </button>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr id="collapseme{!varLineDate}" class="out clsCollapse">
+                                                                        <td colspan="{!columnCount}">
+                                                                            <apex:outputPanel id="idAdditionalFields" layout="none">
+                                                                                 <div style="display:none" id="divAddInfo1{!varLineDate}">
+                                                                                 <fieldset class="slds-form-element">
+                                                                                    <legend style="font-weight:bold;" align="left" class="slds-form-element__label slds-form-element__label--top slds-text-heading--label">Additional Details</legend>
+                                                                                        <apex:repeat value="{!mapRecordTypeIdToName}" var="recordTypeName">
+                                                                                            <apex:outputPanel layout="none" rendered="{!recordTypeName == LEFT(objExpItem.RecordTypeId,15)}">
+                                                                                                <div class="slds-grid slds-wrap slds-grid--align-spread clsAddDetails{!varLineDate} clsAdd" id="{!recordTypeName}{!varLineDate}" > 
+                                                                                                    <apex:repeat value="{!$ObjectType.TR1__Expense_Report_Detail__c.fieldsets[mapRecordTypeIdToName[recordTypeName]]}" var="addField">
+                                                                                                        <div class="slds-col  slds-col--padded slds-size--1-of-1 slds-medium-size--3-of-6 slds-large-size--6-of-12" id="colapseDiv{!varLineDate}">
+                                                                                                            <label class="slds-form-element__label slds-m-top--medium slds-text-heading--label" for="input{!addField.FieldPath}" style="font-weight:bold; display: -webkit-box;">{!addField.label}</label>   
+                                                                                                             <div class="slds-form-element__control">
+                                                                                                                <apex:inputField styleClass="slds-input clsAddInputs{!varLineDate} {!IF(addField.Required == true, 'requiredField', '')} " value="{!objExpItem[addField.FieldPath]}"  style="border-left:{!IF(addField.Required == true, '4px solid red', '' )}"/> 
+                                                                                                             </div>     
+                                                                                                        </div>
+                                                                                                    </apex:repeat>
+                                                                                                </div>
+                                                                                            </apex:outputPanel>
+                                                                                        </apex:repeat>   
+                                                                                        <div class="slds-grid slds-wrap slds-grid--align-spread clsComment{!varLineDate}">
+                                                                                            <div class="slds-col  slds-col--padded slds-size--1-of-1 slds-medium-size--6-of-6 slds-large-size--12-of-12" id="colapseDiv{!varLineDate}">
+                                                                                                <label class="slds-form-element__label slds-m-top--medium slds-text-heading--label" style="font-weight:bold; display: -webkit-box;">Comments</label>   
+                                                                                                 <div class="slds-form-element__control">
+                                                                                                    <apex:inputField style="resize:none;" styleClass="slds-input clsAddInputs{!varLineDate}" value="{!objExpItem.TR1__Comments__c}" /> 
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                </fieldset>
+                                                                                </div>
+                                                                            </apex:outputPanel>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <apex:variable var="varLineDate" value="{!varLineDate+1}" />
+                                                                </apex:repeat> 
+                                                            </tbody>
+                                                          </table>
+                                                       </apex:outputPanel>  
+                                                    </div>
+                                                     <div class="slds-col slds-large-show slds-col--padded slds-size--1-of-1 slds-medium-size--5-of-6 slds-large-size--2-of-12">
+                                                    <apex:commandButton styleClass="slds-button slds-button--neutral slds-button--brand slds-large-show" value="Add Line Item" action="{!addLineItem}" reRender="idLineItem, scripts, expRep" onClick="if(!removeLineItem()) return false;" status="processingImg" oncomplete="checkErrorSection();" /> 
+                                                    <!-- <apex:outputLink value="{!$Page.RelatedListHistoryDetails}" styleClass="slds-button slds-button--brand slds-float--right "> 
+                                                        Add
+                                                        <apex:param name="RelatedList" value="Education" />
+                                                    </apex:outputLink> -->
+                                                    
+                                                </div> 
+                                                 </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </apex:outputPanel>
+                                    <!-- End New Expense Line Item -->
+                                
+                                    <!-- Start to show the tabs when the page in detail mode -->
+                                    <apex:outputPanel layout="block" id="tabs" rendered="{!!isNewExp}" styleClass="slds-col--padded-large">
+                                        <div class="slds-tabs--scoped">
+                                            <ul class="slds-tabs--scoped__nav" role="tablist">
+                                                <li class="slds-tabs__item slds-text-heading--label slds-active" title="Expenses Line Item" id="expenseDetailTab"  role="presentation" style="list-style: none;">
+                                                    <a href="#" role="tab" tabindex="0" aria-selected="true" aria-controls="tab-scoped-1">Expenses Line Item</a>
+                                                </li>
+                                                <li class="slds-tabs__item slds-text-heading--label" title="Documents" role="presentation" id="documentTab" style="list-style: none;display:{!IF(isReadOnly,'block','none')}">
+                                                    <a href="#" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-scoped-3">Documents</a>
+                                                </li>
+                                            </ul> 
+                                            
+                                            <!-- Expense Line Item tabs -->
+                                            <div id="tab-scoped-1" class="slds-tabs__content slds-show" role="tabpanel">
+                                                <apex:outputPanel id="editLineItem" layout="block">
+                                                
+                                                <!-- Start Expense Line Item Details -->
+                                                    <apex:outputPanel id="idExpenseDetails" layout="block">
+                                                        <!-- <apex:outputPanel rendered="{!!isReadOnly}" layout="block">
+                                                            <apex:commandButton styleClass="slds-button slds-button--brand slds-float--right slds-m-bottom--medium" value="Add Line Item" action="{!addLineItem}" onClick="if(!removeLineItem()) return false;" oncomplete="checkErrorSection()" reRender="idExpenseDetails, scripts" status="processingImg" />
+                                                            
+                                                        </apex:outputPanel>  -->
+                                                        
+                                                        <!-- Expense Line Item panel to show the empty message -->
+                                                        <apex:outputPanel rendered="{!lstExpenseDetailItems.size == 0}" layout="block" >
+                                                             <div class="slds-notify slds-notify--alert slds-theme--alert-texture" role="alert" id="messageExpenseEmpty">
+                                                                <div class="slds-notify__close" id="idClose"> 
+                                                                    <span class="slds-assistive-text">Close</span> 
+                                                                </div> 
+                                                                <div class="notify__content slds-grid">                         
+                                                                    <apex:outputPanel styleClass="slds-col slds-align-middle">
+                                                                        <h2 class="slds-text-heading--small ">  
+                                                                             <span>No Candidate Expense Line Item</span>      
+                                                                        </h2>
+                                                                    </apex:outputPanel> 
+                                                                </div>
+                                                            </div>
+                                                        </apex:outputPanel> 
+                                                        <!-- End Expense Line Item panel to show the empty message -->
+                                                        
+                                                        <!--<apex:commandButton style="display:none;" id="saveExpItem" styleClass="slds-button slds-button--neutral" value="Save" 
+                                                            action="{!createExpenseLineItem}" status="processingImg" rerender="idExpenseDetails, scripts" /> -->
+                                                        <div class="slds-grid slds-wrap slds-grid--align-spread">
+                                                             <div class="slds-col  slds-size--1-of-1 slds-medium-size--6-of-6 slds-large-size--10-of-12">     
+                                                                <apex:outputPanel rendered="{!lstExpenseDetailItems.size != 0}" styleClass="slds-m-top--medium" layout="block">
+                                                                     <!-- div class="slds-small-show-only slds-float--right " >
+                                                                         <apex:commandButton styleClass="slds-button slds-button--brand slds-m-bottom--small slds-float--right" value="Add Line Item" action="{!addLineItem}" onClick="if(!removeLineItem()) return false;" oncomplete="checkErrorSection()" reRender="idExpenseDetails, scripts" status="processingImg" />
+                                                                    </div>
+                                                                    <div class="slds-x-small-show-only slds-float--right " >
+                                                                        <apex:commandButton styleClass="slds-button slds-button--brand slds-m-bottom--small slds-float--right" value="Add Line Item" action="{!addLineItem}" onClick="if(!removeLineItem()) return false;" oncomplete="checkErrorSection()" reRender="idExpenseDetails, scripts" status="processingImg" />
+                                                                    </div>  -->
+                                                                    <div class="slds-medium-show-only slds-float--right " >
+                                                                        <apex:commandButton styleClass="slds-button slds-button--brand slds-m-bottom--small slds-float--right" value="Add Line Item" action="{!addLineItem}" onClick="if(!removeLineItem()) return false;" oncomplete="checkErrorSection()" reRender="idExpenseDetails, scripts" status="processingImg" />
+                                                                    </div>
+                                                                    <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal">
+                                                                        <thead>
+                                                                            <tr class="slds-text-heading--label">
+                                                                                <apex:repeat value="{!fieldSetExpenseDetail}" var="field">
+                                                                                  
+                                                                                     <th data-label="{!field.Label}" class="slds-text-heading--label slds-size--1-of-{!columnCount}" scope="col"><b>{!IF(CONTAINS(field.FieldPath, 'RecordTypeId'), '', IF(CONTAINS(field.Label, 'Amount'), 'Expense Amount',if(and(CONTAINS(field.Type, 'boolean'),!isReadOnly),'Prepaid',field.Label)))} </b></th>
+                                                                                      
+                                                                                </apex:repeat><!--                     {!IF(CONTAINS(field.FieldPath, 'RecordTypeId'), 'Type', IF(CONTAINS(field.Label, 'Amount'), 'Expense Amount', field.Label))}-->
+                                                                                <th data-label="" class="slds-text-heading--label slds-size--1-of-{!columnCount}" scope="col"></th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <apex:variable var="varLineEditDate" value="{!0}" /> 
+                                                                            <apex:variable var="varPopover" value="{!0}" />
+                                                                            <apex:repeat value="{!lstExpenseDetailItems}" var="objExpItem" id="expRec"> 
+                                                                                <tr class="slds-hint-parent" id = "newExpItem{!varLineEditDate}">
+                                                                                    <apex:repeat value="{!fieldSetExpenseDetail}" var="field" id="expRecFlds">
+                                                                                        <td data-label="{!field.Label}" class="slds-size--1-of-{!columnCount}" >
+                                                                                           <apex:outputPanel rendered="{!AND((field.Type != 'date'), (field.FieldPath != 'RecordTypeId'),(field.FieldPath != 'TR1__Amount__c'),(field.FieldPath != 'TR1__Rate__c'), (field.Type != 'boolean'),(field.FieldPath != 'TR1__Vendor__c'),(field.FieldPath != 'TR1__Mileage_Amount__c'))}" >
+                                                                                                <apex:outputPanel rendered="{!field.FieldPath != 'TR1__Comments__c'}" >
+                                                                                                    <apex:outputField value="{!objExpItem[field.FieldPath]}" rendered="{!isReadOnly}" />
+                                                                                                </apex:outputPanel>
+                                                                                                <apex:outputPanel rendered="{!field.FieldPath == 'TR1__Comments__c'}" layout="block" styleClass="slds-truncate" style="float:left;text-overflow: clip;">
+                                                                                                    <apex:outputField value="{!objExpItem[field.FieldPath]}" rendered="{!isReadOnly}" /> 
+                                                                                                    <apex:variable var="varPopover" value="{!varPopover+1}" />
+                                                                                                </apex:outputPanel>
+                                                                                                <div style="float:left;display:{!IF(isReadOnly == true, IF(field.FieldPath == 'TR1__Comments__c', '','none'), 'none')}" class="clsPop" id="{!varPopover}"><!--[...]-->
+                                                                                                    <div Class="slds-popover slds-nubbin--top-left clsPopover" role="dialog" style="display:none" id="popover{!varPopover}">
+                                                                                                        <div class="slds-popover__body"></div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <apex:inputField styleClass="slds-input  {!IF(field.Required == true, 'requiredField', '')}" value="{!objExpItem[field.FieldPath]}" rendered="{!!isReadOnly}" style="border-left:{!IF(field.Required == true, '4px solid red', '' )}"/>
+                                                                                            </apex:outputPanel>
+                                                                                            
+                                                                                        <!--<apex:outputPanel rendered="{AND((mapRecordTypeIdToName[LEFT(objExpItem['RecordTypeId'],15)] != 'Mileage'),(mapRecordTypeIdToName[LEFT(objExpItem['RecordTypeId'],15)] != 'Per_Diem'),(field.FieldPath == 'TR1__Vendor__c'))}"> 
+                                                                                                <apex:outputField value="{!objExpItem[field.FieldPath]}" rendered="{!isReadOnly}" /> 
+                                                                                                <apex:inputField styleClass="clsRecordType{!varLineEditDate} slds-input clsSelect clsSelectChange  {!IF(field.Required == true, 'requiredField', '')}" value="{!objExpItem[field.FieldPath]}" required="{!field.Required}" rendered="{!!isReadOnly}" style="border-left:{!IF(field.Required == true, '4px solid red', '' )}"/>
+                                                                                            </apex:outputPanel>   -->
+                                                                                            
+                                                                                            <apex:outputPanel rendered="{!AND(field.FieldPath == 'TR1__Rate__c',!isReadOnly)}" >
+                                                                                                <apex:inputField value="{!objExpItem[field.FieldPath]}" id="inputid" style="display:none;"/>
+                                                                                                <apex:outputText value="{!IF(objExpItem['TR1__Rate__c'] != null,mapRateIdVSRateName[objExpItem['TR1__Rate__c']],'')}" id="inputname" styleclass="slds-input" style="width:70% !important;"  /> 
+                                                                                                <apex:outputLink onclick="openLookupPopup('{!$Component.inputname}', '{!$Component.inputid}','{!objExpItem.RecordTypeId}', '{!strClosingReport}','{!loggedInContact}','{!varLineEditDate}','{!expRepId}');return false ">
+                                                                                                    Find Rates 
+                                                                                                </apex:outputLink>
+                                                                                             </apex:outputPanel>
+
+                                                                                             
+                                                                                             
+                                                                                             <apex:outputPanel rendered="{!AND(field.FieldPath == 'TR1__Rate__c',isReadOnly)}" >
+                                                                                               {!objExpItem.TR1__Rate__r.Name}    
+                                                                                             </apex:outputPanel>
+                                                                                            
+                                                                                            <apex:outputPanel rendered="{!field.FieldPath == 'TR1__Amount__c'}" >
+                                                                                                <apex:outputField value="{!objExpItem[field.FieldPath]}" rendered="{!isReadOnly}" />
+                                                                                                <apex:outputField value="{!objExpItem[field.FieldPath]}" rendered="{!AND(!isReadOnly,objExpItem.RecordTypeId == '0127A0000004hiuQAA')}" />  
+                                                                                               <apex:outputField value="{!objExpItem[field.FieldPath]}" rendered="{!AND(isReadOnlyAmount,!isReadOnly)}" />  
+                                                                                               <apex:outputField value="{!objExpItem[field.FieldPath]}" rendered="{!AND(!isReadOnly, OR(mapRecordTypeIdToName[LEFT(objExpItem['RecordTypeId'],15)] == 'Mileage', mapRecordTypeIdToName[LEFT(objExpItem['RecordTypeId'],15)] == 'Per_Diem' ))}"/> 
+                                                                                               <apex:inputField id="amt" styleClass="clsRecordType{!varLineEditDate} slds-input {!IF(field.Required == true, 'requiredField', '')}" 
+                                                                                                    value="{!objExpItem[field.FieldPath]}" required="{!field.Required}" 
+                                                                                                    rendered="{!AND(!isReadOnly, mapRecordTypeIdToName[LEFT(objExpItem['RecordTypeId'],15)] != 'Mileage', mapRecordTypeIdToName[LEFT(objExpItem['RecordTypeId'],15)] != 'Per_Diem' )}" style="border-left:{!IF(field.Required == true, '4px solid red', '' )}"/>
+                                                                                            </apex:outputPanel>
+                                                                                            
+                                                                                            <apex:outputPanel rendered="{!IF(field.Type == 'date', IF(field.FieldPath != 'RecordTypeId', true,false), false)}" >
+                                                                                                <apex:outputField value="{!objExpItem[field.FieldPath]}" rendered="{!isReadOnly}" />
+                                                                                                <apex:inputField styleClass="slds-input clsdateTime clsDynamicLineDate{!varLineEditDate}  {!IF(field.Required == true, 'requiredField', '')}" value="{!objExpItem[field.FieldPath]}" required="{!field.Required}" showDatePicker="false" rendered="{!!isReadOnly}" style="border-left:{!IF(field.Required == true, '4px solid red', '' )}"/> 
+                                                                                                 <script>
+                                                                                                    if('{!objExpItem[field]}' != '')
+                                                                                                    {
+                                                                                                        var DateConverts = convertUTCDateToLocalDate(new Date('{!objExpItem[field.FieldPath]}'));
+                                                                                                            
+                                                                                                        DateConverts = DateConverts.getMonth()+1+'/'+DateConverts.getDate()+'/'+DateConverts.getFullYear();                                 
+                                                                                                        document.getElementsByClassName("clsDynamicLineDate{!varLineEditDate}")[0].value = DateConverts;
+                                                                                                    }
+                                                                                                </script>
+                                                                                              
+                                                                                            </apex:outputPanel>
+                                                                                            
+                                                                                      <!--    <apex:outputPanel rendered="{!AND(field.FieldPath == 'TR1__Mileage_Amount__c',isReadOnly,mapRecordTypeIdToName[LEFT(objExpItem['RecordTypeId'],15)] == 'Mileage')}">  
+                                                                                             <apex:outputField value="{!objExpItem[field.FieldPath]}" />  
+                                                                                          </apex:outputPanel>
+                                                                                          
+                                                                                          <apex:outputPanel rendered="{!AND(field.FieldPath == 'TR1__Mileage_Amount__c',isReadOnly,mapRecordTypeIdToName[LEFT(objExpItem['RecordTypeId'],15)] == 'Mileage')}">  
+                                                                                             <apex:outputField value="{!objExpItem[field.FieldPath]}" />  
+                                                                                          </apex:outputPanel> -->
+
+                                                                                          <apex:outputPanel rendered="{!AND(field.Type == 'boolean',isReadOnly,mapRecordTypeIdToName[LEFT(objExpItem['RecordTypeId'],15)] != 'Per_Diem')}">  
+                                                                                             <apex:outputField value="{!objExpItem[field.FieldPath]}" />  
+                                                                                          </apex:outputPanel> 
+                                                                                          <apex:outputPanel rendered="{!AND(field.Type == 'boolean',!isReadOnly,mapRecordTypeIdToName[LEFT(objExpItem['RecordTypeId'],15)] != 'Per_Diem')}">
+                                                                                              <apex:inputField value="{!objExpItem[field.FieldPath]}" />
+                                                                                          </apex:outputPanel> 
+                                                                                          
+                                                                                          <apex:outputPanel rendered="{!AND(field.FieldPath == 'TR1__Vendor__c',isReadOnly,mapRecordTypeIdToName[LEFT(objExpItem['RecordTypeId'],15)] != 'Per_Diem',mapRecordTypeIdToName[LEFT(objExpItem['RecordTypeId'],15)] != 'Mileage')}">  
+                                                                                             <apex:outputField value="{!objExpItem[field.FieldPath]}" />  
+                                                                                          </apex:outputPanel> 
+                                                                                          <apex:outputPanel rendered="{!AND(field.FieldPath == 'TR1__Vendor__c',!isReadOnly,mapRecordTypeIdToName[LEFT(objExpItem['RecordTypeId'],15)] != 'Per_Diem',mapRecordTypeIdToName[LEFT(objExpItem['RecordTypeId'],15)] != 'Mileage')}">
+                                                                                              <apex:inputField value="{!objExpItem[field.FieldPath]}" />
+                                                                                          </apex:outputPanel> 
+                                                                                            
+                                                                                        </td> 
+                                                                                    </apex:repeat>
+                                                                                    <td data-label="" class="slds-size--1-of-{!columnCount}">
+                                                                                        <button class="slds-button slds-button--icon-border slds-toggle-visibility header" id="{!varLineEditDate}" style="text-align: center; cursor:pointer;" onClick="return ExpandAndCollapse({!varLineEditDate});">
+                                                                                              <img src="{!URLFOR($Resource.SLDS092, '/assets/icons/utility/up_60.png')}" id="img{!varLineEditDate}" height="24" width="24" ></img>
+                                                                                            <span class="slds-assistive-text">View More</span>
+                                                                                        </button>
+                                                                                        <button class="slds-button slds-button--icon-border slds-toggle-visibility" id="{!varLineEditDate}" style="text-align: center; cursor:pointer; display:{!IF(isReadOnly == true, 'none', '')}"  onclick="deleteRow('{!varLineEditDate}')">
+                                                                                              <img src="{!URLFOR($Resource.SLDS092, '/assets/icons/utility/delete_60.png')}" height="24" width="24" ></img>
+                                                                                            <span class="slds-assistive-text">delete</span>
+                                                                                        </button>
+                                                                                       
+                                                                                      
+                                                                                    </td>
+                                                                                </tr>
+                                                                                
+                                                                                <tr id="collapseme{!varLineEditDate}" class="out clsCollapse">
+                                                                                    <td colspan="{!columnCount}">
+                                                                                    <div id="idAdditionalFields{!varLineEditDate}">
+                                                                                        <apex:outputPanel id="idAdditionalFields" layout="none" >
+                                                                                            <div style="display:none;" id="divAddInfo{!varLineEditDate}">
+                                                                                             <fieldset class="slds-form-element">
+                                                                                                <legend style="font-weight:bold;" align="left" class="slds-form-element__label slds-form-element__label--top slds-text-heading--label">Additional Details</legend>
+                                                                                                    <apex:repeat value="{!mapRecordTypeIdToName}" var="recordTypeName" rendered="{!!isReadOnly}"> 
+                                                                                                        <apex:outputPanel layout="none" rendered="{!recordTypeName == LEFT(objExpItem.RecordTypeId,15)}">
+                                                                                                            <div class="slds-grid slds-wrap slds-grid--align-spread clsAddDetails{!varLineEditDate} clsAdd" id="{!recordTypeName}{!varLineEditDate}" > 
+                                                                                                                <apex:repeat value="{!$ObjectType.TR1__Expense_Report_Detail__c.fieldsets[mapRecordTypeIdToName[recordTypeName]]}" var="addField">
+                                                                                                                    <div class="slds-col  slds-col--padded slds-size--1-of-1 slds-medium-size--3-of-6 slds-large-size--6-of-12" id="colapseDiv{!varLineEditDate}">
+                                                                                                                        <label  class="slds-form-element__label slds-m-top--medium slds-text-heading--label" for="input{!addField.FieldPath}" style="font-weight:bold; display: -webkit-box;">{!addField.label}</label>   
+                                                                                                                        <apex:inputField styleClass="slds-input clsAddInputs{!varLineEditDate}  {!IF(addField.Required == true, 'requiredField', '')}" value="{!objExpItem[addField.FieldPath]}" rendered="{!!isReadOnly}" style="border-left:{!IF(addField.Required == true, '4px solid red', '' )}"/>  <!-- rendered="{!AND(!!isReadOnly,mapRecordTypeIdToName[LEFT(objExpItem['RecordTypeId'],15)] != 'Mileage')}" -->
+                                                                                                                    </div>
+                                                                                                                </apex:repeat>
+                                                                                                            </div>
+                                                                                                        </apex:outputPanel>
+                                                                                                    </apex:repeat>
+                                                                                                
+                                                                                                    <apex:repeat value="{!$ObjectType.TR1__Expense_Report_Detail__c.fieldsets[mapRecordTypeIdToName[LEFT(objExpItem.RecordTypeId,15)]]}" var="addField" rendered="{!isReadOnly}">
+                                                                                                        <div class="slds-col  slds-col--padded slds-size--1-of-1 slds-medium-size--3-of-6 slds-large-size--6-of-12 ">
+                                                                                                            <label class="slds-form-element__label slds-m-top--medium slds-text-heading--label" style="font-weight:bold; display: -webkit-box;">{!addField.label}</label>   
+                                                                                                            <apex:outputField styleClass="slds-input clsAddInputs{!varLineEditDate}" value="{!objExpItem[addField.FieldPath]}" rendered="{!isReadOnly}"/> 
+                                                                                                        </div>
+                                                                                                    </apex:repeat>
+                                                                                                    
+                                                                                                  <apex:outputPanel rendered="{!mapRecordTypeIdToName[LEFT(objExpItem['RecordTypeId'],15)] == 'Mileage'}">  
+                                                                                                    <div class="slds-grid slds-wrap slds-grid--align-spread">
+                                                                                                        <div class="slds-col  slds-col--padded slds-size--1-of-1 slds-medium-size--6-of-6 slds-large-size--12-of-12 clsComment{!varLineEditDate}">
+                                                                                                            <label class="slds-form-element__label slds-m-top--medium slds-text-heading--label" style="font-weight:bold; display: -webkit-box;">Mileage Rate</label>
+                                                                                                               <apex:outputtext styleClass="slds-input" value="{!mileageReadonly}" rendered="{!AND(mileageReadonlyBol)}"/>    
+                                                                                                               <apex:inputField style="resize:none;" styleClass="slds-input" value="{!objExpItem.TR1__MileageRate__c}" rendered="{!and(isReadOnly,!mileageReadonlyBol)}"/> 
+                                                                                                               <apex:inputField style="resize:none;" styleClass="slds-input" value="{!objExpItem.TR1__MileageRate__c}" rendered="{!and(!isReadOnly,!mileageReadonlyBol)}"/>
+                                                                                                        </div> 
+                                                                                                    </div>
+                                                                                                  </apex:outputPanel>    
+                                                                                                    
+                                                                                                    <div class="slds-grid slds-wrap slds-grid--align-spread">
+                                                                                                        <div class="slds-col  slds-col--padded slds-size--1-of-1 slds-medium-size--6-of-6 slds-large-size--12-of-12 clsComment{!varLineEditDate}">
+                                                                                                            <label class="slds-form-element__label slds-m-top--medium slds-text-heading--label" style="font-weight:bold; display: -webkit-box;">Comments</label>   
+                                                                                                           <apex:outputField styleClass="slds-input" value="{!objExpItem.TR1__Comments__c}" rendered="{!isReadOnly}"/>
+                                                                                                           <apex:inputField style="resize:none;" styleClass="slds-input" value="{!objExpItem.TR1__Comments__c}" rendered="{!!isReadOnly}"/> 
+                                                                                                        </div> 
+                                                                                                    </div>
+                                                                                            </fieldset>
+                                                                                          </div>
+                                                                                        </apex:outputPanel>
+                                                                                        </div>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <apex:variable var="varLineEditDate" value="{!varLineEditDate+1}" />
+                                                                            </apex:repeat>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </apex:outputPanel>
+                                                            </div>
+                                                            <div class="slds-col slds-m-top--medium slds-large-show slds-col--padded slds-size--1-of-1 slds-medium-size--3-of-6 slds-large-size--2-of-12">
+                                                                <apex:outputPanel rendered="{!!isReadOnly}" layout="block">
+                                                                    <apex:commandButton styleClass="slds-button slds-button--brand slds-large-show" value="Add Line Item" action="{!addLineItem}" onClick="if(!removeLineItem()) return false;" oncomplete="checkErrorSection();ExpandAndCollapse({!lstExpenseDetailItems.size - 1});" reRender="idExpenseDetails, scripts" status="processingImg" />
+                                                            
+                                                                </apex:outputPanel>
+                                                            </div> 
+                                                       </div>
+                                                    </apex:outputPanel>
+                                                </apex:outputPanel>
+                                            </div>
+                                            <!-- End with Expense Line Item Details -->
+                                        
+                                            <div id="tab-scoped-3" class="slds-tabs__content slds-hide" role="tabpanel">
+                                                    <!-- Show message for Empty Document-->
+                                                    <apex:outputPanel layout="block" id="uploadMessage"> 
+                                                         <div class="slds-notify slds-notify--alert slds-theme--{!IF(isUploadSuccess, 'success', IF(lstAttachments.size == 0,'alert-texture','error'))} slds-theme--alert-texture" role="alert" id="messageUploadBannerEmpty" style="display:{!IF(isUploadSuccess, '', IF(lstAttachments.size == 0,'', IF(strUploadMessage != '','', 'none')))}">
+                                                             <div class="slds-notify__close" id="idClose"  onClick="closeBanner();" style="cursor:pointer; display:{!IF(isUploadSuccess,'','none')}"> 
+                                                                <span class="closeButton">x</span> 
+                                                            </div> 
+                                                            <div class="notify__content slds-grid">                         
+                                                                <apex:outputPanel styleClass="slds-col slds-align-middle">
+                                                                    <h2 class="slds-text-heading--small ">  
+                                                                         <span style="display:{!IF(lstAttachments.size == 0,'','none')}">No Documents</span>  
+                                                                         <span style="display:{!IF(isUploadSuccess,'','none')}">{!strUploadMessage}</span>  
+                                                                         <span></span> 
+                                                                    </h2>
+                                                                </apex:outputPanel> 
+                                                            </div>
+                                                        </div>
+                                                    </apex:outputPanel>
+                                                
+                                                
+                                                    <!-- Upload Document through IFrame -->
+                                                    <apex:outputPanel layout="block" rendered="{!objExpRep.TR1__Status__c != 'Submitted'}" styleClass="slds-grid slds-wrap slds-grid--align-spread">
+                                                        <div class="slds-col">
+                                                            <label class="slds-form-element__label slds-m-top--medium" style="display:block;" for="">Upload Document</label>
+                                                            <iframe src="UploadContactDocument?ExpId={!expRepId} " id="uploadFileIframe" name="targetframe"  allowtransparency="true" scrolling="no" frameborder="0" height="25" ></iframe>
+                                                            <input type="button" class="slds-button slds-button--brand" value="Upload" onClick="uploadResume();"/><br/>
+                                                            <span id="idUploadDoc" style="color:red;"> </span>
+                                                        </div>
+                                                    </apex:outputPanel>
+                                                
+                                                
+                                                    <!-- Show the document details -->
+                                                    <apex:outputPanel id="Document">
+                                                         <apex:outputPanel styleClass="slds-m-top--medium" layout="block" rendered="{!lstAttachments.size != 0}">
+                                                            <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal ">
+                                                                <thead>
+                                                                    <tr class="slds-text-heading--label">
+                                                                        <th data-label="Attachment Name" class="slds-text-heading--label slds-size--1-of-3" scope="col"><b>Attachment Name</b></th>
+                                                                        <th data-label="Type" class="slds-text-heading--label slds-size--1-of-3" scope="col"><b>Type</b></th>
+                                                                        <th data-label="Description" class="slds-text-heading--label slds-size--1-of-3" scope="col"><b>Description</b></th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <apex:repeat value="{!lstAttachments}" var="objAttachment">
+                                                                        <tr class="slds-hint-parent">
+                                                                            <td data-label="Attachment Name" class="slds-size--1-of-3" ><apex:outputField value="{!objAttachment.Name}"/></td>
+                                                                            <td data-label="Type" class="slds-size--1-of-3" ><apex:outputField value="{!objAttachment.ContentType}"/></td>
+                                                                            <td data-label="Description" class="slds-size--1-of-3" ><apex:outputField value="{!objAttachment.Description}"/></td>
+                                                                        </tr>
+                                                                    </apex:repeat>
+                                                                </tbody>
+                                                            </table>
+                                                        </apex:outputPanel>
+                                                </apex:outputPanel>
+                                            <!-- End with the document details -->
+                                            </div>
+                                        </div>
+                                    </apex:outputPanel>
+                                </apex:outputPanel>
+                                
+                                <apex:outputPanel id="scripts">
+                                    <script>
+                                    
+                                        var accountObjects;
+                                        var queryTerm;
+                                        
+                                        //Date picker
+                                        $( ".clsdateTime" ).datepicker();
+                                       
+                                       //AutoComplete
+                                       /* $('[id$=AccountTextBoxId]').autocomplete({
+                                            minLength: 2,
+                                            source: function(request, response) {
+                                                        queryTerm = request.term;
+                                                        RC_CandidateExpenseReportDetail.searchAccount(request.term, function(result, event){
+                                                            if(event.type == 'exception') {
+                                                                  alert(event.message);
+                                                            } else {
+                                                                 accountObjects = result;
+                                                                 response(accountObjects);
+                                                            }
+                                                        });
+                                                   }, 
+                                            focus: function( event, ui ) {
+                                                    $('[id$=AccountTextBoxId]').val( ui.item.Name );
+                                                    return false;
+                                            },  
+                                            select: function( event, ui ) {
+                                                       console.log(ui.item.Name);
+                                                        $('[id$=AccountTextBoxId]').val( ui.item.Name.replace('&amp;', '&'));
+                                                        $('[id$=searchAccountId]').val( ui.item.Id );
+                                                        return false;
+                                                    },
+                                         })
+                                          .data( "ui-autocomplete" )._renderItem = function( ul, item ) {
+                                                return $( "<li>" )
+                                                .append( "<a>" + item.Name +"<br> </a>" )
+                                                .appendTo( ul );
+                                         }; */
+                                         
+                                        /* $(".header").click(function (e) {
+                                             
+                                             console.log('--- Inside ---'+e.currentTarget.id);
+                                             
+                                            $('.clsAddDetails'+''+e.currentTarget.id).each(function() {
+                                                $(this).hide();
+                                            });
+                                            
+                                            $('#'+$('.clsRecordType'+e.currentTarget.id).val()+''+e.currentTarget.id).show();
+                                            
+                                            console.log('After Show');
+                                            
+                                            if($("#collapseme"+e.currentTarget.id).hasClass("out")) {
+                                                console.log('1');
+                                                $("#collapseme"+e.currentTarget.id).addClass("in");
+                                                $("#collapseme"+e.currentTarget.id).removeClass("out");
+                                            } 
+                                            else {
+                                                console.log('2');
+                                                $("#collapseme"+e.currentTarget.id).addClass("out");
+                                                $("#collapseme"+e.currentTarget.id).removeClass("in");
+                                            }
+                                        });
+                                        */
+                                        
+                                        
+                                        function ExpandAndCollapse(rowNum)
+                                        { 
+                                            console.log('--rowNum---',rowNum);
+                                            
+                                            if($('#divAddInfo'+rowNum).css('display') == 'none')
+                                                $('#divAddInfo'+rowNum).show();
+                                            else
+                                                $('#divAddInfo'+rowNum).hide();
+                                                
+                                            if($('#divAddInfo1'+rowNum).css('display') == 'none')
+                                                $('#divAddInfo1'+rowNum).show();
+                                            else
+                                                $('#divAddInfo1'+rowNum).hide();
+                                                
+                                           /* $('.clsAddDetails'+''+rowNum).each(function() {
+                                                $(this).hide();
+                                            });*/
+                                            
+                                            $('#'+$('.clsRecordType'+rowNum).val()+''+rowNum).show();
+                                            
+                                            if($("#collapseme"+rowNum).hasClass("out")) {
+                                                $("#collapseme"+rowNum).addClass("in");
+                                                $("#collapseme"+rowNum).removeClass("out");
+                                                $('#img'+rowNum).attr('src','{!URLFOR($Resource.SLDS092, "/assets/icons/utility/down_60.png")}');
+                                            } 
+                                            else {
+                                                $("#collapseme"+rowNum).addClass("out");
+                                                $("#collapseme"+rowNum).removeClass("in");
+                                                $('#img'+rowNum).attr('src','{!URLFOR($Resource.SLDS092, "/assets/icons/utility/up_60.png")}');
+                                            }
+                                            
+                                            return false;
+                                        }
+                                        
+                                        
+                                        function checkErrorSection()
+                                        {
+                                            $('.errorMsg').each(function(){
+                                                
+                                                if($(this).parent().attr('id') != undefined)
+                                                {
+                                                    $("#collapseme"+$(this).parent().attr('id').substring(10, $(this).parent().attr('id').length)).removeClass("out");
+                                                    $("#collapseme"+$(this).parent().attr('id').substring(10, $(this).parent().attr('id').length)).addClass("in");
+                                                    
+                                                    var rowNum =  $(this).parent().attr('id').substring(10, $(this).parent().attr('id').length);
+                                                    
+                                                    $('#'+$('.clsRecordType'+rowNum).val()+''+rowNum).show();
+                                                }
+                                                else 
+                                                {
+                                                   $("#collapseme"+$(this).parent().parent().attr('id').substring(10, $(this).parent().parent().attr('id').length)).removeClass("out");
+                                                    $("#collapseme"+$(this).parent().parent().attr('id').substring(10, $(this).parent().parent().attr('id').length)).addClass("in");
+                                                    
+                                                    var rowNum =  $(this).parent().parent().attr('id').substring(10, $(this).parent().parent().attr('id').length);
+                                                    
+                                                    $('#'+$('.clsRecordType'+rowNum).val()+''+rowNum).show();
+                                                }
+                                                
+                                            }); 
+                                            
+                                            if($('.errorMsg').length != 0){
+                                                var reCount = 0;
+                                                $('.clsSelect').each(function(){
+                                                    var selectedTypeId = $(this).val()+''+reCount;
+                                                    var tempObj = arrObj[reCount];
+                                                    var reInt = 0;
+                                                    if(tempObj !=undefined && Object.keys(tempObj).length -2 !=reInt){
+                                                        $('#'+selectedTypeId+' input,.clsComment'+reCount+' textarea').each(function(){
+                                                         this.value = tempObj[reInt]; 
+                                                          reInt++;
+                                                         
+                                                         });
+                                                     }
+                                                    reCount++;
+                                                });
+                                            }
+                                        }
+                                        $(".crChange").change(function(){
+                                            console.log('---came in CR select---');
+                                            dummyRerenderFunction();
+                                        })
+                                      /*  $(".clsRateChange").change(function(){
+                                            //var rateId = $("[id*=idMyPage]").val();
+                                            console.log('----Rate $(this).val() ----'+$(this).val());
+                                            var classNames = $(this).attr('class');
+                                            var newstr = classNames.split(' ')[1];
+                                            var indexToDisable = newstr.substr(11,newstr.length)
+                                           
+                                            console.log('---- indexToRemove ----'+indexToDisable);
+                                            rateType(indexToDisable, $(this).val());
+                                        });*/
+                                        
+                                        $( ".clsSelectChange" ).change(function() {
+                                           
+                                           console.log('---came in select---');
+                                           $(".clsCollapse").removeClass("in");
+                                           $(".clsCollapse").addClass("out");
+                                           
+                                           var classNames = $(this).attr('class');
+                                           var newstr = classNames.split(' ')[0];
+                                           var indexToRemove = newstr.substr(13,newstr.length)
+                                           
+                                           console.log('---- indexToRemove ----'+indexToRemove);
+                                           
+                                           $('#newExpItem'+indexToRemove).remove();
+                                           
+                                          // $('.LineItemRow'+indexToRemove).remove();
+                                           //$('#collapseme'+indexToRemove).remove();
+                                           //$('.clsAddDetails'+indexToRemove).remove();
+                                          
+                                          
+                                           $('.clsAddDetails'+indexToRemove+' input,.clsComment'+indexToRemove+' textarea').each(function(){
+                                              console.log('Value--'+this.value );
+                                            this.value = '';
+                                           }); 
+                                           
+                                            console.log('---- $(this).val() ----'+$(this).val());
+                                            
+                                             console.log('---- $(this).Text() ----'+$("[id*=j_id207] option:selected").text());
+                                           
+                                           DummyFunction(indexToRemove, $(this).val()); 
+                                            
+                                       }); 
+                                        
+                                        
+                                        function updateRecordType(rowNum,rateId){
+                                            console.log('*rownum**'+rowNum);
+                                            console.log('*val**'+rateId);
+                                            updateELRecordType(rowNum,rateId);
+                                        }
+                                        
+                                        //lookupchnage
+                                     /*   $(".lookupInput").change(function() {
+                                           var rateId = $("[id*=idMyPage]").val();
+                                            console.log('---clslookupChange in select---'+$(this).parent());
+                                            var link = $(".lookupInput").closest(":has(div input)").find('input');
+                                            console.log('---clslookupChange in select2---'+link.val());
+                                            //var classNames = $(this).attr('class');
+                                          //  var newstr = classNames.split(' ')[0];
+                                           // var indexofLookup = newstr.substr(15,newstr.length)
+                                           // console.log('newstr>>'+newstr);
+                                            //if(indexofLookup!= '')
+                                            //  TimeType(0);
+                                         });*/
+                                        
+                                    </script>
+                                    
+                                </apex:outputPanel>
+                            </apex:form>
+                        </div>
+                    
+                    </div>     
+                    <br/><br/>
+                     <!-- Page Footer-->
+                    <span class="nonslds">
+                        <div class="footer">
+                            <div class="footer-socials half-bottom">
+                                <a href="#" class="footer-share show-share-bottom"><i class="fa fa-share-alt"></i></a>
+                                <a href="#" class="footer-up"><i class="fa fa-angle-up"></i></a>
+                            </div>
+                            <p class="center-text">&copy; 2017 Talent Rover. All rights reserved.</p>
+                        </div>   
+                    </span>
+                </div>
+            </div>
+            <script>
+                arrObj = [];
+                function removeLineItem()
+                {
+                    $('.errorMsg').remove();
+                    $('.manualRequired').remove();
+                    var ErrorFlag = 0;
+                    $('.requiredField').each(function(){ 
+                        
+                        console.log('--- Value ---'+this.value.trim());
+                        if(this.value.trim() == '')
+                        {
+                            $(this).after(function() {
+                                
+                                if($(this).parent().attr('id') != undefined)
+                                {
+                                    $("#`"+$(this).parent().attr('id').substring(10, $(this).parent().attr('id').length)).removeClass("out");
+                                    $("#collapseme"+$(this).parent().attr('id').substring(10, $(this).parent().attr('id').length)).addClass("in");
+                                    
+                                    var rowNum =  $(this).parent().attr('id').substring(10, $(this).parent().attr('id').length);
+                                    
+                                    $('#'+$('.clsRecordType'+rowNum).val()+''+rowNum).show();
+                                }
+                                else if($(this).parent().parent().attr('id') != undefined)
+                                {
+                                    $("#collapseme"+$(this).parent().parent().attr('id').substring(10, $(this).parent().parent().attr('id').length)).removeClass("out");
+                                    $("#collapseme"+$(this).parent().parent().attr('id').substring(10, $(this).parent().parent().attr('id').length)).addClass("in");
+                                }
+                                
+                                   
+                                
+                                return "<div style=color:red; class=manualRequired > Error: You must enter a value</div>";
+                                
+                            });
+                            
+                            ErrorFlag = 1;
+                        }
+                    });
+                    
+                    
+                    if(ErrorFlag == 1)
+                    {
+                        console.log('--- Test 1---');
+                        return false;
+                        
+                    }
+                    else
+                    {
+                        console.log('--- Test 0 ---');
+                        return true;
+                    }
+                    
+                    
+                    
+                   /* 
+                    
+                    arrObj = [];
+                    var count = 0;
+                     $('.clsSelect').each(function(){
+                        var selectedTypeId = $(this).val();
+                        mapObj = {}; //For error Handle
+                        var int = 0;
+                        mapObj.Id = selectedTypeId+''+count;
+                       
+                        $('.clsAddDetails'+count).each(function(){
+                            
+                            if(selectedTypeId+''+count != $(this).attr('id') )
+                            {
+                                 $(this).remove();
+                                
+                            }
+                        });
+                        
+                        //Code for capturing data before adding new Line item/Save
+                        // to restore data again on error
+                        $('.clsAddDetails'+count+'  input,.clsComment'+count+' textarea').each(function(){
+
+                            mapObj[int] = this.value; 
+                            int++;
+                         });
+                        arrObj.push(mapObj); 
+                        
+                        count += 1;
+                        
+                    }); */
+                    
+                    
+                }
+                    
+                
+                 //$("#idBackDrop").css("height", $('.slds').height()+'px'); 
+                 
+                  $( document ).ready(function() {
+                     console.log('---- height ----'+$('.slds-snap-content').height());
+                    $('.footer').css('top', ($('.slds-snap-content').height()-200)+'px');
+                });
+
+                 $('.slds-tabs__item').on('click', function(){
+                     $(this).addClass('slds-active');
+                     $(this).find('a').attr('aria-selected', true);
+                     var $contentToShow = $('#'+$(this).find('a').attr('aria-controls'));
+                     $contentToShow.removeClass('slds-hide');
+                     $contentToShow.addClass('slds-show');
+                    
+                     $(this).siblings().removeClass('slds-active');
+                     $(this).siblings().find('a').attr('aria-selected', false);
+                     $contentToShow.siblings('.slds-tabs__content').removeClass('slds-show');
+                     $contentToShow.siblings('.slds-tabs__content').addClass('slds-hide');
+                    });
+                    
+                //Expand Collapse
+                $(document).ready(function () {
+                    $(".data").hide();
+                });
+    
+                //DateTime Picker
+                $(function() {
+                    $( ".clsdateTime" ).datepicker();
+                });
+                
+                //Popover for Comments
+                $('.clsPop').hover(function(e){
+                   $('#popover'+e.currentTarget.id).show();  
+                   
+                   $('#popover'+e.currentTarget.id).css({'left':e.pageX - 10,'top':e.pageY + 5});
+               }); 
+               
+               //Close Popover for Comments
+               $( ".clsPop" ).mouseleave(function(e){
+                   console.log('out'); 
+                   $('#popover'+e.currentTarget.id).hide();  
+               });
+                
+                
+                //Call Ifram action function to upload the documents
+                function uploadResume()
+                {
+                    var isFileUpload = false;
+                    
+                    document.getElementById('idUploadDoc').innerHTML = '';
+                   
+                    if($('#uploadFileIframe').contents().find('[id$=inputUpload]').val() != undefined && $('#uploadFileIframe').contents().find('[id$=inputUpload]').val() != '')
+                    {
+                        isFileUpload = true;
+                        showLoading();
+                        document.getElementById('uploadFileIframe').contentWindow.UploadExpenseAttachment(); 
+                    }
+                    else
+                    {
+                        document.getElementById('idUploadDoc').innerHTML = 'Please choose a document to upload';
+                    }
+                }
+                
+                //Action Status for Uploading document
+                function showLoading()
+                {
+                    
+                    document.getElementById("idBackDrop").className = document.getElementById("idBackDrop").className.replace( /(?:^|\s)slds-modal-backdrop--close(?!\S)/g , ' slds-modal-backdrop--open');
+                    document.getElementById("outPopUp").style.display = '';
+                    
+                }
+                
+                function closeLoading()
+                {
+                    document.getElementById("outPopUp").style.display = 'none';
+                    document.getElementById("idBackDrop").className = document.getElementById("idBackDrop").className.replace( /(?:^|\s)slds-modal-backdrop--open(?!\S)/g , ' slds-modal-backdrop--close');
+                }
+                
+                //End Action status for Uploading document
+                
+                //Error Message banner for DML opertaions
+                function ShowErrorMessage(strMessage)
+                {
+                    if(strMessage != '')
+                        document.getElementById("showErrorMessage").style.display = ''; 
+                    else
+                        document.getElementById("showErrorMessage").style.display = 'none'; 
+                        
+                   checkErrorSection();
+                } 
+                
+                function showUploadMessage(Message, isUploadSuccess)
+                {
+                   
+                    //document.getElementById("idUploadBan").style.display = 'none';
+                    document.getElementById("idUploadNotification").style.display = 'none';
+                    document.getElementById('uploadMessageSuccessBanner').style.display = 'none';
+                    //document.getElementById('uploadMessageErrorBanner').style.display = 'none';
+                    
+                   
+                   if(isUploadSuccess == 'true' && Message != '')
+                   {
+                        $('#documentTab').addClass('slds-active');
+                        $('#documentTab').find('a').attr('aria-selected', true);
+                        var $contentToShow = $('#'+$('#documentTab').find('a').attr('aria-controls'));
+                        $contentToShow.removeClass('slds-hide');
+                        $contentToShow.addClass('slds-show');
+                        
+                        $('#documentTab').siblings().removeClass('slds-active');
+                        $('#documentTab').siblings().find('a').attr('aria-selected', false);
+                        $contentToShow.siblings('.slds-tabs__content').removeClass('slds-show');
+                        $contentToShow.siblings('.slds-tabs__content').addClass('slds-hide');
+                        
+                        //document.getElementById('messageUploadBannerEmpty').style.display = 'none';
+                        document.getElementById("uploadMessageSuccessBanner").style.display = '';
+                        document.getElementById("idUploadNotification").style.display = '';
+                        if(document.getElementById("messageUploadBannerEmpty") != null)
+                            document.getElementById("messageUploadBannerEmpty").style.display = 'none';
+                         
+                     
+                   }
+                  /* else if(Message != '')
+                   {
+                       document.getElementById('uploadMessageErrorBanner').style.display = '';
+                       document.getElementById("idUploadBan").style.display = '';
+                   }*/
+                   
+                   closeLoading();
+                }
+
+                function convertUTCDateToLocalDate(date) {
+                   var newDate = new Date(date.getTime()+date.getTimezoneOffset()*60*1000);
+            
+                   var offset = date.getTimezoneOffset() / 60;
+                   var hours = date.getHours();
+            
+                   newDate.setHours(hours - offset);
+            
+                   return newDate;   
+                }
+                
+                //Delete Table row once click on Delete Icon 
+                function deleteRow(rowNum)
+                {
+                    $('.clsAddDetails'+rowNum+' input,.clsComment'+rowNum+' textarea').each(function(){
+                           
+                         this.value = '';
+                    }); 
+                    
+                    $('#newExpItem'+rowNum).remove();
+                    deleteItem(rowNum);
+                }
+                
+                function removeError()
+                {
+                    $('.errorMsg').remove();
+                }
+                
+                function redirectFunct()
+                {
+                    console.log('-----valuw','{!isNewExp}');
+                    if('{!isNewExp}' == 'true')
+                    {
+                        console.log('-----came in if');
+                        window.location.href = '{!$Site.Prefix}/ExpenseReports';
+                    }
+                    else
+                    {
+                        console.log('---id----','{!expRepId}');
+                        window.location.href = '{!$Site.Prefix}/CandidateExpenseReportDetail?ExpRep={!expRepId}';
+                    }
+                }
+            </script>
+        </apex:define>
+    </apex:composition>
+  </html>    
+</apex:page>

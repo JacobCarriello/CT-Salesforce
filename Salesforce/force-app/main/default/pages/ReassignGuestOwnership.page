@@ -1,0 +1,148 @@
+<apex:page controller="ReassignGuestOwnershipController" sidebar="false" showHeader="false">
+   <head>
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+   </head>
+
+    <script type="text/javascript">
+        /**
+         * set row level checkboxes based on "all checkbox" state
+         */
+        function toggleSelectAll(checkbox){
+
+            var $j = jQuery.noConflict();
+
+            if(checkbox.checked){
+                $j( ".rowCheckbox" ).prop('checked', true);
+            }else{
+                $j( ".rowCheckbox" ).prop('checked', false);
+            }
+        }
+
+        /**
+         * set "all checkbox" based on state of row level checkboxes
+         */
+        function toggleItem(){
+
+            var $j = jQuery.noConflict();
+            var cbs = $j('.rowCheckbox');
+
+            //all row level checkboxes selected
+            if(cbs.filter(':not(:checked)').length==0){
+                $j("input[id$=selectAll]").prop('checked', true);
+            }else{
+                $j("input[id$=selectAll]").prop('checked', false);
+            }
+        }
+    </script>
+
+    <div class="apexp">
+        <div class="pbBody">
+            <apex:pageMessages escape="false" id="pMessage"/>
+
+            <apex:form id="pForm">
+                <apex:actionFunction name="callAction" action="{!callLookup}"/>
+
+                <apex:pageBlock title="Transfer Site User Ownership" id="pbHeader">
+                    <p>For security reasons the default user below needs to be set, so that records created by the site
+                        user will be assigned to a default user without public access. Make sure the selected default
+                        user has at least read permission for the objects you need to transfer records.
+                    </p>
+                </apex:pageBlock>
+
+                <apex:outputPanel id="opConvertedObjects">
+
+                    <apex:pageBlock rendered="{!convertObjectList.size > 0}">
+                        <apex:pageBlockSection columns="2" title="Select User" collapsible="false">
+                                <!--<apex:inputField value="{!user.Id}" id="User"/>-->
+                            <apex:inputText label="User" style="float:left;" value="{!userName}">
+                                <apex:image value="https://api.icons8.com/download/19343120d27c16dd3e9d21ad3aa637f94fd4d5fa/Android_L/PNG/256/Very_Basic/search-256.png" height="20" onclick="callAction()"/>
+                            </apex:inputText>
+                        </apex:pageBlockSection>
+                    </apex:pageBlock>
+
+                    <apex:pageBlock title="Records to convert" id="pbConvertObjects" rendered="{!convertObjectList.size > 0}">
+                        <!-- Process Conversion Page Message -->
+                        <apex:outputPanel rendered="{!jobIsRunning || isQueueableJobRunning}">
+                            <apex:pageMessage severity="info" strength="2" title="Job Is Running"/>
+                        </apex:outputPanel>
+                        <!-- PageBlock Buttons -->
+                        <apex:pageBlockButtons location="bottom">
+                            <apex:actionStatus id="startConvertStatus">
+                                <apex:facet name="start">
+                                    <apex:commandButton value="Start" disabled="true"/>
+                                </apex:facet>
+                                <apex:facet name="stop">
+                                    <apex:commandButton value="Start" disabled="{!jobIsRunning || isQueueableJobRunning}" action="{!ConvertSiteUserOwnership}" rendered="{!convertObjectList.size > 0}" rerender="actPollItem,pMessage,pbConvertObjects" status="startConvertStatus"/>
+                                </apex:facet>
+                            </apex:actionStatus>
+                        </apex:pageBlockButtons>
+                        <apex:pageBlockSection columns="1">
+                            <!-- Table with objects to convert -->
+                            <apex:pageBlockTable id="convertTable" value="{!convertObjectList}" var="co">
+                                <apex:column style="width:25px">
+                                    <apex:facet name="header">
+                                        <apex:inputCheckbox id="selectAll" onclick="toggleSelectAll(this);" disabled="{!jobIsRunning || isQueueableJobRunning}"/>
+                                    </apex:facet>
+                                    <apex:inputCheckbox styleClass="rowCheckbox" onclick="toggleItem();" value="{!co.Selected}" disabled="{!jobIsRunning || isQueueableJobRunning}"/>
+                                </apex:column>
+                                <apex:column style="width:25px">
+                                    <apex:facet name="header">
+                                        <apex:image value="/img/icon/warning16.png"/>
+                                    </apex:facet>
+                                    <apex:image value="/img/icon/warning16.png" rendered="{!co.ErrorMessages != ''}" title="{!co.ErrorMessages}"/>
+                                </apex:column>
+                                <apex:column >
+                                    <apex:facet name="header">
+                                        <apex:outputText value="Object" escape="false"/>
+                                    </apex:facet>
+                                    <apex:outputText value="{!co.ObjectLabel}" escape="false"/>
+                                </apex:column>
+                                <apex:column >
+                                    <apex:facet name="header">
+                                        <apex:outputText value="Number of records" escape="false" />
+                                    </apex:facet>
+                                    <apex:commandLink value="Show count" action="{!RevealRecordCount}" rerender="convertTable" rendered="{!!co.DisplayCount}">
+                                        <apex:param name="selectedObject" value="{!co.ObjectApiName}" assignTo="{!selectedObjectApiName}"/>
+                                    </apex:commandLink>
+                                    <apex:outputText value="{!co.RecordCount}{!IF(co.RecordCount == maxLimit, '+', '')}" rendered="{!co.DisplayCount}" escape="false"/>
+                                    &nbsp;
+                                    <apex:commandLink value="Refresh count" action="{!RevealRecordCount}" rerender="convertTable" rendered="{!co.DisplayCount}" >
+                                        <apex:param name="selectedObject" value="{!co.ObjectApiName}" assignTo="{!selectedObjectApiName}"/>
+                                    </apex:commandLink>
+                                </apex:column>
+                                <apex:column >
+                                    <apex:facet name="header">
+                                        <apex:outputText value="CSV File" escape="false"/>
+                                    </apex:facet>
+                                    <apex:outputPanel >
+                                        <b><a href="/apex/csvDownloader?objType={!co.ObjectLabel}" target="_blank">{!co.ObjectLabel}</a></b>
+                                	</apex:outputPanel> 
+                                </apex:column>
+                            </apex:pageBlockTable>
+                        </apex:pageBlockSection>
+                        <apex:pageBlockSection columns="1" title="Advanced settings" collapsible="false">
+                            <!-- Batch Size Select Option -->
+                            <apex:pageBlockSectionItem rendered="{!convertObjectList.size > 0}" helpText="Help text">
+                                <apex:outputText value="Batch size"/>
+                                <apex:selectList value="{!selectedBatchSize}" size="1" disabled="{!jobIsRunning || isQueueableJobRunning}">
+                                    <apex:selectOptions value="{!batchSizeSelectList}"/>
+                                </apex:selectList>
+                            </apex:pageBlockSectionItem>
+                        </apex:pageBlockSection>
+                    </apex:pageBlock>
+
+                    <apex:pageBlock rendered="{!convertObjectList.size == 0}">
+                        <p>All records is up to date</p>
+                    </apex:pageBlock>
+
+                </apex:outputPanel>
+
+                <apex:outputPanel id="actPollItem">
+                    <apex:actionPoller interval="5" action="{!RecalculateConvertObjects}" enabled="{!jobIsRunning || isQueueableJobRunning}" rerender="opConvertedObjects"/>
+                </apex:outputPanel>
+            </apex:form>
+
+        </div>
+    </div>
+
+</apex:page>

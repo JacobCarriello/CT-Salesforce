@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApexComponent xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>41.0</apiVersion>
+    <label>Medestar Candidate Template V2</label>
+    <packageVersions>
+        <majorNumber>3</majorNumber>
+        <minorNumber>295</minorNumber>
+        <namespace>TR1</namespace>
+    </packageVersions>
+    <packageVersions>
+        <majorNumber>2</majorNumber>
+        <minorNumber>9001</minorNumber>
+        <namespace>TRSCHED</namespace>
+    </packageVersions>
+</ApexComponent>

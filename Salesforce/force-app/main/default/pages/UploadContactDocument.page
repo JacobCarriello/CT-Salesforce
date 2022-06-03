@@ -1,0 +1,73 @@
+<apex:page controller="RC_UploadContactDocument" sidebar="false" showHeader="false" standardStylesheets="false">
+    <apex:form id="FileUploadForm" style="margin-top:-8px;">
+        
+        <apex:actionFunction id="uploadDocument" name="uploadDocument" action="{!uploadDocument}" />
+        <apex:actionFunction id="UploadExpenseAttachment" name="UploadExpenseAttachment" action="{!UploadExpenseAttachment}" /> 
+            
+            <span id = "docType" > 
+				<apex:inputHidden value="{!strDocumentType}" />
+			</span>
+			
+            <apex:outputPanel id="FilePostRenderSection" rendered="{!IF(strMessage == '', false, true)}" layout="none"> 
+                <script>
+                    parent.getUploadDetails('{!strMessage}', '{!isUploadSuccess}');
+                </script>
+            </apex:outputPanel> 
+            
+            <apex:outputPanel id="FilePostRenderSection1" rendered="{!IF(ExpId == '', false, true)}" layout="none"> 
+                <script>
+                    parent.getUploadDetails('{!strMessage}', '{!isUploadSuccess}');
+                </script>
+            </apex:outputPanel> 
+            
+            <apex:outputPanel >
+                <div id="fileUploadDiv" style="color:#7C7F83;display: -webkit-box; display:flex; ">
+                    <!--<apex:inputFile id="inputUpload" value="{!objAttachment.Body}" fileSize="{!objAttachment.BodyLength}" size="30" 
+                         onchange="calFile(this)" Filename="{!objAttachment.Name}" contentType="{!objAttachment.ContentType}"/>-->
+                         <apex:inputFile value="{!attbody}" fileName="{!attname}" contentType="{!atttype}" id="inputUpload" onchange="calFile(this)"/>
+                    <!-- <a id = "removeLink" onclick = "removeUploadedFile();" style = "cursor: pointer; color: blue;display:none;">Remove</a> -->
+                </div>
+            </apex:outputPanel> 
+    </apex:form>
+    
+    <script>
+        function upload(documentType)
+        {
+    	     document.getElementById('docType').firstChild.value= documentType;
+    	     uploadDocument();
+    	 }
+        
+        var uploadFileObj;
+        var attId;
+        function calFile(fileObj){
+            uploadFileObj = fileObj;
+            if(fileObj.files.length > 0) {
+                //validate file attachment is not > 500k
+                var uploadFileSize = fileObj.files[0].size;
+                //var uploadFileName = fileObj.files[0].name;
+                //uploadFileName = uploadFileName.slice(0,70);
+                
+               
+                //console.log('dddd'+uploadFileName);
+                if(uploadFileSize > 1024 * 1024 * 25){
+                    alert('File uploads must be less than 25 Mb in size. Your file size is: '+(Math.round(uploadFileSize/(1024*1024))) + 'Mb');
+                    fileObj.value = '';
+                }
+                else{
+                    //if(uploadFileObj.value !=  undefined && uploadFileObj.value != '')        
+                        //document.getElementById('removeLink').style.display = 'block';
+                }
+            }
+            else{
+                // no file attached, if not required, call save method
+            }
+        }
+        
+        function removeUploadedFile()
+        {
+            uploadFileObj.value = '';
+            document.getElementById('removeLink').style.display = 'none';
+        }
+        
+    </script>
+</apex:page>

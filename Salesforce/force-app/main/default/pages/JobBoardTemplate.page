@@ -1,0 +1,187 @@
+<apex:page standardStyleSheets="true" showHeader="false" sidebar="false" cache="false">
+<title>Job Board | THMED</title>
+<link rel="icon" type="image/png"/>
+<!--link rel="icon" type="image/png" href="{!$Resource.JobBoardFavicon}" /-->
+<link rel="stylesheet"  type="text/css" href="http://thmedstaffing.com/wp-content/themes/scroller/styles/font-awesome-ie7.css?ver=4.7.2"/>
+  <link rel="stylesheet"  type="text/css" href="http://thmedstaffing.com/wp-content/themes/Divi/style.css?ver=3.0.78"/>
+<link rel="stylesheet"  type="text/css" href="http://thmedstaffing.com/wp-content/cache/et/500/et-core-unified-15177968586516.min.css"/>
+
+  <apex:stylesheet value="{!URLFOR($Resource.JobBoardTemplate, 'css/bootstrap-theme.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.JobBoardTemplate, 'css/bootstrap-theme.min.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.JobBoardTemplate, 'css/bootstrap.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.JobBoardTemplate, 'css/bootstrap.min.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.JobBoardTemplate, 'css/selectone-job-board.css')}" />
+        <apex:includeScript value="{!URLFOR($Resource.JobBoardTemplate, 'js/bootstrap.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.JobBoardTemplate, 'js/bootstrap.min.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.JobBoardTemplate, 'js/npm.js')}" />
+        
+        <!-- Brandon R, provided files-->
+        <apex:stylesheet value="" />
+        <!--apex:stylesheet value="{!$Resource.JobBoard_CSS}" /-->
+        <apex:stylesheet value="{!$Resource.JobBoard_CSSmedestar}" />
+        <apex:stylesheet value="{!$Resource.style}" />
+        <apex:stylesheet value="{!URLFOR($Resource.JobBoardTemplate, 'css/job-board-cos-styles.css')}" />
+        <apex:includeScript value="{!URLFOR($Resource.JobBoardTemplate, 'js/jquery.min.js')}" />
+        <apex:includeScript value="{!URLFOR($Resource.JobBoardTemplate, 'js/responsive-nav.min.js')}" />        
+        <br/>
+<script>
+
+$( document ).ready(function() {
+  var nav = responsiveNav("#navWrap",{label: "&nbsp;",customToggle: "customToggle"});
+});
+
+</script>
+
+<style>
+.et_pb_row {
+    position: relative;
+    width: 31%;
+    max-width: 1080px;
+    margin: auto;
+}
+.et_overlay:before, .et_pb_bg_layout_light .et_pb_more_button, .et_pb_bg_layout_light .et_pb_newsletter_button, .et_pb_bg_layout_light .et_pb_promo_button, .et_pb_bg_layout_light.et_pb_module.et_pb_button, .et_pb_contact_submit, .et_pb_filterable_portfolio .et_pb_portfolio_filters li a.active, .et_pb_filterable_portfolio .et_pb_portofolio_pagination ul li a.active, .et_pb_gallery .et_pb_gallery_pagination ul li a.active, .et_pb_member_social_links a:hover, .et_pb_pricing li a, .et_pb_pricing_table_button, .et_pb_sum, .woocommerce-page #content input.button:hover .et_pb_widget li a:hover{
+color: #fff !important;
+}
+input[type=text] {
+    width: 130px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: white;
+    background-image: url('searchicon.png');
+    background-position: 10px 10px; 
+    background-repeat: no-repeat;
+    padding: 12px 20px 12px 40px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+}
+
+input[type=text]:focus {
+    width: 100%;
+}
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+ <div calss="container">                                           
+    <header id="main-header" data-height-onload="80" data-height-loaded="true" data-fixed-height-onload="54" class="et-fixed-header" style="top: -20px;">
+            <div class="container clearfix et_menu_container">
+                            <div class="logo_container" style="width:16% !important;float: left;" >
+                    <span class="logo_helper"></span>
+                    <a href="http://thmedstaffing.com/">
+                        <img src="http://thmedstaffing.com/wp-content/uploads/2017/10/THMED-simple-logo.png" alt="THMED" id="logo" data-height-percentage="54" />
+                    </a>
+                </div>
+                <div id="et-top-navigation" data-height="66" data-fixed-height="40" style="padding-left: 174px;">
+                                            <nav id="top-menu-nav">
+                        <ul id="top-menu" class="nav"><li id="menu-item-126" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-126"><a href="http://thmedstaffing.com/about-us/">About Us</a></li>
+<li id="menu-item-149" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-149"><a href="http://thmedstaffing.com/thmed-careers/">#WeAreTHMED</a></li>
+<li id="menu-item-642" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-642"><a href="http://thmedstaffing.com/blog/">Latest News</a></li>
+<li id="menu-item-213" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-213"><a href="http://thmedstaffing.com/contact-us/">Contact Us</a></li>
+</ul>                       </nav>
+                    
+                    
+                    
+                                        <div id="et_top_search">
+                        <span class="fa fa-search"></span>
+                    </div>
+                    
+                    <div id="et_mobile_nav_menu">
+                <div class="mobile_nav closed">
+                    <span class="select_page">Select Page</span>
+                    <span class="mobile_menu_bar mobile_menu_bar_toggle"></span>
+                <ul id="mobile_menu" class="et_mobile_menu"><li id="menu-item-126" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-126 et_first_mobile_item"><a href="http://thmedstaffing.com/about-us/">About Us</a></li>
+<li id="menu-item-149" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-149"><a href="http://thmedstaffing.com/thmed-careers/">#WeAreTHMED</a></li>
+<li id="menu-item-642" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-642"><a href="http://thmedstaffing.com/blog/">Latest News</a></li>
+<li id="menu-item-213" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-213"><a href="http://thmedstaffing.com/contact-us/">Contact Us</a></li>
+</ul></div>
+            </div>              </div> <!-- #et-top-navigation -->
+            </div> <!-- .container -->
+            <div class="et_search_outer">
+                <div class="container et_search_form_container">
+                    <form>
+  <input type="text" name="search" placeholder="Search.."/>
+</form>
+                </div>
+            </div>
+        </header>
+        
+        <div id="BodyWrapper" class="row" style="margin-top:1%;padding:0px;">
+        <apex:insert name="body"/>
+        </div>
+        <br/>
+        
+<div class="et_pb_section  et_pb_section_4 et_pb_with_background et_section_regular">
+                
+                
+                
+                    <div class="et_animated et_pb_row et_pb_row_5 fade" style="animation-duration: 1000ms; animation-delay: 0ms; opacity: 0; animation-timing-function: ease-in-out;">
+                
+                
+                <div class="et_pb_column et_pb_column_4_4  et_pb_column_12">
+                
+                
+                <div class="et_pb_text et_pb_module et_pb_bg_layout_dark et_pb_text_align_left  et_pb_text_3" >
+                
+                
+                <div class="et_pb_text_inner">
+                    
+<h1 style="text-align: center;"><strong>Where to next?</strong></h1>
+
+                </div>
+            </div> <!-- .et_pb_text -->
+            </div> <!-- .et_pb_column -->
+            </div> <!-- .et_pb_row --><div class=" et_pb_row et_pb_row_6">
+                
+                
+                <div class="et_pb_column et_pb_column_1_3  et_pb_column_13">
+                
+                
+                <div class="et_pb_button_module_wrapper et_pb_module et_pb_button_alignment_center">
+                <a class="et_pb_button et_animated et_pb_button_0 et_pb_module et_pb_bg_layout_light fade" href="/featured-jobs/" style="animation-duration: 1000ms; animation-delay: 0ms; opacity: 0; animation-timing-function: ease-in-out;">Search Open Positions </a>
+            </div>
+            </div> <!-- .et_pb_column --><div class="et_pb_column et_pb_column_1_3  et_pb_column_14">
+                
+                
+                <div class="et_pb_button_module_wrapper et_pb_module et_pb_button_alignment_center">
+                <a class="et_pb_button et_animated et_pb_button_1 et_pb_module et_pb_bg_layout_light fade" href="/conta" style="animation-duration: 1000ms; animation-delay: 0ms; opacity: 0; animation-timing-function: ease-in-out;">Contact Us</a>
+            </div>
+            </div> <!-- .et_pb_column --><div class="et_pb_column et_pb_column_1_3  et_pb_column_15">
+                
+                
+                <div class="et_pb_button_module_wrapper et_pb_module et_pb_button_alignment_center">
+                <a class="et_pb_button et_animated et_pb_button_2 et_pb_module et_pb_bg_layout_light fade" href="/thmed-news/" style="animation-duration: 1000ms; animation-delay: 0ms; opacity: 0; animation-timing-function: ease-in-out;">Latest News</a>
+            </div>
+            </div> <!-- .et_pb_column -->
+            </div> <!-- .et_pb_row -->
+                
+            </div></div>
+        
+        <!--div class="row"><div class="outerWrap simpleFooter"><div class="innerWrap"><a href="http://thmedstaffing.com/" target="_blank"><img src="{!$Resource.JobBoard_Client_Logo}"/></a><p>&copy; Talent Rover. All Rights Reserved.</p></div></div></div-->
+                                            
+    
+<!-- Start of Async HubSpot Analytics Code -->
+  <script type="text/javascript">
+    (function(d,s,i,r) {
+      if (d.getElementById(i)){return;}
+      var n=d.createElement(s),e=d.getElementsByTagName(s)[0];
+      n.id=i;n.src='//js.hs-analytics.net/analytics/'+(Math.ceil(new Date()/r)*r)+'/436003.js';
+      e.parentNode.insertBefore(n, e);
+    })(document,"script","hs-analytics",300000);
+  </script>
+<!-- End of Async HubSpot Analytics Code -->
+
+<!-- start Google Analytics code -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-61605107-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!--end Google Analytics code -->
+
+        <br/>
+</apex:page>

@@ -1,0 +1,65 @@
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false" controller="RC_ViewResume" action="{!validateHtmlUrl}">
+    <style>
+        .slds-scope .messageText {
+            color: white !important;
+        }
+        .slds-scope .messageText h4 {
+            display: none !important;
+        }
+        .slds-scope .message {
+            background-image: -webkit-linear-gradient(45deg, rgba(0, 0, 0, 0.025) 25%, transparent 25%, transparent 50%, rgba(0, 0, 0, 0.025) 50%, rgba(0, 0, 0, 0.025) 75%, transparent 75%, transparent);
+            background-image: linear-gradient(45deg, rgba(0, 0, 0, 0.025) 25%, transparent 25%, transparent 50%, rgba(0, 0, 0, 0.025) 50%, rgba(0, 0, 0, 0.025) 75%, transparent 75%, transparent);
+            background-size: 64px 64px;
+            background-color: #c23934;
+            margin: 0px !important;
+            border-radius: 0px !important;
+            border: 0px !important;
+        }
+        .slds-scope .confirmM3 {
+            background-color: #04844b !important;
+        }
+        .slds-scope .message table tr td:first-child {
+            display: none !important;
+        }
+        .slds-scope .messageText {
+            text-align: center !important;
+        }
+        .slds-scope .lookupInput  a {
+            border: 0px !important;
+            padding: 0px !important;
+            background-color: transparent !important;
+            min-height: 0px !important;
+            width: 24px !important;
+        }
+        .slds-scope td.messageCell {
+            display: block;
+        }
+    </style>
+    <div class="slds-scope">
+        <apex:pageMessages />
+    </div>
+    <script>
+    	var resumeUrl = '{!resumeUrl}';
+    	var getResumeHtml = function(extUrl) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", extUrl, true);
+            xhr.onreadystatechange = function() {
+                if(this.readyState === 4 && this.status === 200) {
+                    var newElement = document.createElement('p');
+                    newElement.innerHTML = this.responseText;
+                    document.getElementById("resume").appendChild(newElement);
+                }
+            };
+            xhr.onerror = function() {};
+            xhr.send();
+        };
+       	var init = function() {
+            if({!isSuccess}) {
+                getResumeHtml(resumeUrl);
+            }
+        }
+    	document.addEventListener('DOMContentLoaded', init);
+    </script>
+    <div id="resume">
+    </div>   
+</apex:page>

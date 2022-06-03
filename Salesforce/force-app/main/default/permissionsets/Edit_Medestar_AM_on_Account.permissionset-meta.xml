@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Edit Medestar AM field on Account</description>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Medestar_AM__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Edit Medestar AM on Account</label>
+    <license>Salesforce Platform</license>
+</PermissionSet>

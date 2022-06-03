@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>37.0</apiVersion>
+    <availableInTouch>false</availableInTouch>
+    <confirmationTokenRequired>false</confirmationTokenRequired>
+    <description>Add Selected Associated Qualifications</description>
+    <label>CloneAssociatedQualifications</label>
+    <packageVersions>
+        <majorNumber>3</majorNumber>
+        <minorNumber>295</minorNumber>
+        <namespace>TR1</namespace>
+    </packageVersions>
+</ApexPage>

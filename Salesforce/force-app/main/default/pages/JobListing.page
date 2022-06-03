@@ -1,0 +1,910 @@
+<apex:page controller="RC_JobListing" showHeader="false" standardStylesheets="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false" action="{!redirectUnAuthenticatedUser}" >
+    <!-- action="{!redirectUnAuthenticatedUser}" -->
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <head>
+            <title>Candidate Job Listing</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1"/>
+            <apex:stylesheet value="{!URLFOR($Resource.SLDS092, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+            <apex:includeScript value="{!URLFOR($Resource.TB_JS, '/jQuery-1.11.3.min.js')}" />
+            <apex:includeScript value="{!URLFOR($Resource.TB_JS, '/jquery-ui-1.11.3.js')}" />
+            <meta name="viewport" content="width=device-width, initial-scale=1"/> 
+            <style>
+                .sfdc_richtext
+                {
+                white-space: initial; 
+                }
+                .slds-modal__header h2.slds-text-heading--medium 
+                {
+                white-space: pre-line; 
+                }
+                
+                .slds-modal__content .htmlDetailElementTable td, .htmlDetailElementTable th, .htmlDetailElementTable tr{
+                    border-top: 0px solid #d8dde6 !important;
+                    text-align: left !important;
+                }
+                
+                .slds-modal__content .htmlDetailElementTable tbody tr:hover > td, tbody tr:hover > th{
+                    box-shadow: none  !important;
+                    background-color: white !important;
+                }
+            
+            </style>
+        </head>
+        <apex:composition template="RC_CommunityTemplate">
+            <apex:define name="body">
+                <style>
+                    .errorMsg{
+                    color:red;
+                    }
+                    .contactTextarea {
+                    padding-left: 20px; 
+                    padding-right: 20px;
+                    padding-top: 9px;
+                    padding-bottom: 9px;
+                    font: 12px Arial; 
+                    color: #666666; 
+                    margin-bottom: 0; 
+                    height: 45px; 
+                    }
+                    #outPopUp{
+                    position:absolute;
+                    z-index:9999999;
+                    top:50%;
+                    left:47%;
+                    }
+                    .slds-table--bordered{
+                    border-left: 1px solid #d8dde6;
+                    border-right: 1px solid #d8dde6;
+                    } 
+                    .closeButton{
+                    font-size: 18px;
+                    FONT-WEIGHT: 600;
+                    }
+                </style>
+                <div style="height:60px;">&nbsp;</div>
+                <div class="slds-all-elements">
+                    <script>
+                        function closeBanner(closedId)
+                        {
+                            document.getElementById(closedId).style.display = 'none';
+                        }
+                    </script>
+                    <div id="content" class="slds-snap-content" style="z-index:100">
+                        <div class="slds-content" style="min-height:500px;">
+                            <apex:form id="formId">
+                                <body>
+                                    <div class="slds">
+                                        <apex:outputPanel id="errors">
+                                            <div id = "exceptionMsgClientPanel" class="slds-notify slds-notify--alert slds-theme--error slds-theme--alert-texture" role="alert">
+                                                <div class="slds-notify__close" id="idClose"  onClick="closeBanner('exceptionMsgClientPanel');" style="cursor:pointer; display:{!IF(isSuccess, '','none')}"> 
+                                                    <span class="closeButton">x</span> 
+                                                </div>
+                                                <div class="notify__content slds-grid">
+                                                    <div class="slds-col slds-align-middle">
+                                                        <h2 id = "msgId" class="slds-text-heading--small msgId">
+                                                            <apex:messages />
+                                                        </h2>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <script>
+                                                if( $('#msgId').parent().children().length==1) 
+                                                     $('#exceptionMsgClientPanel').remove();
+                                                 else
+                                                    $('#successPanel').remove();
+                                            </script>
+                                            <apex:outputPanel rendered="{!isSuccess}">
+                                                <div id = "successPanel" class="slds-notify slds-notify--alert slds-theme--success slds-theme--alert-texture" role="alert" style="display:{!IF(strMessage != '', '','none')}">
+                                                    <div class="slds-notify__close" id="idClose" onClick="closeBanner('successPanel');" style="cursor:pointer; display:{!IF(isSuccess, '','none')}"> 
+                                                        <span class="closeButton">x</span> 
+                                                    </div>
+                                                    <div class="notify__content slds-grid">
+                                                        <apex:outputPanel styleClass="slds-col slds-align-middle" id="idMsg">
+                                                            <h2 class="slds-text-heading--small ">  
+                                                                <span>{!strMessage}</span>
+                                                            </h2>
+                                                        </apex:outputPanel>
+                                                    </div>
+                                                </div>
+                                            </apex:outputPanel>
+                                        </apex:outputPanel>
+                                        <div class="slds-page-header" role="banner">
+                                            <div class="slds-grid slds-wrap slds-grid--align-spread">
+                                                <div class="slds-col">
+                                                    <div class="slds-media">
+                                                        <div class="slds-media__figure">
+                                                            <span class="slds-avatar slds-avatar--medium">
+                                                            <img src="{!URLFOR($Resource.SLDS092, '/assets/icons/standard/case_60.png')}" style="background-color: #43b4e7;" /> 
+                                                            </span>
+                                                        </div>
+                                                        <div class="slds-media__body">
+                                                            <p class="slds-text-heading--label">{!$User.FirstName} {!$User.LastName}</p>
+                                                            <div class="slds-grid">
+                                                                <h1 class="slds-text-heading--medium slds-m-right--small slds-truncate slds-align-middle">{!IF(strContactType=='candidate','Candidate job listing',if(strContactType=='client','Client Job Listing',IF(strContactType=='c&c','Job Listing','')))}</h1>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="slds-col"> 
+                                                </div>
+                                            </div>
+                                            <div class="slds-grid slds-wrap slds-grid--align-spread slds-page-header__detail-row">
+                                                <apex:repeat value="{!$ObjectType.Contact.Fieldsets.RC_My_Profile_Header}" var="field">
+                                                    <div class="slds-col--padded slds-size--2-of-6 slds-medium-size--2-of-6 slds-large-size--1-of-6">
+                                                        <dl>
+                                                            <dt>
+                                                                <p class="slds-text-heading--label slds-truncate" title="{!field.label}">{!field.label}</p>
+                                                            </dt>
+                                                            <dd>
+                                                                <p class="slds-text-body--regular slds-truncate" title="{!objContact[field]}">
+                                                                    <apex:outputField value="{!objContact[field]}" />
+                                                                </p>
+                                                            </dd>
+                                                        </dl>
+                                                    </div>
+                                                </apex:repeat>
+                                            </div>
+                                        </div>
+                                        <!-- main panel -->
+                                        <!--  c and c -->
+                                        <apex:outputPanel id="mainPanelccCandidate" rendered="{!strContactType == 'c&c'}">
+                                            <!-- my content -->
+                                            <div class="slds-m-top--medium slds-col--padded-large" id="Candidate">
+                                                <h2 class="slds-section-title slds-truncate slds-m-bottom--xx-small">Candidate Job Listing</h2>
+                                                <div class="slds-tabs--scoped">
+                                                    <ul class="slds-tabs--scoped__nav" role="tablist" >
+                                                        <li class="slds-tabs__item slds-text-heading--label slds-active candidateTab" title="Item One" role="presentation" >
+                                                            <a href="#" role="tab" tabindex="0" aria-selected="true" aria-controls="candidate-tab-default-1"  >Available Positions</a> 
+                                                        </li>
+                                                        <li class="slds-tabs__item slds-text-heading--label " title="Item Two" role="presentation">
+                                                            <a href="#" role="tab" tabindex="-1" aria-selected="false" aria-controls="candidate-tab-default-2" >My Job Applications</a> 
+                                                        </li>
+                                                    </ul>
+                                                    <div id="candidate-tab-default-1" class="slds-tabs__content slds-show table-content-padding" role="tabpanel">
+                                                        <apex:outputPanel rendered="{!lstNotAppliedJobs.size == 0}" layout="block" styleClass="slds-m-bottom--medium">
+                                                            <div class="slds-notify slds-notify--alert slds-theme--alert-texture" role="alert" id="messageBannerTab1">
+                                                                <div class="notify__content slds-grid" id="tab1IdNotification">
+                                                                    <apex:outputPanel styleClass="slds-col slds-align-middle">
+                                                                        <h2 class="slds-text-heading--small ">  
+                                                                            <span >No Available Positions</span> 
+                                                                        </h2>
+                                                                    </apex:outputPanel>
+                                                                </div>
+                                                            </div>
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel rendered="{!lstNotAppliedJobs.size > 0}" layout="block" styleClass="slds-m-bottom--medium slds-scrollable--y" style="max-height:200px;">
+                                                            <table id ="sum_table" class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal">
+                                                                <apex:variable value="{!lstFieldsNotApplied.size-1}" var="colCountTab" />
+                                                                <thead>
+                                                                    <tr  class="slds-text-heading--label">
+                                                                        <apex:repeat value="{!lstFieldsNotApplied}" var="field">
+                                                                            <apex:outputPanel rendered="{!AND(NOT(field == 'TR1__Client_Job_Description__c'), NOT(field == 'TR1__Salary_Low__c'), NOT(field == 'TR1__Salary_High__c'))}" layout="none">
+                                                                                <th class="slds-text-heading--x-small slds-size--1-of-{!colCountTab}" scope="col" >
+                                                                                    <b><span class="slds-truncate">{!IF(field == 'RecordTypeId', 'Type',field.Label)}</span></b>  
+                                                                                </th>
+                                                                            </apex:outputPanel>
+                                                                            <apex:outputPanel rendered="{!field == 'TR1__Salary_Low__c'}" layout="none">
+                                                                                <th class="slds-text-heading--x-small slds-size--1-of-{!colCountTab}" scope="col" >
+                                                                                    <b><span class="slds-truncate">Salary</span></b>  
+                                                                                </th>
+                                                                            </apex:outputPanel>
+                                                                        </apex:repeat>
+                                                                        <th class="slds-text-heading--x-small slds-size--1-of-{!colCountTab}" scope="col"></th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <apex:repeat value="{!lstNotAppliedJobs}"  var="objJob">
+                                                                        <tr class="slds-hint-parent">
+                                                                            <apex:repeat value="{!lstFieldsNotApplied}" var="field">
+                                                                                <apex:outputPanel rendered="{!AND(NOT(field == 'TR1__Client_Job_Description__c'), NOT(field == 'TR1__Salary_Low__c'), NOT(field == 'TR1__Salary_High__c'))}" layout="none">
+                                                                                    <td class="slds-size--1-{!colCountTab}" data-label="{!IF(field == 'TR1__Client_Job_Description__c','',IF(field=='RecordTypeId','Type',field.label))}">
+                                                                                        <apex:outputField value="{!objJob[field]}" />
+                                                                                        <apex:outputPanel rendered="{!(field == 'Job_Title__c')}">
+                                                                                            <apex:outputPanel rendered="{!NOT(ISBLANK(objJob['TR1__Client_Job_Description__c']))}" >
+                                                                                                <span  onclick="$('#{!objJob.Id}').show();" style="cursor: pointer;">[...]</span>
+                                                                                            </apex:outputPanel>
+                                                                                            <div id="{!objJob.Id}" style="display:none">
+                                                                                                <div aria-hidden="false" role="dialog" class="slds-modal slds-fade-in-open" >
+                                                                                                    <div class="slds-modal__container">
+                                                                                                        <div class="slds-modal__header">
+                                                                                                            <h2 class="slds-text-heading--medium">{!objJob.job_title__c}</h2>
+                                                                                                        </div>
+                                                                                                        <div class="slds-modal__content">
+                                                                                                            <div id="modalMessage" style="overflow-x:auto;height:300px!important;">
+                                                                                                                <apex:outputField value="{!objJob['TR1__Client_Job_Description__c']}"/>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                        <div class="slds-modal__footer">
+                                                                                                            <div style="cursor:pointer" class="slds-button slds-button--neutral" onclick="closeMessageBanner('{!objJob.Id}');">Close</div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="slds-modal-backdrop slds-modal-backdrop--open" id="modal2"></div>
+                                                                                            </div>
+                                                                                        </apex:outputPanel>
+                                                                                    </td>
+                                                                                </apex:outputPanel>
+                                                                                <apex:outputPanel rendered="{!field == 'TR1__Salary_Low__c'}" layout="none">
+                                                                                    <td class="slds-size--1-{!colCountTab}" data-label="Salary">
+                                                                                       <apex:outputField value="{!objJob['TR1__Salary_High__c']}" rendered="{!(ISBLANK(objJob[field]))}"/> 
+                                                                                       <apex:outputField value="{!objJob[field]}" rendered="{!(ISBLANK(objJob['TR1__Salary_High__c']))}"/>
+                                                                                       <apex:outputPanel rendered="{!AND(NOT(ISBLANK(objJob['TR1__Salary_High__c'])), NOT(ISBLANK(objJob[field])))}">
+                                                                                           <apex:outputField value="{!objJob[field]}" />
+                                                                                                <label> - </label>
+                                                                                           <apex:outputField value="{!objJob['TR1__Salary_High__c']}" />
+                                                                                       </apex:outputPanel> 
+                                                                                    </td>
+                                                                                </apex:outputPanel>
+                                                                            </apex:repeat>
+                                                                            <td class="slds-size--1-of-{!colCountTab}"  data-label="{!$Label.For_Applying}">
+                                                                                <!--<apex:commandButton status="loading" value="{!$Label.For_Applying}" styleClass="slds-button slds-button--neutral" action="{!applyToJob}" rerender="mainPanelccCandidate" immediate="true" >
+                                                                                    <apex:param name="jobId" value="{!objJob.id}" assignTo="{!idJobToBeApplied}"/>
+                                                                                </apex:commandButton>-->
+                                                                                <apex:outputLink value="{!$Page.JobDetail}" styleClass="slds-button slds-button--neutral"> 
+                                                                                    {!$Label.For_Applying}
+                                                                                    <apex:param name="Id" value="{!objJob.Id}" />
+                                                                                </apex:outputLink>
+                                                                            </td>
+                                                                        </tr> 
+                                                                    </apex:repeat>
+                                                                </tbody>
+                                                            </table>
+                                                        </apex:outputPanel>
+                                                    </div>
+                                                    <div id="candidate-tab-default-2" class="slds-tabs__content slds-hide table-content-padding" role="tabpanel"> 
+                                                        <apex:outputPanel rendered="{!lstAppliedJobs.size == 0}" layout="block" styleClass="slds-m-bottom--medium">
+                                                            <div class="slds-notify slds-notify--alert slds-theme--alert-texture" role="alert" id="messageBannerTab2">
+                                                                <div class="notify__content slds-grid">
+                                                                    <apex:outputPanel styleClass="slds-col slds-align-middle">
+                                                                        <h2 class="slds-text-heading--small ">  
+                                                                            <span >No Applied Applications</span>     
+                                                                        </h2>
+                                                                    </apex:outputPanel>
+                                                                </div>
+                                                            </div>
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel rendered="{!lstAppliedJobs.size > 0 }" layout="block" styleClass="slds-m-bottom--medium slds-scrollable--y" style="max-height:200px;">
+                                                            <table id ="sum_table" class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal">
+                                                                
+                                                                <apex:variable value="{!lstFieldMyApplications.size-2}" var="colCountTab2" />
+                                                                <thead>
+                                                                    <tr  class="slds-text-heading--label">
+                                                                        <apex:repeat value="{!lstFieldMyApplications}" var="field">
+                                                                            <apex:outputPanel rendered="{!AND(NOT(field == 'TR1__Job__r.TR1__Client_Job_Description__c'), NOT(field == 'TR1__Job__r.TR1__Salary_Low__c'), NOT(field == 'TR1__Job__r.TR1__Salary_High__c'))}" layout="none">
+                                                                                <th class="slds-text-heading--x-small slds-size--1-of-{!colCountTab2}" scope="col" >
+                                                                                    <b><span class="slds-truncate">{!IF(field == 'TR1__Status__c','Status',IF(field=='TR1__Job__r.RecordTypeId', 'Type',field.Label))}
+                                                                                    </span></b>
+                                                                                </th>
+                                                                            </apex:outputPanel>
+                                                                            <apex:outputPanel rendered="{!field == 'TR1__Job__r.TR1__Salary_Low__c'}" layout="none">
+                                                                                <th class="slds-text-heading--x-small slds-size--1-of-{!colCountTab2}" scope="col" >
+                                                                                    <b><span class="slds-truncate">Salary</span></b>  
+                                                                                </th>
+                                                                            </apex:outputPanel>
+                                                                        </apex:repeat>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <apex:repeat value="{!lstAppliedJobs}"  var="objJob">
+                                                                        <tr class="slds-hint-parent">
+                                                                            <apex:repeat value="{!lstFieldMyApplications}" var="field">
+                                                                                <apex:outputPanel rendered="{!AND(NOT(field == 'TR1__Job__r.TR1__Client_Job_Description__c'), NOT(field == 'TR1__Job__r.TR1__Salary_Low__c'), NOT(field == 'TR1__Job__r.TR1__Salary_High__c'))}" layout="none">
+                                                                                    <td class="slds-size--1-{!colCountTab2}" data-label="{!IF(field == 'TR1__Job__r.TR1__Client_Job_Description__c','',IF(field == 'TR1__Job__r.RecordTypeId','Type',IF(field =='TR1__Status__c','Status',field.label)))}">
+                                                                                        <apex:outputField value="{!objJob[field]}"/>
+                                                                                        <apex:outputPanel rendered="{!(field == 'TR1__Job__r.Job_Title__c')}">
+                                                                                            <apex:outputPanel rendered="{!NOT(ISBLANK(objJob['TR1__Job__r']['TR1__Client_Job_Description__c']))}" style="cursor:">
+                                                                                                <span  onclick="$('#{!objJob.Id}').show();" style="cursor: pointer;">[...]</span> 
+                                                                                            </apex:outputPanel>
+                                                                                            <div id="{!objJob.Id}" style="display:none">
+                                                                                                <div aria-hidden="false" role="dialog" class="slds-modal slds-fade-in-open" >
+                                                                                                    <div class="slds-modal__container">
+                                                                                                        <div class="slds-modal__header">
+                                                                                                            <h2 class="slds-text-heading--medium">{!objJob.TR1__Job__r.job_title__c}</h2>
+                                                                                                        </div>
+                                                                                                        <div class="slds-modal__content">
+                                                                                                            <div id="modalMessage">
+                                                                                                                <apex:outputField value="{!objJob.TR1__Job__r.TR1__Client_Job_Description__c}"/>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                        <div class="slds-modal__footer">
+                                                                                                            <div style="cursor:pointer" class="slds-button slds-button--neutral" onclick="closeMessageBanner('{!objJob.Id}');">Close</div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="slds-modal-backdrop slds-modal-backdrop--open" id="modal1"></div>
+                                                                                            </div>
+                                                                                        </apex:outputPanel>
+                                                                                    </td>
+                                                                                </apex:outputPanel>
+                                                                                <apex:outputPanel rendered="{!field == 'TR1__Job__r.TR1__Salary_Low__c'}" layout="none">
+                                                                                    <td class="slds-size--1-{!colCountTab2}" data-label="Salary">
+                                                                                       <apex:outputField value="{!objJob['TR1__Job__r.TR1__Salary_High__c']}" rendered="{!(ISBLANK(objJob[field]))}"/> 
+                                                                                       <apex:outputField value="{!objJob[field]}" rendered="{!(ISBLANK(objJob['TR1__Job__r.TR1__Salary_High__c']))}"/>
+                                                                                       <apex:outputPanel rendered="{!AND(NOT(ISBLANK(objJob['TR1__Job__r.TR1__Salary_High__c'])), NOT(ISBLANK(objJob[field])))}">
+                                                                                           <apex:outputField value="{!objJob[field]}" />
+                                                                                                <label> - </label>
+                                                                                           <apex:outputField value="{!objJob['TR1__Job__r.TR1__Salary_High__c']}" />
+                                                                                       </apex:outputPanel> 
+                                                                                    </td>
+                                                                                </apex:outputPanel>
+                                                                                
+                                                                            </apex:repeat>
+                                                                        </tr>
+                                                                    </apex:repeat>
+                                                                </tbody>
+                                                            </table>
+                                                        </apex:outputPanel>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- My Content -->
+                                            <script>
+                                                $('.slds-tabs__item').on('click', function()
+                                                 {
+                                                  $(this).addClass('slds-active');
+                                                  $(this).find('a').attr('aria-selected', true);
+                                                  var $contentToShow = $('#'+$(this).find('a').attr('aria-controls'));
+                                                  $contentToShow.removeClass('slds-hide');
+                                                  $contentToShow.addClass('slds-show');
+                                                 
+                                                  $(this).siblings().removeClass('slds-active');
+                                                  $(this).siblings().find('a').attr('aria-selected', false);
+                                                  $contentToShow.siblings('.slds-tabs__content').removeClass('slds-show');
+                                                  $contentToShow.siblings('.slds-tabs__content').addClass('slds-hide');
+                                                 });
+                                            </script>
+                                        </apex:outputPanel>
+                                        <apex:outputPanel id="mainPanelccClient" rendered="{!strContactType == 'c&c'}">
+                                            <apex:actionFunction name="saveLeadRecord"  action="{!saveJobLead}" rerender="errors" status="myStatus"/>
+                                            <div class="slds-m-top--medium slds-col--padded-large" id="Client">
+                                                <h2 class="slds-section-title slds-truncate slds-m-bottom--xx-small">Client Job Listing</h2>
+                                                <div class="slds-tabs--scoped">
+                                                    <ul class="slds-tabs--scoped__nav" role="tablist" >
+                                                        <li class="slds-tabs__item slds-text-heading--label slds-active " title="Open Jobs" role="presentation"  id="item1">
+                                                            <a href="#" role="tab" tabindex="0" aria-selected="true" aria-controls="client-tab-default-1" >Open Jobs</a>
+                                                        </li>
+                                                        <li class="slds-tabs__item slds-text-heading--label" title="Past Jobs" role="presentation" id="item2">
+                                                            <a href="#" role="tab" tabindex="-1" aria-selected="false"  aria-controls="client-tab-default-2" >Past Jobs</a>
+                                                        </li>
+                                                        <li class="slds-tabs__item slds-text-heading--label " title="New Vacancy Lead" role="presentation"  id="item3">
+                                                            <a href="#" role="tab" tabindex="-2" aria-selected="false"  aria-controls="tab-default-3">New Vacancy Lead </a>
+                                                        </li>
+                                                    </ul>
+                                                    <!-- Tab 1   OPEN Jobs-->
+                                                    <div id="client-tab-default-1" class="slds-tabs__content slds-show table-content-padding" role="tabpanel" >
+                                                        <apex:variable value="{!fieldSetOpenJobList.size + 1}" var="columnCount" />
+                                                        <apex:outputPanel rendered="{!lstOpenJobs.size > 0}" styleClass="slds-scrollable--y" style="max-height:200px;">
+                                                            <table id ="OpenJob_table" class="slds-table slds-table--bordered slds-max-medium-table--stacked">
+                                                                <thead>
+                                                                    <tr  class="slds-text-heading--label">
+                                                                        <apex:repeat value="{!fieldSetOpenJobList}" var="field">
+                                                                            <th class="slds-text-heading--x-small slds-size--1-of-{!columnCount}" scope="col">
+                                                                                <b>{!IF(CONTAINS(field.FieldPath, 'RecordTypeId'), 'Type',
+                                                                                IF(CONTAINS(field.FieldPath, 'TR1__Estimated_Start_Date__c'),'Start Date',field.Label))}</b>
+                                                                            </th>
+                                                                        </apex:repeat>
+                                                                        <th class="slds-text-heading--x-small slds-size--1-of-{!columnCount}" scope="col"></th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <apex:repeat value="{!lstOpenJobs}" var="objJob">
+                                                                        <tr class="slds-hint-parent">
+                                                                            <apex:repeat value="{!fieldSetOpenJobList}" var="field">
+                                                                                <td class="slds-size--1-of-{!columnCount}" 
+                                                                                    data-label="{!IF(CONTAINS(field.FieldPath, 'RecordTypeId'), 'Type',IF(CONTAINS(field.FieldPath, 'TR1__Estimated_Start_Date__c'),'Start Date',field.Label))}">
+                                                                                    <apex:outputField value="{!objJob[field.FieldPath]}" />
+                                                                                </td>
+                                                                            </apex:repeat>
+                                                                            <td class="slds-size--1-of-{!columnCount}"  >
+                                                                                <a href="{!$Site.Prefix}/ClientJobCandidates?jobId={!objJob.Id}" class="slds-button slds-button--neutral" >View Candidates</a>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </apex:repeat>
+                                                                </tbody>
+                                                            </table>
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel rendered="{!lstOpenJobs.size == 0}" >
+                                                            <div id = "exceptionMsgOpen" class="slds-m-top--small slds-notify slds-notify--alert slds-theme--alert-texture" role="alert">
+                                                                <div class="notify__content slds-grid">
+                                                                    <div class="slds-col slds-align-middle">
+                                                                        <h2 class="slds-text-heading--small ">
+                                                                            No Open Jobs
+                                                                            <apex:message />
+                                                                        </h2>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </apex:outputPanel>
+                                                    </div>
+                                                    <!-- Tab 2   PAST JObs-->
+                                                    <div id="client-tab-default-2" class="slds-tabs__content slds-hide table-content-padding" role="tabpanel" >
+                                                        <apex:variable value="{!fieldSetPastJobList.size + 1}" var="columnCount" />
+                                                        <apex:outputPanel rendered="{!lstPastJobs.size > 0}" styleClass="slds-scrollable--y" style="max-height:200px;" >
+                                                            <table id ="pastJob_table" class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal ">
+                                                                <thead>
+                                                                    <tr  class="slds-text-heading--label">
+                                                                        <apex:repeat value="{!fieldSetPastJobList}" var="field">
+                                                                            <th class="slds-text-heading--x-small slds-size--1-of-{!columnCount}" scope="col">
+                                                                                <b>{!IF(CONTAINS(field.FieldPath, 'RecordTypeId'), 'Job Type',field.Label)}</b>
+                                                                            </th>
+                                                                        </apex:repeat>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <apex:repeat value="{!lstPastJobs}" var="objJob">
+                                                                        <tr class="slds-hint-parent">
+                                                                            <apex:repeat value="{!fieldSetPastJobList}" var="field">
+                                                                                <td class="slds-size--1-of-{!columnCount}" data-label="{!field.Label}">
+                                                                                    <apex:outputField value="{!objJob[field.FieldPath]}" />
+                                                                                </td>
+                                                                            </apex:repeat>
+                                                                        </tr>
+                                                                    </apex:repeat>
+                                                                </tbody>
+                                                            </table>
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel rendered="{!lstPastJobs.size == 0}" >
+                                                            <div id = "exceptionMsgPast" class="slds-m-top--small slds-notify slds-notify--alert slds-theme--alert-texture" role="alert">
+                                                                <div class="notify__content slds-grid">
+                                                                    <div class="slds-col slds-align-middle">
+                                                                        <h2  class="slds-text-heading--small "> 
+                                                                            No Past Jobs  
+                                                                        </h2>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </apex:outputPanel>
+                                                    </div>
+                                                    <div  id="tab-default-3" class="slds-tabs__content slds-hide" role="tabpanel">
+                                                        <apex:outputPanel id="tab3Id2" >
+                                                        
+                                                            <div class="slds-grid slds-wrap">
+                                                                <div class="slds-col slds-size--1-of-1 slds-small-size--1-of-1 slds-medium-size--5-of-6 slds-large-size--10-of-12"></div>
+                                                                <div class="slds-col slds-size--1-of-1 slds-small-size--1-of-1 slds-medium-size--1-of-6 slds-large-size--2-of-12">
+                                                                    <div class="slds-button-group slds-float--right" role="group" >
+                                                                        <a href="#" class="slds-button slds-button--neutral" onclick="$('#exceptionMsg').remove();$('#item1').click();">Cancel</a> 
+                                                                        <a href="#" class="slds-button slds-button--brand" onclick="saveVacancyRecord();">Save</a> 
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <apex:repeat value="{!$ObjectType.TR1__Job_Leads__c.fieldsets.JobVacancy}" var="fieldValue">
+                                                                <div class="slds-form-element">
+                                                                    <label class="slds-form-element__label">{!fieldValue.label}</label>
+                                                                    <div class="slds-form-element__control">
+                                                                        <apex:inputfield styleclass="slds-input slds-m-bottom--small"  value="{!objJobLead[fieldValue.fieldPath]}" required="{!fieldValue.required}" id="inputId" style="border-left: 4px solid red;"/>
+                                                                    </div>
+                                                                </div>
+                                                            </apex:repeat>
+                                                        </apex:outputPanel>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <script>
+                                                $('.slds-tabs__item').on('click', function()
+                                                {
+                                                 $(this).addClass('slds-active');
+                                                 $(this).find('a').attr('aria-selected', true);
+                                                 var $contentToShow = $('#'+$(this).find('a').attr('aria-controls'));
+                                                 $contentToShow.removeClass('slds-hide');
+                                                 $contentToShow.addClass('slds-show');
+                                                
+                                                 $(this).siblings().removeClass('slds-active');
+                                                 $(this).siblings().find('a').attr('aria-selected', false);
+                                                 $contentToShow.siblings('.slds-tabs__content').removeClass('slds-show');
+                                                 $contentToShow.siblings('.slds-tabs__content').addClass('slds-hide');
+                                                });
+                                                
+                                                function saveVacancyRecord() 
+                                                {
+                                                saveLeadRecord();
+                                                $('[id$=":inputId"]').val('');
+                                                $('[id$=":textAreaDelegate_TR1__Job_Description__c"]').find('iframe').contents().find("body").html('');
+                                                }
+                                                
+                                            </script>
+                                        </apex:outputPanel>
+                                        <!--  c and c -->
+                                        
+                                        <!-- Candidate -->
+                                        <apex:outputPanel id="mainPanelCandidate" rendered="{!strContactType == 'candidate'}">
+                                            <div class="slds-tabs--scoped slds-m-top--medium slds-col--padded-large">
+                                                <ul class="slds-tabs--scoped__nav" role="tablist">
+                                                    <li class="slds-tabs__item slds-text-heading--label slds-active candidateTab" title="Item One" role="presentation" >
+                                                        <a href="#" role="tab" tabindex="0" aria-selected="true" aria-controls="candidate-tab-default-1"  >Available Positions</a> 
+                                                    </li>
+                                                    <li class="slds-tabs__item slds-text-heading--label " title="Item Two" role="presentation">
+                                                        <a href="#" role="tab" tabindex="-1" aria-selected="false" aria-controls="candidate-tab-default-2" >My Job Applications</a> 
+                                                    </li>
+                                                </ul>
+                                                <div id="candidate-tab-default-1" class="slds-tabs__content slds-show" role="tabpanel">
+                                                    <apex:outputPanel rendered="{!lstNotAppliedJobs.size == 0}" layout="block" styleClass="slds-m-bottom--medium">
+                                                        <div class="slds-notify slds-notify--alert slds-theme--alert-texture" role="alert" id="messageBannerTab1">
+                                                            <div class="notify__content slds-grid" id="tab1IdNotification">
+                                                                <apex:outputPanel styleClass="slds-col slds-align-middle">
+                                                                    <h2 class="slds-text-heading--small ">  
+                                                                        <span >No Available Positions</span>
+                                                                    </h2> 
+                                                                </apex:outputPanel> 
+                                                            </div>
+                                                        </div>
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel rendered="{!lstNotAppliedJobs.size > 0}" layout="block" styleClass="slds-m-bottom--medium slds-scrollable--y" style="max-height:450px;">
+                                                        <table id ="sum_table" class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal">
+                                                            <apex:variable value="{!lstFieldsNotApplied.size-1}" var="colCountTab" />
+                                                            <script>
+                                                                console.log('----sizeList------','{!lstFieldsNotApplied.size}');
+                                                            </script>
+                                                            <thead>
+                                                                <tr  class="slds-text-heading--label">
+                                                                    <apex:repeat value="{!lstFieldsNotApplied}" var="field">
+                                                                        <apex:outputPanel rendered="{!AND(NOT(field == 'TR1__Client_Job_Description__c'), NOT(field == 'TR1__Salary_Low__c'), NOT(field == 'TR1__Salary_High__c'))}" layout="none">
+                                                                            <th class="slds-text-heading--x-small slds-size--1-of-{!colCountTab}" scope="col" >
+                                                                                <b><span class="slds-truncate">{!IF(field == 'RecordTypeId', 'Type',field.Label)}</span></b>  
+                                                                            </th>
+                                                                        </apex:outputPanel>
+                                                                        <apex:outputPanel rendered="{!field == 'TR1__Salary_Low__c'}" layout="none">
+                                                                                <th class="slds-text-heading--x-small slds-size--1-of-{!colCountTab}" scope="col" >
+                                                                                    <b><span class="slds-truncate">Salary</span></b>  
+                                                                                </th>
+                                                                        </apex:outputPanel>
+                                                                    </apex:repeat>
+                                                                    <th class="slds-text-heading--x-small slds-size--1-of-{!colCountTab}" scope="col"></th>
+                                                                   
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <apex:repeat value="{!lstNotAppliedJobs}"  var="objJob">
+                                                                    <tr class="slds-hint-parent">
+                                                                        <apex:repeat value="{!lstFieldsNotApplied}" var="field">
+                                                                            <apex:outputPanel rendered="{!AND(NOT(field == 'TR1__Client_Job_Description__c'), NOT(field == 'TR1__Salary_Low__c'), NOT(field == 'TR1__Salary_High__c'))}" layout="none">
+                                                                                <td class="slds-size--1-{!colCountTab}" data-label="{!IF(field == 'TR1__Client_Job_Description__c','',IF(field=='RecordTypeId','Type',field.label))}">
+                                                                                    <apex:outputField value="{!objJob[field]}" />
+                                                                                    <apex:outputPanel rendered="{!(field == 'Job_Title__c')}">
+                                                                                        <apex:outputPanel rendered="{!NOT(ISBLANK(objJob['TR1__Client_Job_Description__c']))}" >
+                                                                                            <span  onclick="$('#{!objJob.Id}').show();" style="cursor: pointer;">[...]</span>
+                                                                                        </apex:outputPanel>
+                                                                                        <div id="{!objJob.Id}" style="display:none">
+                                                                                            <div aria-hidden="false" role="dialog" class="slds-modal slds-fade-in-open" >
+                                                                                                <div class="slds-modal__container">
+                                                                                                    <div class="slds-modal__header">
+                                                                                                        <h2 class="slds-text-heading--medium">{!objJob.job_title__c}</h2>
+                                                                                                    </div>
+                                                                                                    <div class="slds-modal__content">
+                                                                                                        <div id="modalMessage" style="overflow-x:auto;height:300px!important;">
+                                                                                                            <apex:outputField value="{!objJob['TR1__Client_Job_Description__c']}"/>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div class="slds-modal__footer">
+                                                                                                        <div style="cursor:pointer" class="slds-button slds-button--neutral" onclick="closeMessageBanner('{!objJob.Id}');">Close</div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="slds-modal-backdrop slds-modal-backdrop--open" id="modal2"></div>
+                                                                                        </div>
+                                                                                    </apex:outputPanel>
+                                                                                </td>
+                                                                            </apex:outputPanel>
+                                                                            <apex:outputPanel rendered="{!field == 'TR1__Salary_Low__c'}" layout="none">
+                                                                                <td class="slds-size--1-{!colCountTab}" data-label="Salary">
+                                                                                   <apex:outputField value="{!objJob['TR1__Salary_High__c']}" rendered="{!(ISBLANK(objJob[field]))}"/> 
+                                                                                   <apex:outputField value="{!objJob[field]}" rendered="{!(ISBLANK(objJob['TR1__Salary_High__c']))}"/>
+                                                                                   <apex:outputPanel rendered="{!AND(NOT(ISBLANK(objJob['TR1__Salary_High__c'])), NOT(ISBLANK(objJob[field])))}">
+                                                                                       <apex:outputField value="{!objJob[field]}" />
+                                                                                            <label> - </label>
+                                                                                       <apex:outputField value="{!objJob['TR1__Salary_High__c']}" />
+                                                                                   </apex:outputPanel> 
+                                                                                </td>
+                                                                            </apex:outputPanel>
+                                                                        </apex:repeat>
+                                                                        <td class="slds-size--1-of-{!colCountTab}"  data-label="{!$Label.For_Applying}">
+                                                                            <!--<apex:commandButton status="loading" value="{!$Label.For_Applying}" styleClass="slds-button slds-button--neutral" action="{!applyToJob}" rerender="mainPanelCandidate,idMsg" immediate="true" >
+                                                                                <apex:param name="jobId" value="{!objJob.id}" assignTo="{!idJobToBeApplied}"/>
+                                                                            </apex:commandButton>-->
+                                                                            <apex:outputLink value="{!$Page.JobDetail}" styleClass="slds-button slds-button--neutral"> 
+                                                                                {!$Label.For_Applying}
+                                                                                <apex:param name="Id" value="{!objJob.Id}" />
+                                                                            </apex:outputLink>
+                                                                        </td>
+                                                                    </tr>
+                                                                </apex:repeat>
+                                                            </tbody>
+                                                        </table>
+                                                    </apex:outputPanel> 
+                                                </div>
+                                                <div id="candidate-tab-default-2" class="slds-tabs__content slds-hide" role="tabpanel">
+                                                    <apex:outputPanel rendered="{!lstAppliedJobs.size == 0}" layout="block" styleClass="slds-m-bottom--medium">
+                                                        <div class="slds-notify slds-notify--alert slds-theme--alert-texture" role="alert" id="messageBannerTab2">
+                                                            <div class="notify__content slds-grid">
+                                                                <apex:outputPanel styleClass="slds-col slds-align-middle">
+                                                                    <h2 class="slds-text-heading--small ">  
+                                                                        <span >No Applied Applications</span>     
+                                                                    </h2>
+                                                                </apex:outputPanel>
+                                                            </div>
+                                                        </div>
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel rendered="{!lstAppliedJobs.size > 0}" layout="block" styleClass="slds-m-bottom--medium slds-scrollable--y" style="max-height:450px;">
+                                                        <table id ="sum_table" class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal">
+                                                            <apex:variable value="{!lstFieldMyApplications.size-2}" var="colCountTab2" />
+                                                            <thead>
+                                                                <tr  class="slds-text-heading--label">
+                                                                    <apex:repeat value="{!lstFieldMyApplications}" var="field">
+                                                                        <apex:outputPanel rendered="{!AND(NOT(field == 'TR1__Job__r.TR1__Client_Job_Description__c'), NOT(field == 'TR1__Job__r.TR1__Salary_Low__c'), NOT(field == 'TR1__Job__r.TR1__Salary_High__c'))}" layout="none">
+                                                                            <th class="slds-text-heading--x-small slds-size--1-of-{!colCountTab2}" scope="col" >
+                                                                                <b><span class="slds-truncate">{!IF(field == 'TR1__Status__c','Status',IF(field=='TR1__Job__r.RecordTypeId', 'Type',field.Label))}</span></b>
+                                                                            </th>
+                                                                        </apex:outputPanel>
+                                                                        <apex:outputPanel rendered="{!field == 'TR1__Job__r.TR1__Salary_Low__c'}" layout="none">
+                                                                            <th class="slds-text-heading--x-small slds-size--1-of-{!colCountTab2}" scope="col" >
+                                                                                <b><span class="slds-truncate">Salary</span></b>  
+                                                                            </th>
+                                                                        </apex:outputPanel>
+                                                                    </apex:repeat>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <apex:repeat value="{!lstAppliedJobs}"  var="objJob">
+                                                                    <tr class="slds-hint-parent">
+                                                                        <apex:repeat value="{!lstFieldMyApplications}" var="field">
+                                                                            <apex:outputPanel rendered="{!AND(NOT(field == 'TR1__Job__r.TR1__Client_Job_Description__c'), NOT(field == 'TR1__Job__r.TR1__Salary_Low__c'), NOT(field == 'TR1__Job__r.TR1__Salary_High__c'))}" layout="none">
+                                                                                <td class="slds-size--1-{!colCountTab2}" data-label="{!IF(field == 'TR1__Job__r.TR1__Client_Job_Description__c','',IF(field == 'TR1__Job__r.RecordTypeId','Type',IF(field =='TR1__Status__c','Status',field.label)))}">
+                                                                                    <apex:outputField value="{!objJob[field]}"/>
+                                                                                    <apex:outputPanel rendered="{!(field == 'TR1__Job__r.Job_Title__c')}">
+                                                                                        <apex:outputPanel rendered="{!NOT(ISBLANK(objJob['TR1__Job__r']['TR1__Client_Job_Description__c']))}" style="cursor:">
+                                                                                            <span  onclick="$('#{!objJob.Id}').show();" style="cursor: pointer;">[...]</span> 
+                                                                                        </apex:outputPanel>
+                                                                                        <div id="{!objJob.Id}" style="display:none">
+                                                                                            <div aria-hidden="false" role="dialog" class="slds-modal slds-fade-in-open" >
+                                                                                                <div class="slds-modal__container">
+                                                                                                    <div class="slds-modal__header">
+                                                                                                        <h2 class="slds-text-heading--medium">{!objJob.TR1__Job__r.job_title__c}</h2>
+                                                                                                    </div>
+                                                                                                    <div class="slds-modal__content">
+                                                                                                        <div id="modalMessage">
+                                                                                                            <apex:outputField value="{!objJob.TR1__Job__r.TR1__Client_Job_Description__c}"/>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div class="slds-modal__footer">
+                                                                                                        <div style="cursor:pointer" class="slds-button slds-button--neutral" onclick="closeMessageBanner('{!objJob.Id}');">Close</div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="slds-modal-backdrop slds-modal-backdrop--open" id="modal1"></div>
+                                                                                        </div>
+                                                                                    </apex:outputPanel>
+                                                                                </td>
+                                                                            </apex:outputPanel>
+                                                                            
+                                                                            <apex:outputPanel rendered="{!field == 'TR1__Job__r.TR1__Salary_Low__c'}" layout="none">
+                                                                                <td class="slds-size--1-{!colCountTab2}" data-label="Salary">
+                                                                                   <apex:outputField value="{!objJob['TR1__Job__r.TR1__Salary_High__c']}" rendered="{!(ISBLANK(objJob[field]))}"/> 
+                                                                                   <apex:outputField value="{!objJob[field]}" rendered="{!(ISBLANK(objJob['TR1__Job__r.TR1__Salary_High__c']))}"/>
+                                                                                   <apex:outputPanel rendered="{!AND(NOT(ISBLANK(objJob['TR1__Job__r.TR1__Salary_High__c'])), NOT(ISBLANK(objJob[field])))}">
+                                                                                       <apex:outputField value="{!objJob[field]}" />
+                                                                                            <label> - </label>
+                                                                                       <apex:outputField value="{!objJob['TR1__Job__r.TR1__Salary_High__c']}" />
+                                                                                   </apex:outputPanel> 
+                                                                                </td>
+                                                                            </apex:outputPanel>
+                                                                        </apex:repeat>
+                                                                    </tr>
+                                                                </apex:repeat>
+                                                            </tbody>
+                                                        </table>
+                                                    </apex:outputPanel> 
+                                                </div>
+                                            </div>
+                                        
+                                            <!-- My Content -->
+                                            <script>
+                                                $('.slds-tabs__item').on('click', function()
+                                                 {
+                                                  $(this).addClass('slds-active');
+                                                  $(this).find('a').attr('aria-selected', true);
+                                                  var $contentToShow = $('#'+$(this).find('a').attr('aria-controls'));
+                                                  $contentToShow.removeClass('slds-hide');
+                                                  $contentToShow.addClass('slds-show');
+                                                 
+                                                  $(this).siblings().removeClass('slds-active');
+                                                  $(this).siblings().find('a').attr('aria-selected', false);
+                                                  $contentToShow.siblings('.slds-tabs__content').removeClass('slds-show');
+                                                  $contentToShow.siblings('.slds-tabs__content').addClass('slds-hide');
+                                                 });
+                                            </script>
+                                        </apex:outputPanel>
+                                        <!-- Candidate -->
+                                        
+                                        <!-- Client -->
+                                        <apex:outputPanel id="mainPanelClient" rendered="{!strContactType == 'client'}">
+                                            <apex:actionFunction name="saveLeadRecord"  action="{!saveJobLead}" rerender="errors" status="myStatus"/>
+                                    
+                                            <div class="slds-tabs--scoped slds-m-top--medium slds-col--padded-large">
+                                                <ul class="slds-tabs--scoped__nav" role="tablist">
+                                                    <li class="slds-tabs__item slds-text-heading--label slds-active " title="Open Jobs" role="presentation"  id="item1">
+                                                        <a href="#" role="tab" tabindex="0" aria-selected="true" aria-controls="client-tab-default-1" >Open Jobs</a>
+                                                    </li>
+                                                    <li class="slds-tabs__item slds-text-heading--label" title="Past Jobs" role="presentation" id="item2">
+                                                        <a href="#" role="tab" tabindex="-1" aria-selected="false"  aria-controls="client-tab-default-2" >Past Jobs</a>
+                                                    </li>
+                                                    <li class="slds-tabs__item slds-text-heading--label " title="New Vacancy Lead" role="presentation"  id="item3">
+                                                        <a href="#" role="tab" tabindex="-2" aria-selected="false"  aria-controls="tab-default-3">New Vacancy Lead </a>
+                                                    </li>
+                                                </ul>
+                                                <!-- Tab 1   OPEN Jobs-->
+                                                <div id="client-tab-default-1" class="slds-tabs__content slds-show" role="tabpanel">
+                                                    <apex:variable value="{!fieldSetOpenJobList.size + 1}" var="columnCount" />
+                                                    <apex:outputPanel rendered="{!lstOpenJobs.size > 0}" styleClass="slds-scrollable--y" style="max-height:450px;">
+                                                        <table id ="OpenJob_table" class="slds-table slds-table--bordered slds-max-medium-table--stacked">
+                                                            <thead>
+                                                                <tr  class="slds-text-heading--label">
+                                                                    <apex:repeat value="{!fieldSetOpenJobList}" var="field">
+                                                                        <th class="slds-text-heading--x-small slds-size--1-of-{!columnCount}" scope="col">
+                                                                            <b>{!IF(CONTAINS(field.FieldPath, 'RecordTypeId'), 'Type',
+                                                                            IF(CONTAINS(field.FieldPath, 'TR1__Estimated_Start_Date__c'),'Start Date',field.Label))}</b>
+                                                                        </th>
+                                                                    </apex:repeat>
+                                                                    <th class="slds-text-heading--x-small slds-size--1-of-{!columnCount}" scope="col"></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <apex:repeat value="{!lstOpenJobs}" var="objJob">
+                                                                    <tr class="slds-hint-parent">
+                                                                        <apex:repeat value="{!fieldSetOpenJobList}" var="field">
+                                                                            <td class="slds-size--1-of-{!columnCount}" 
+                                                                                data-label="{!IF(CONTAINS(field.FieldPath, 'RecordTypeId'), 'Type',IF(CONTAINS(field.FieldPath, 'TR1__Estimated_Start_Date__c'),'Start Date',field.Label))}">
+                                                                                <apex:outputField value="{!objJob[field.FieldPath]}" />
+                                                                            </td>
+                                                                        </apex:repeat>
+                                                                        <td class="slds-size--1-of-{!columnCount}"  >
+                                                                            <a href="{!$Site.Prefix}/ClientJobCandidates?jobId={!objJob.Id}" class="slds-button slds-button--neutral" >View Candidates</a>
+                                                                        </td>
+                                                                    </tr>
+                                                                </apex:repeat>
+                                                            </tbody>
+                                                        </table>
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel rendered="{!lstOpenJobs.size == 0}" >
+                                                        <div id = "exceptionMsgOpen" class="slds-m-top--small slds-notify slds-notify--alert slds-theme--alert-texture" role="alert">
+                                                            <div class="notify__content slds-grid">
+                                                                <div class="slds-col slds-align-middle">
+                                                                    <h2 class="slds-text-heading--small ">
+                                                                        No Open Jobs
+                                                                        <apex:message />
+                                                                    </h2>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </apex:outputPanel>
+                                                </div>
+                                                <!-- Tab 2   PAST JObs-->
+                                                <div id="client-tab-default-2" class="slds-tabs__content slds-hide" role="tabpanel">
+                                                    <apex:variable value="{!fieldSetPastJobList.size + 1}" var="columnCount" />
+                                                    <apex:outputPanel rendered="{!lstPastJobs.size > 0}" styleClass="slds-scrollable--y" style="max-height:450px;" >
+                                                        <table id ="pastJob_table" class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal ">
+                                                            <thead>
+                                                                <tr  class="slds-text-heading--label">
+                                                                    <apex:repeat value="{!fieldSetPastJobList}" var="field">
+                                                                        <th class="slds-text-heading--x-small slds-size--1-of-{!columnCount}" scope="col">
+                                                                            <b>{!IF(CONTAINS(field.FieldPath, 'RecordTypeId'), 'Job Type',field.Label)}</b>
+                                                                        </th>
+                                                                    </apex:repeat>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <apex:repeat value="{!lstPastJobs}" var="objJob">
+                                                                    <tr class="slds-hint-parent">
+                                                                        <apex:repeat value="{!fieldSetPastJobList}" var="field">
+                                                                            <td class="slds-size--1-of-{!columnCount}" data-label="{!field.Label}">
+                                                                                <apex:outputField value="{!objJob[field.FieldPath]}" />
+                                                                            </td>
+                                                                        </apex:repeat>
+                                                                    </tr>
+                                                                </apex:repeat>
+                                                            </tbody>
+                                                        </table>
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel rendered="{!lstPastJobs.size == 0}" >
+                                                        <div id = "exceptionMsgPast" class="slds-m-top--small slds-notify slds-notify--alert slds-theme--alert-texture" role="alert">
+                                                            <div class="notify__content slds-grid">
+                                                                <div class="slds-col slds-align-middle">
+                                                                    <h2  class="slds-text-heading--small "> 
+                                                                        No Past Jobs  
+                                                                    </h2>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </apex:outputPanel>
+                                                </div>
+                                                <div  id="tab-default-3" class="slds-tabs__content slds-hide" role="tabpanel">
+                                                    <apex:outputPanel id="tab3Id21">
+                                                        <div class="slds-grid slds-wrap">
+                                                            <div class="slds-col slds-size--1-of-1 slds-small-size--1-of-1 slds-medium-size--5-of-6 slds-large-size--10-of-12"></div>
+                                                            <div class="slds-col slds-size--1-of-1 slds-small-size--1-of-1 slds-medium-size--1-of-6 slds-large-size--2-of-12">
+                                                                <div class="slds-button-group slds-float--right" role="group" >
+                                                                    <a href="#" class="slds-button slds-button--neutral" onclick="$('#exceptionMsg').remove();$('#item1').click();">Cancel</a> 
+                                                                    <a href="#" class="slds-button slds-button--brand" onclick="saveVacancyRecord();">Save</a> 
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <apex:repeat value="{!$ObjectType.TR1__Job_Leads__c.fieldsets.JobVacancy}" var="fieldValue">
+                                                            <div class="slds-form-element">
+                                                                <label class="slds-form-element__label">{!fieldValue.label}</label>
+                                                                <div class="slds-form-element__control">
+                                                                    <apex:inputfield styleclass="slds-input slds-m-bottom--small"  value="{!objJobLead[fieldValue.fieldPath]}" required="{!fieldValue.required}" id="inputId" style="border-left: 4px solid red;"/>
+                                                                </div>
+                                                            </div>
+                                                        </apex:repeat>
+                                                    </apex:outputPanel>
+                                                </div>
+                                            </div>
+                                        
+                                            <script>
+                                                $('.slds-tabs__item').on('click', function()
+                                                {
+                                                 $(this).addClass('slds-active');
+                                                 $(this).find('a').attr('aria-selected', true);
+                                                 var $contentToShow = $('#'+$(this).find('a').attr('aria-controls'));
+                                                 $contentToShow.removeClass('slds-hide');
+                                                 $contentToShow.addClass('slds-show');
+                                                
+                                                 $(this).siblings().removeClass('slds-active');
+                                                 $(this).siblings().find('a').attr('aria-selected', false);
+                                                 $contentToShow.siblings('.slds-tabs__content').removeClass('slds-show');
+                                                 $contentToShow.siblings('.slds-tabs__content').addClass('slds-hide');
+                                                });
+                                                
+                                                function saveVacancyRecord() 
+                                                {
+                                                saveLeadRecord();
+                                                $('[id$=":inputId"]').val('');
+                                                $('[id$=":textAreaDelegate_TR1__Job_Description__c"]').find('iframe').contents().find("body").html('');
+                                                }
+                                                
+                                            </script>
+                                        </apex:outputPanel>
+                                        <!-- Client -->
+                                        
+                                        <!-- main panel -->
+                                    </div>
+                                </body>
+                                <apex:actionstatus id="loading" startText="Requesting...">
+                                    <apex:facet name="start">
+                                        <div id="salesforceSource_blurybackground" style="position:absolute;left:1px; top:1px; width:100%; height:100%; text-align:center; vertical-align: middle; background-color: #dcdcdc; opacity:0.7;filter:alpha(opacity=60)"></div>
+                                        <div id="ManageMembersViewport_loading" class="waitingSearchDiv slds-m-around--medium" style="top:50%; left:0px; position:absolute; z-index:1000; width:100%; height:45%; text-align:center; vertical-align: middle; overflow:hidden!important;">
+                                            <div class="waitingHolder">
+                                                <div class="slds-spinner--small"> 
+                                                    <img src="{!URLFOR($Resource.SLDS092, 'assets/images/spinners/slds_spinner.gif')}" alt="Loading..." height="50px" width="50px"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="ManageMembersViewport_loading" class="waitingSearchDiv" style="width: 100%; height: 100%; display:''; "></div>
+                                        <script>document.getElementById('ManageMembersViewport_loading').height = window.innerHeight * (3/4);</script>
+                                    </apex:facet>
+                                    <apex:facet name="stop"></apex:facet>
+                                </apex:actionstatus>
+                                <script>
+                                
+                                
+                                    function closeMessageBanner(strId)  
+                                    {
+                                       document.getElementById(strId).style.display = 'none';
+                                    }
+                                </script>
+                            </apex:form>
+                        </div>
+                        <!-- Page Footer-->
+                        <span class="nonslds">
+                            <div class="footer">
+                                <div class="footer-socials half-bottom">
+                                    <a href="#" class="footer-share show-share-bottom"><i class="fa fa-share-alt"></i></a>
+                                    <a href="#" class="footer-up"><i class="fa fa-angle-up"></i></a>
+                                </div>
+                                <p class="center-text">&copy; 2015 Talent Rover. All rights reserved.</p>
+                            </div>
+                        </span>
+                    </div>
+                </div>
+            </apex:define>
+        </apex:composition>
+    </html>
+</apex:page>

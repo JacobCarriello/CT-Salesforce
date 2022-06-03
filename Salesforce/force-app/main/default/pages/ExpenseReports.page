@@ -1,0 +1,723 @@
+<apex:page controller="RC_ExpenseReports" showHeader="false" standardStylesheets="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false" action="{!redirectUnAuthenticatedUser}" >
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+       <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1"/>
+            <apex:stylesheet value="{!URLFOR($Resource.SLDS092, 'assets/styles/salesforce-lightning-design-system-vf.css')}" /> 
+            <apex:includeScript value="{!URLFOR($Resource.TB_JS, '/jQuery-1.11.3.min.js')}" />
+            <apex:includeScript value="{!URLFOR($Resource.TB_JS, '/jquery-ui-1.11.3.js')}" />
+		    <style>
+			    .errorMsg{
+			        color:red;
+			    }
+			   
+                 #outPopUp{
+                     position:absolute; 
+                     z-index:9999999;
+                     top:50%;
+                     left:47%;
+                }
+            
+                .clsPopover
+                {
+                    z-index: 99 !important;
+                    position: absolute !important;
+                    white-space: normal;
+                }
+                
+                 .slds-table--bordered{
+                    border-left: 1px solid #d8dde6;
+                    border-right: 1px solid #d8dde6; 
+                }
+                
+                .slds-card{
+                    margin-left: 24px;
+                    margin-right: 24px;
+                }
+               
+			</style>
+			
+       </head>
+    
+    <apex:composition template="RC_CommunityTemplate">
+        
+        <apex:define name="body">
+            <style>
+                 #outPopUp{
+	                 position:absolute;
+	                 z-index:15;
+	                 top:50%;
+	                 left:50%;
+	                 margin:-100px 0 0 -150px;
+            }
+            .leaveAfter{
+                width: 23%;
+            }
+            .slds .slds-badge{
+                text-transform: none;
+                font-size: 11px;
+            }
+            </style> 
+            
+            <div style="height:60px;">&nbsp;</div>
+            <div class="slds-all-elements">
+                <div id="content" class="slds-snap-content" style="z-index:100">
+                    <div class="slds-content" style="min-height:500px">
+                        <apex:form >
+                            
+                            <apex:actionFunction action="{!rejectExp}" name="rejectExpReport" rerender="mainPanel,mainPanel1, idMsg, idMsg1 " onComplete="updatePanelCss('{!isSuccess}', '{!strMessage}');">
+                				<apex:param name="expId" assignTo="{!idExp}" value="" />
+                				<apex:param name="strComment" assignTo="{!strComment}" value="" />
+                			</apex:actionFunction>
+                            <div class = "slds">
+                            <!-- Start C & C community Type -->
+                                <apex:outputPanel rendered="{!strCommunityType == 'C and C'}">
+                                    
+                                    <apex:variable value="{!fieldSetExpenseReports.size}" var="columnCount" />
+                                     
+                                     <!-- C & C Header -->       
+                                     <div class="slds-page-header" role="banner">
+                                        <div class="slds-grid slds-wrap slds-grid--align-spread">
+                                            <div class="slds-col slds-size--1-of-1 slds-small-size--1-of-1 slds-medium-size--4-of-6 slds-large-size--10-of-12">
+                                                <div class="slds-media">
+                                                    <div class="slds-media__figure">
+                                                        <span class="slds-avatar slds-avatar--medium">
+                                                            <img src="{!URLFOR($Resource.SLDS092, '/assets/icons/standard/report_60.png')}" style="background-color: #8291C3;" />
+                                                        </span>
+                                                    </div> 
+                                                
+                                                    <div class="slds-media__body">
+                                                    	<p class="slds-text-heading--label">{!$User.FirstName} {!$User.LastName}</p>
+                                                    	<h1 class="slds-text-heading--medium slds-m-right--small slds-truncate slds-align-middle" title="Expense Reports">Expense Reports</h1>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="slds-col slds-size--1-of-1 slds-small-size--1-of-1 slds-medium-size--2-of-6 slds-large-size--2-of-12">
+                                                <a href="{!$Site.Prefix}/CandidateExpenseReportDetail?NewExp=true" class="slds-button slds-button--neutral">New Expense Report</a>
+                                            </div>
+                                        </div>
+                                        <div class="slds-grid slds-wrap slds-grid--align-spread slds-page-header__detail-row">
+	                                       	<apex:repeat value="{!$ObjectType.Contact.Fieldsets.RC_My_Profile_Header}" var="fieldval"> 
+	                                       		<div class="slds-col--padded slds-size--2-of-6 slds-medium-size--2-of-6 slds-large-size--1-of-6">
+	                                       		  <dl>
+	                                       			<dt>
+	                                       			  <p class="slds-text-heading--label slds-truncate" title="{!fieldval.label}">{!fieldval.label}</p>
+	                                       			</dt>
+	                                       			<dd>
+	                                       			  <p class="slds-text-body--regular slds-truncate" title="{!objCont[fieldval]}"><apex:outputField value="{!objCont[fieldval]}"/></p> 
+	                                       			</dd>
+	                                       		  </dl>
+	                                       		</div>
+	                                       	</apex:repeat>
+                                         </div> 
+                                    </div>
+                                    
+                                    
+                                    <!-- Start Candidate Expense -->
+                                    
+                                    <div class="slds-card slds-m-top--medium">
+                                        <div class="slds-card__header slds-grid">
+                                            <div class="slds-media slds-media--center slds-has-flexi-truncate">
+                                                <div class="slds-media__body">
+                                                    <h2 class="slds-text-heading--small slds-truncate">Candidate Expense Reports</h2>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="slds-card__body out" id="Candidate">
+                                            <apex:outputPanel rendered="{!lstExpenseReports.size == 0}" layout="block" styleClass="slds-text-align--center">
+                                                <div class="slds-notify slds-notify--alert slds-theme--alert-texture" role="alert" id="messageExpenseEmpty">
+                                                    <div class="notify__content slds-grid">                         
+                                                        <apex:outputPanel styleClass="slds-col slds-align-middle">
+                                                            <h2 class="slds-text-heading--small ">  
+                                                                <span>No Expenses report</span>      
+                                                                </h2>
+                                                        </apex:outputPanel> 
+                                                    </div>
+                                                </div>
+                                            </apex:outputPanel> 
+                                            <apex:outputPanel rendered="{!lstExpenseReports.size != 0}" layout="block" styleClass="slds-scrollable--y" style="max-height:200px;"> <!-- styleClass="slds-scrollable--y" style="height:200px;" -->
+                                                <table class="slds-table slds-table--bordered slds-max-medium-table--stacked">
+                                                    <thead>
+                                                        <tr class="slds-text-heading--label">
+                                                            <apex:repeat value="{!fieldSetExpenseReports}" var="field">
+                                                                <apex:outputPanel rendered="{!field.FieldPath != 'TR1__Comments__c'}">
+                                                                    <th data-label="{!field.Label}" class="slds-text-heading--label slds-size--1-of-{!columnCount}" scope="col">{!field.Label}</th>
+                                                                </apex:outputPanel>
+                                                            </apex:repeat>
+                                                            <th class="slds-text-heading--label slds-size--1-of-{!columnCount}" scope="col"> </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>  
+                                                        <apex:variable var="varPopover" value="{!0}" />
+                                                        <apex:repeat value="{!lstExpenseReports}" var="objExpRep"> 
+                                                        <tr class="slds-hint-parent">
+                                                            <apex:repeat value="{!fieldSetExpenseReports}" var="field">
+                                                                <apex:outputPanel rendered="{!field.FieldPath != 'TR1__Comments__c'}">
+                                                                    <td data-label="{!field.Label}" class="slds-size--1-of-{!columnCount}" > 
+                                                                        <apex:outputField value="{!objExpRep[field.FieldPath]}" rendered="{!field.Label == 'Account Name'}" >
+                                                                            <span class="clsPop" id="{!varPopover}"  style="cursor: pointer;display:{!IF(objExpRep.TR1__Comments__c != '', '','none')}">[...]
+                                                                                <div Class="slds-popover slds-nubbin--top-left clsPopover" role="dialog" style="display:none" id="popover{!varPopover}">
+                                                                                    <div class="slds-popover__body">{!objExpRep.TR1__Comments__c}</div>
+                                                                                </div>
+                                                                            </span> 
+                                                                        </apex:outputField> 
+                                                                        <apex:outputField value="{!objExpRep[field.FieldPath]}" rendered="{!field.Label != 'Account Name'}" /> 
+                                                                    </td>
+                                                                </apex:outputPanel>
+                                                                <apex:variable var="varPopover" value="{!varPopover+1}" />
+                                                            </apex:repeat>
+                                                            <td class="slds-text-heading--label slds-size--1-of-{!columnCount}">
+                                                                <a href="{!$Site.Prefix}/CandidateExpenseReportDetail?ExpRep={!objExpRep.Id}" class="slds-button slds-button--neutral">View</a> 
+                                                            </td>
+                                                        </tr>
+                                                    </apex:repeat>
+                                                </tbody>
+                                            </table>
+                                        </apex:outputPanel>
+                                    </div>
+                                    <div class="slds-card__footer"></div>
+                                </div>
+                                
+                                <!-- End Candidate Expense -->
+                                
+                                <!-- Client Expense Reports -->
+                                <div class="slds-card slds-m-top--medium">
+                                    <div class="slds-card__header slds-grid">
+                                        <div class="slds-media slds-media--center slds-has-flexi-truncate">
+                                            <div class="slds-media__body">
+                                                <h2 class="slds-text-heading--small slds-truncate">Client Expense Reports</h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-card__body out" id="Client">
+                                        <apex:outputPanel layout="block" rendered="{!AND(lstClientExpenseReport.size == 0, isSuccess) }" styleClass="slds-m-top--xx-medium" >
+                                                <div class="slds-notify slds-notify--alert slds-theme--{!IF(lstClientExpenseReport.size==0,'alert-texture','error')} slds-theme--alert-texture" role="alert" id="messageBannerTab1">
+                                                    <div class="notify__content slds-grid" id="tab1IdNotification">
+                                                        <apex:outputPanel styleClass="slds-col slds-align-middle">
+                                                            <h2 class="slds-text-heading--small ">  
+                                                                <span>No Expense Reports</span>        
+                                                            </h2>
+                                                        </apex:outputPanel>
+                                                    </div>
+                                                </div>
+                                         </apex:outputPanel>
+                                        <apex:outputPanel id="messageBannerPanel1"> 
+                                            <div class="slds-notify slds-notify--alert slds-theme--{!IF(isSuccess, 'success','error')}" role="alert" id="messageBanner" style="display:{!IF(strMessage != '', '','none')}">
+                                                <div class="notify__content">
+                                                    <apex:outputPanel styleClass="slds-col slds-align-middle" id="idMsg">
+                                                        <h2 class="slds-text-heading--small ">  
+                                                            <span>{!strMessage}</span>
+                                                        </h2>
+                                                    </apex:outputPanel>
+                                                </div>
+                                            </div>
+                                        </apex:outputPanel>
+                                        <apex:outputPanel id="mainPanel1" >
+                                            <apex:outputPanel layout="block" rendered="{!AND(lstClientExpenseReport.size > 0,isSuccess) }" styleClass="slds-scrollable--y" style="max-height:200px;" id="tableContainer1">
+                                                <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal" id="tableId">
+                                                    <thead>
+                                                        <tr class = "titlerow" id="thId">
+                                                            <apex:variable value="{!0}" var="colCountTab1" />
+                                                            <apex:repeat value="{!$ObjectType.TR1__Expense_Report__c.fieldsets['RC_Client_Expense_report']}" var="field">
+                                                                <apex:variable var="colCountTab1" value="{!colCountTab1+1}"/>
+                                                                <th class="slds-text-heading--label" scope="col" >
+                                                                    <span class="slds-truncate">{!field.Label}</span>
+                                                                </th>
+                                                            </apex:repeat>
+                                                            <th class="slds-text-heading--x-small" scope="col"></th>
+                                                            <apex:variable var="colCountTab1" value="{!colCountTab1+2}"/>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <apex:variable value="{!-1}" var="rowCount" />
+                                                            <apex:repeat value="{!lstClientExpenseReport}" var="objExp">
+                                                                <apex:variable var="rowCount" value="{!rowCount+1}"/>  
+                                                                <tr id="trId">
+                                                                    <apex:repeat value="{!$ObjectType.TR1__Expense_Report__c.fieldsets['RC_Client_Expense_report']}" var="field">
+                                                                        <td data-label="{!field.label}">
+                                                                            <apex:outputField value="{!objExp[field]}" style="pointer-events: none" styleClass="opField"/>
+                                                                            <apex:outputPanel rendered="{!field=='TR1__Consultant_Name__c'}">
+                                                                                <span style="cursor:pointer" onclick="$('#expDescContainer{!objExp.id}').show();">[...]</span> 
+                                                                                <div id="expDescContainer{!objExp.id}" style="display:none">
+                                                                                    <div aria-hidden="false" role="dialog" class="slds-modal slds-fade-in-open" >
+                                                                                        <div class="slds-modal__container">
+                                                                                            <div class="slds-modal__header">
+                                                                                                <span class="slds-text-heading--medium"><b>Description</b></span>
+                                                                                            </div>
+                                                                                            <div class="slds-modal__content">
+                                                                                                <table>
+                                                                                                    <apex:repeat value="{!$ObjectType.TR1__Expense_Report__c.fieldsets['RC_Client_Expense_report_detail']}" var="fieldDesc">
+        	                                                                                            <tr>
+        	                                                                                                <th class="removeTh">{!fieldDesc.label}</th>
+        		                                                                                            <td data-label="{!fieldDesc.label}" headers="{!fieldDesc.label}{!objExp.id}">
+        			                                                                                            <apex:outputField value="{!objExp[fieldDesc]}" />
+                                                                                                            </td>
+        	                                                                                            </tr>
+                                                                                                    </apex:repeat>
+                                                                                                </table>
+                                                                                            </div>
+                                                                                            <div class="slds-modal__footer">
+                                                                                                <div style="cursor:pointer" class="slds-button slds-button--neutral" onclick="closeMessageBanner('expDescContainer{!objExp.id}');">Close</div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="slds-modal-backdrop slds-modal-backdrop--open" id="DescModalBlur{!objExp.id}"></div>
+                                                                                </div>
+                                                                            </apex:outputPanel>
+                                                                        </td>
+                                                                    </apex:repeat>
+                                                                    <td>
+                                                                        <apex:commandButton value="Approve" styleClass="slds-button slds-button--neutral" action="{!approveExp}" rerender="mainPanel1,idMsg,tableContainer1" onComplete="updatePanelCss('{!isSuccess}', '{!strMessage}');">
+                                                                            <apex:param name="expId" value="{!objExp.id}" assignTo="{!idExp}"/>
+                                                                        </apex:commandButton>
+                                                                        <div style="cursor:pointer;"  class="slds-button slds-button--neutral" onclick="rerenderModal('{!objExp.id}','{!objExp.TR1__Comments__c}','{!rowCount}');$('#{!objExp.id}').show();">
+                                                                            <span>Reject</span>
+                                                                        </div>
+                                                                        <div id="{!objExp.id}" style="display:none">
+                                                                            <div aria-hidden="false" role="dialog" class="slds-modal slds-fade-in-open" >
+                                                                                <div class="slds-modal__container" id="idModalReject{!objExp.id}">
+                                                                                    <div class="slds-modal__header">
+                                                                                        <span class="slds-text-heading--medium" id="rej{!objExp.id}"><b>Confirm Rejection</b></span>
+                                                                                        <div style="display:none" class="slds-notify slds-notify--alert slds-theme--error slds-theme--alert-texture" role="alert" id="messageBannerModal{!objExp.id}">
+                                                                                            <div class="notify__content slds-grid" id="tab1IdNotification">
+                                                                                                <apex:outputPanel styleClass="slds-col slds-align-middle">
+                                                                                                    <h2 class="slds-text-heading--small ">  
+        	                                                                                           <span>Comments can't be empty while rejecting</span>       
+                                                                                                    </h2>
+                                                                                                </apex:outputPanel>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="slds-modal__content">
+                                                                                        <div id="modalMessage" style="overflow-x:auto;height:300px!important;">
+                                                                                            <apex:outputLabel value="Comment"/>
+                                                                                            <br />
+                                                                                            <apex:inputField style="resize:none;" value="{!objExp.TR1__Comments__c}" styleClass="slds-textarea" id="commentTextArea"/>
+                                                                                        </div>  
+                                                                                    </div>
+                                                                                    <div class="slds-modal__footer">
+                                                                                        <apex:commandButton styleClass="slds-button slds-button--neutral" onclick="closeMessageBanner('{!objExp.id}');" value="Cancel" rerender="dummy"/>
+                                                                                        <Apex:commandButton value="Reject" styleClass="slds-button slds-button--neutral" onclick="rejectConfirm('{!objExp.id}','{!objExp.TR1__Comments__c}','{!rowCount}');" rerender="dummy">
+                                                                                            <apex:param name="expId" value="{!objExp.id}" assignTo="{!idExp}"/>
+                                                                                        </apex:commandButton>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="slds-modal-backdrop slds-modal-backdrop--open" id="modalBlur{!objExp.id}"></div>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </apex:repeat>
+                                                        </tbody>
+                                                    </table>
+                                                </apex:outputPanel>
+                                        </apex:outputPanel>
+                                    </div>
+                                    <div class="slds-card__footer"></div>
+                                </div>
+                                <!-- End Client Expense Reports -->
+    
+    
+                            <!--<div class="slds-text-align--center slds-m-top--medium"> 
+                                <a href="/Home" class="slds-button slds-button--neutral">Back</a>
+                            </div> -->
+                        </apex:outputPanel>
+                        <!-- End With C & C candidate Type -->
+                        
+                        
+                        <!-- Start with candidate community type -->
+                        <apex:outputPanel rendered="{!strCommunityType == 'Candidate'}">
+                            <apex:variable value="{!fieldSetExpenseReports.size}" var="columnCount" />
+                             <div class="slds-page-header" role="banner">
+                                <div class="slds-grid slds-wrap slds-grid--align-spread">
+                                    <div class="slds-col slds-size--1-of-1 slds-small-size--1-of-1 slds-medium-size--4-of-6 slds-large-size--10-of-12">
+                                        <div class="slds-media">
+                                            <div class="slds-media__figure">
+                                                <span class="slds-avatar slds-avatar--medium">
+                                                   <img src="{!URLFOR($Resource.SLDS092, '/assets/icons/standard/report_60.png')}" style="background-color: #8291C3;" />
+                                                </span>
+                                            </div> 
+                                            
+                                            <div class="slds-media__body">
+                                              <p class="slds-text-heading--label">{!$User.FirstName} {!$User.LastName}</p>
+                                              <h1 class="slds-text-heading--medium slds-m-right--small slds-truncate slds-align-middle" title="Candidate Expense Reports">Candidate Expense Reports</h1>
+                                             </div>
+                                        </div>
+                                    </div>
+                                     <div class="slds-col slds-size--1-of-1 slds-small-size--1-of-1 slds-medium-size--2-of-6 slds-large-size--2-of-12">
+                                        <a href="{!$Site.Prefix}/CandidateExpenseReportDetail?NewExp=true" class="slds-button slds-button--neutral">New Expense Report</a>
+                                    </div>
+                                </div>
+                                 <div class="slds-grid slds-wrap slds-grid--align-spread slds-page-header__detail-row">
+                                   	<apex:repeat value="{!$ObjectType.Contact.Fieldsets.RC_My_Profile_Header}" var="field">
+                                   		<div class="slds-col--padded slds-size--2-of-6 slds-medium-size--2-of-6 slds-large-size--1-of-6">
+                                   		  <dl>
+                                   			<dt>
+                                   			  <p class="slds-text-heading--label slds-truncate" title="{!field.label}">{!field.label}</p>
+                                   			</dt>
+                                   			<dd>
+                                   			  <p class="slds-text-body--regular slds-truncate" title="{!objCont[field]}"><apex:outputField value="{!objCont[field]}"/></p>
+                                   			  <script>
+                                   			  	console.log('---------value','{!objCont[field]}');
+                                   			  </script>
+                                   			</dd>
+                                   		  </dl>
+                                   		</div>
+                                   	</apex:repeat>
+                               </div>
+                            </div>
+                            
+                            <apex:outputPanel rendered="{!lstExpenseReports.size == 0}" layout="block" styleClass="slds-text-align--center slds-m-top--medium">
+                                <div class="slds-notify slds-notify--alert slds-theme--alert-texture" role="alert" id="messageExpenseEmpty">
+                                    <div class="notify__content slds-grid">                         
+                                        <apex:outputPanel styleClass="slds-col slds-align-middle">
+                                            <h2 class="slds-text-heading--small ">  
+                                                 <span>No Expenses report</span>      
+                                            </h2>
+                                        </apex:outputPanel> 
+                                    </div>
+                                </div>
+                            </apex:outputPanel> 
+                            <apex:outputPanel rendered="{!lstExpenseReports.size != 0}" layout="block" styleClass="slds-col--padded-large">
+                                <table class="slds-table slds-table--bordered slds-max-medium-table--stacked slds-m-top--medium ">
+                                    <thead>
+                                        <tr class="slds-text-heading--label">
+                                            <apex:repeat value="{!fieldSetExpenseReports}" var="field">
+                                                <apex:outputPanel rendered="{!field.FieldPath != 'TR1__Comments__c'}">
+                                                    <th data-label="{!field.Label}" class="slds-text-heading--label slds-size--1-of-{!columnCount}" scope="col">{!field.Label}</th>
+                                                </apex:outputPanel>
+                                            </apex:repeat>
+                                            <th class="slds-text-heading--label slds-size--1-of-{!columnCount}" scope="col"> </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>  
+                                        <apex:variable var="varPopover" value="{!0}" />
+                                        <apex:repeat value="{!lstExpenseReports}" var="objExpRep"> 
+                                            <tr class="slds-hint-parent">
+                                                <apex:repeat value="{!fieldSetExpenseReports}" var="field">
+                                                    <apex:outputPanel rendered="{!field.FieldPath != 'TR1__Comments__c'}">
+                                                        <td data-label="{!field.Label}" class="slds-size--1-of-{!columnCount}" > 
+                                                            <apex:outputField value="{!objExpRep[field.FieldPath]}" rendered="{!field.Label == 'Account Name'}" >
+                                                                 <span class="clsPop" id="{!varPopover}"  style="cursor: pointer;display:{!IF(objExpRep.TR1__Comments__c != '', '','none')}">[...]
+                                                                    <div Class="slds-popover slds-nubbin--top-left clsPopover" role="dialog" style="display:none" id="popover{!varPopover}">
+                                                                        <div class="slds-popover__body">{!objExpRep.TR1__Comments__c}</div>
+                                                                    </div>
+                                                                </span> 
+                                                            </apex:outputField>
+                                                            <apex:outputField value="{!objExpRep[field.FieldPath]}" rendered="{!field.Label != 'Account Name'}" /> 
+                                                        </td>
+                                                    </apex:outputPanel>
+                                                    <apex:variable var="varPopover" value="{!varPopover+1}" />
+                                                </apex:repeat>
+                                                <td class="slds-text-heading--label slds-size--1-of-{!columnCount}">
+                                                    <a href="{!$Site.Prefix}/CandidateExpenseReportDetail?ExpRep={!objExpRep.Id}" class="slds-button slds-button--neutral">View</a> 
+                                                </td>
+                                            </tr>
+                                        </apex:repeat>
+                                    </tbody>
+                                </table>
+                            </apex:outputPanel>
+                            <!--<div class="slds-text-align--center slds-m-top--medium"> 
+                                <a href="/Home" class="slds-button slds-button--neutral">Back</a>
+                            </div> -->
+                        </apex:outputPanel>
+                        <!-- End with Candidate community type -->
+                        
+                        <!-- Start with Client community type -->
+                        <apex:outputPanel rendered="{!strCommunityType == 'Client'}">
+                            <div id="sldsId">
+            				    <apex:outputPanel id="messageBannerPanel"> 
+            						<div class="slds-notify slds-notify--alert slds-theme--{!IF(isSuccess, 'success','error')} slds-theme--alert-texture" role="alert" id="messageBanner" style="display:{!IF(strMessage != '', '','none')}">
+            							<div class="notify__content">
+            								<apex:outputPanel styleClass="slds-col slds-align-middle" id="idMsg1">
+            									<h2 class="slds-text-heading--small ">  
+            										<span>{!strMessage}</span>
+            									</h2>
+            								</apex:outputPanel>
+            							</div>
+            						</div>
+            					</apex:outputPanel>
+                					
+            					 <div class="slds-page-header" role="banner">
+                                    <div class="slds-grid slds-wrap slds-grid--align-spread">
+                                        <div class="slds-col">
+                                            <div class="slds-media">
+                                                <div class="slds-media__figure">
+                                                    <span class="slds-avatar slds-avatar--medium">
+                                                       <img src="{!URLFOR($Resource.SLDS092, '/assets/icons/standard/report_60.png')}" style="background-color: #8291C3;" />
+                                                    </span>
+                                                </div> 
+                                                <div class="slds-media__body">
+                                                	<p class="slds-text-heading--label">{!$User.FirstName} {!$User.LastName}</p>
+                                                    <div class="slds-grid">
+                                                    	<h1 class="slds-text-heading--medium slds-m-right--small slds-truncate slds-align-middle" title="Client Expense Reports">Client Expense Reports</h1> 
+                                                    </div> 
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-grid slds-wrap slds-grid--align-spread slds-page-header__detail-row">
+                                    	<apex:repeat value="{!$ObjectType.Contact.Fieldsets.RC_My_Profile_Header}" var="field">
+                                    		<div class="slds-col--padded slds-size--2-of-6 slds-medium-size--2-of-6 slds-large-size--1-of-6">
+                                    		  <dl>
+                                    			<dt>
+                                    			  <p class="slds-text-heading--label slds-truncate" title="{!field.label}">{!field.label}</p>
+                                    			</dt>
+                                    			<dd>
+                                    			  <p class="slds-text-body--regular slds-truncate" title="{!objCont[field]}"><apex:outputField value="{!objCont[field]}"/></p>
+                                    			  <script>
+                                    			  	console.log('---------value','{!objCont[field]}');
+                                    			  </script>
+                                    			</dd>
+                                    		  </dl>
+                                    		</div>
+                                    	</apex:repeat>
+                                     </div>
+                                </div>
+                					
+                					
+            					<apex:outputPanel id="mainPanel" layout="block" styleClass="slds-col--padded-large">
+            						<apex:outputPanel layout="block" rendered="{!AND(lstClientExpenseReport.size > 0,isSuccess) }" styleClass="slds-m-top--medium" id="tableContainer">
+            							<table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal" id="tableId">
+            								<thead>
+            									<tr class = "titlerow" id="thId">
+            										<apex:variable value="{!0}" var="colCountTab1" />
+            										<apex:repeat value="{!$ObjectType.TR1__Expense_Report__c.fieldsets['RC_Client_Expense_report']}" var="field">
+            											<apex:variable var="colCountTab1" value="{!colCountTab1+1}"/>
+            											<th class="slds-text-heading--label" scope="col" >
+            												<span class="slds-truncate">{!field.Label}</span>
+            											</th>
+            										</apex:repeat>
+            										<th class="slds-text-heading--x-small" scope="col"></th>
+            										<apex:variable var="colCountTab1" value="{!colCountTab1+2}"/>
+            									</tr>
+            								</thead>
+            								<tbody>
+            									<apex:variable value="{!-1}" var="rowCount" />
+            									<apex:repeat value="{!lstClientExpenseReport}" var="objExp">
+            										<apex:variable var="rowCount" value="{!rowCount+1}"/>  
+            										<tr id="trId">
+            											<apex:repeat value="{!$ObjectType.TR1__Expense_Report__c.fieldsets['RC_Client_Expense_report']}" var="field">
+            												<td data-label="{!field.label}">
+            													<apex:outputField value="{!objExp[field]}" style="pointer-events: none" styleClass="opField"/>
+            													
+            													<apex:outputPanel rendered="{!field=='TR1__Consultant_Name__c'}">
+            														<span style="cursor:pointer" onclick="$('#expDescContainer{!objExp.id}').show();">[...]</span> 
+            														<div id="expDescContainer{!objExp.id}" style="display:none">
+            															<div aria-hidden="false" role="dialog" class="slds-modal slds-fade-in-open" >
+            																<div class="slds-modal__container">
+            																	<div class="slds-modal__header">
+            																		<span class="slds-text-heading--medium"><b>Description</b></span>
+            																	</div>
+            																	<div class="slds-modal__content">
+            																		<table>
+            																			<apex:repeat value="{!$ObjectType.TR1__Expense_Report__c.fieldsets['RC_Client_Expense_report_detail']}" var="fieldDesc">
+            																				<tr>
+            																					<th class="removeTh">{!fieldDesc.label}</th>
+            																					<td data-label="{!fieldDesc.label}" headers="{!fieldDesc.label}{!objExp.id}">
+            																						<apex:outputField value="{!objExp[fieldDesc]}" />
+            																					</td>
+            																				</tr>
+            																			</apex:repeat>
+            																		</table>
+            																	</div>
+            																	<div class="slds-modal__footer">
+            																		<div style="cursor:pointer" class="slds-button slds-button--neutral" onclick="closeMessageBanner('expDescContainer{!objExp.id}');">Close</div>
+            																	</div>
+            																</div>
+            															</div>
+            															<div class="slds-modal-backdrop slds-modal-backdrop--open" id="DescModalBlur{!objExp.id}"></div>
+            														</div>
+            													</apex:outputPanel>
+            												</td>
+            											</apex:repeat>
+            											<td>
+            												<apex:commandButton value="Approve" styleClass="slds-button slds-button--neutral" action="{!approveExp}" rerender="mainPanel,idMsg1, tableContainer" onComplete="updatePanelCss('{!isSuccess}', '{!strMessage}');">
+            													<apex:param name="expId" value="{!objExp.id}" assignTo="{!idExp}"/>
+            												</apex:commandButton>
+            												<div style="cursor:pointer;"  class="slds-button slds-button--neutral" onclick="rerenderModal('{!objExp.id}','{!objExp.TR1__Comments__c}','{!rowCount}');$('#{!objExp.id}').show();">
+            													<span>Reject</span>
+            												</div>
+            												<div id="{!objExp.id}" style="display:none">
+            													<div aria-hidden="false" role="dialog" class="slds-modal slds-fade-in-open" >
+            														<div class="slds-modal__container" id="idModalReject{!objExp.id}">
+            															<div class="slds-modal__header">
+            																<span class="slds-text-heading--medium" id="rej{!objExp.id}"><b>Confirm Rejection</b></span>
+            																<div style="display:none" class="slds-notify slds-notify--alert slds-theme--error slds-theme--alert-texture" role="alert" id="messageBannerModal{!objExp.id}">
+            																	<div class="notify__content slds-grid" id="tab1IdNotification">
+            																		<apex:outputPanel styleClass="slds-col slds-align-middle">
+            																			<h2 class="slds-text-heading--small ">  
+            																				<span>Comments can't be empty while rejecting</span>       
+            																			</h2>
+            																		</apex:outputPanel>
+            																	</div>
+            																</div>
+            															</div>
+            															<div class="slds-modal__content">
+            																<div id="modalMessage" style="overflow-x:auto;height:300px!important;">
+            																	<apex:outputLabel value="Comment"/>
+            																	<br />
+            																	<apex:inputField style="resize:none;" value="{!objExp.TR1__Comments__c}" styleClass="slds-textarea" id="commentTextArea"/>
+            																</div>
+            															</div>
+            															<div class="slds-modal__footer">
+            																<!-- onComplete="updatePanelCss('{!isSuccess}', '{!strMessage}');" -->
+            																<!--<Apex:commandButton value="Reject" action="{!rejectExp}" rerender="{!IF(false,'mainPanel','dummy')}" styleClass="slds-button slds-button--neutral" onclick="rejectConfirm('{!objExp.id}','{!objExp.TR1__Comments__c}','{!rowCount}');" > 
+            																	<apex:param name="expId" value="{!objExp.id}" assignTo="{!idExp}"/> 
+            																	</apex:commandButton>--><!-- updatePanelCss('{!isSuccess}', '{!strMessage}'); -->
+            																<apex:commandButton styleClass="slds-button slds-button--neutral" onclick="closeMessageBanner('{!objExp.id}');" value="Cancel" rerender="dummy"/>
+            																<Apex:commandButton value="Reject" styleClass="slds-button slds-button--neutral" onclick="rejectConfirm('{!objExp.id}','{!objExp.TR1__Comments__c}','{!rowCount}');" rerender="dummy">
+            																	<apex:param name="expId" value="{!objExp.id}" assignTo="{!idExp}"/>
+            																</apex:commandButton>
+            															</div>
+            														</div>
+            													</div>
+            													<div class="slds-modal-backdrop slds-modal-backdrop--open" id="modalBlur{!objExp.id}"></div>
+            												</div>
+            											</td>
+            											<!--<td>
+            												</td> -->
+            										</tr>
+            									</apex:repeat>
+            								</tbody>
+            							</table>
+            						</apex:outputPanel>
+            						<apex:outputPanel layout="block" rendered="{!AND(lstClientExpenseReport.size == 0, isSuccess) }" styleClass="slds-m-top--xx-medium" >
+            							<div class="slds-notify slds-notify--alert slds-theme--{!IF(lstClientExpenseReport.size==0,'alert-texture','error')} slds-theme--alert-texture" role="alert" id="messageBannerTab1">
+            								<div class="notify__content slds-grid" id="tab1IdNotification">
+            									<apex:outputPanel styleClass="slds-col slds-align-middle">
+            										<h2 class="slds-text-heading--small ">  
+            											<span>No Expense Reports</span>        
+            										</h2>
+            									</apex:outputPanel>
+            								</div>
+            							</div>
+            						</apex:outputPanel>
+            					</apex:outputPanel>
+            				</div>
+            			</apex:outputPanel>
+                        
+                        <!-- End with Client community type -->
+                        
+                    </div>
+                </apex:form>
+            </div>  
+            <br/><br/>
+            <!-- Page Footer-->
+            <span class="nonslds">
+                <div class="footer">
+                    <div class="footer-socials half-bottom">
+                        <a href="#" class="footer-share show-share-bottom"><i class="fa fa-share-alt"></i></a>
+                        <a href="#" class="footer-up"><i class="fa fa-angle-up"></i></a>
+                    </div>
+                    <p class="center-text">&copy; 2015 Talent Rover. All rights reserved.</p>
+                </div>   
+            </span>   
+        </div>
+        
+    </div>
+        	
+	<script>
+	
+        /*$( document ).ready(function() {
+             console.log('---- height ----'+$('.slds-snap-content').height());
+            $('.footer').css('top', ($('.slds-snap-content').height()-200)+'px');
+        }); */
+        
+       function showPopover(popoverId, mouseObject) 
+       {
+           console.log('--- popoverId ----',mouseObject.pageX);  
+           $('#'+popoverId).show();
+           
+       }
+       
+       $('.clsPop').hover(function(e){
+           
+           $('#popover'+e.currentTarget.id).show();  
+           
+           //$('#popover'+e.currentTarget.id).css({'left':e.pageX - 5});
+       }); 
+       
+       $( ".clsPop" ).mouseleave(function(e){
+           console.log('out'); 
+           $('#popover'+e.currentTarget.id).hide();  
+       });
+       
+       function hidePopover(popoverId) 
+       {
+           //console.log('called');
+            $('#'+popoverId).hide();
+           //$('.clsPopover').hide();
+       }
+   
+    	$(document).ready(function()
+    	{
+    	    updatePanelCss('{!isSuccess}', '{!strMessage}'); 
+    	});
+    	
+    	function rerenderModal(idVal,strComment,index)
+    	{
+    	    document.getElementById('rej'+idVal).innerHTML = 'Confirm Rejection';
+    	    document.getElementById('messageBannerModal'+idVal).style.display = 'none';
+    	    $("#modalMessage > textarea")[index].value = strComment; 
+    	}
+    	
+    	function rejectConfirm(idVal,comment,index)
+    	{
+    	    
+    	    if($("#modalMessage > textarea")[index].value == '')
+    	    {
+    	        document.getElementById('rej'+idVal).innerHTML = '';
+    	        document.getElementById('messageBannerModal'+idVal).style.display = 'block';
+    	        return false; 
+    	    }
+    	    else // reject Expense Report
+    	    {
+    	        rejectExpReport(idVal,($("#modalMessage > textarea")[index].value));
+    	    } 
+    	    /*document.getElementById('idModalReject'+idVal).style.display = 'none';
+    	    document.getElementById('modalBlur'+idVal).style.display = 'none'; */ 
+    	}
+    	
+    	function updatePanelCss(SuccessAlert, Message) 
+    	{
+    	  
+    	    if(Message != '')
+    	    {
+    	        
+    	        document.getElementById('messageBanner').style.display = ''; 
+    	        if(SuccessAlert == 'false')
+    	        {
+    	            document.getElementById("messageBanner").className = document.getElementById("messageBanner").className.replace( /(?:^|\s)slds-theme--success(?!\S)/g , ' slds-theme--error' );
+    	            document.getElementById("idBan").style.display = '';
+    	        }
+    	        else
+    	        {
+    	            document.getElementById("messageBanner").className = document.getElementById("messageBanner").className.replace( /(?:^|\s)slds-theme--error(?!\S)/g , ' slds-theme--success' );
+    	            document.getElementById("idNotification").style.display = '';
+    	        }
+    	    }
+    	}
+    	
+    	function closeMessageBanner(strId)  
+    	{
+    	   document.getElementById(strId).style.display = 'none'; 
+    	}
+    	
+    	function ExpandAndCollapse(varId)
+        { 
+            if($("#"+varId).hasClass("out")) {
+                $("#"+varId).addClass("in");
+                $("#"+varId).removeClass("out");
+                //$('#img'+rowNum).attr('src','{!URLFOR($Resource.SLDS092, "/assets/icons/utility/down_60.png")}');
+            } 
+            else {
+                $("#"+varId).addClass("out");
+                $("#"+varId).removeClass("in");
+                //$('#img'+rowNum).attr('src','{!URLFOR($Resource.SLDS092, "/assets/icons/utility/up_60.png")}');
+            }
+        }
+    </script>
+    </apex:define> 
+</apex:composition>
+</html>    
+</apex:page>

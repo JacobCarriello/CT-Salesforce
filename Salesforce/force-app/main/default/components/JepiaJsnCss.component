@@ -1,0 +1,14 @@
+<apex:component >
+
+  <apex:stylesheet value="{!URLFOR($Resource.Jepia_Resources, 'styles/style-nonslds.css')}"/> <!--non slds conflict-->
+  <apex:stylesheet value="{!URLFOR($Resource.Jepia_Resources, 'styles/framework-nonslds.css')}"/> <!--non slds conflict-->
+  <apex:stylesheet value="{!URLFOR($Resource.Jepia_Resources, 'styles/owl.theme.css')}"/>
+  <apex:stylesheet value="{!URLFOR($Resource.Jepia_Resources, 'styles/swipebox.css')}"/>
+  <apex:stylesheet value="{!URLFOR($Resource.Jepia_Resources, 'styles/font-awesome.css')}"/>
+  <apex:stylesheet value="{!URLFOR($Resource.Jepia_Resources, 'styles/animate.css')}"/>
+  <apex:includeScript value="{!URLFOR($Resource.Jepia_Resources, 'scripts/jquery.js')}"/>
+  <apex:includeScript value="{!URLFOR($Resource.Jepia_Resources, 'scripts/jqueryui.js')}"/>
+  <apex:includeScript value="{!URLFOR($Resource.Jepia_Resources, 'scripts/framework.plugins.js')}"/>
+  <apex:includeScript value="{!URLFOR($Resource.Jepia_Resources, 'scripts/custom.js')}"/>
+    
+</apex:component>

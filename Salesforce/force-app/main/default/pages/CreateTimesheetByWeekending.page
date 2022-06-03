@@ -1,0 +1,34 @@
+<apex:page StandardController="TR1__Timesheet__c" extensions="CreateTimesheetByWeekendingCtrl" lightningStylesheets="true" >
+    <style>
+    .bPageBlock th.vfLabelColTextWrap{
+        white-space: nowrap;
+    }
+    </style>
+    <apex:form id="TimesheetForm">
+    <apex:messages />
+    <apex:pageBlock Id="CreateTimesheet">
+        <apex:pageMessages id="CreateTimesheetMessages"/>
+     <!--   <apex:outputText rendered="{!NOT(ISBLANK(cr.TR1__Week_Ending__c))}">
+            <p style="padding-left: 11px; font-size: 11px;font-weight: bold;">{!$Label.CreateTSPage_Note_Start}&nbsp;{!cr.TR1__Week_Start__c}&nbsp;{!$Label.CreateTSPage_Note_End}&nbsp;{!cr.TR1__Week_Ending__c}.</p>
+        </apex:outputText>
+        <apex:outputText rendered="{!(ISBLANK(cr.TR1__Week_Ending__c))}">
+            <p style="padding-left: 11px; font-size: 11px;font-weight: bold;"> {!$Label.CreateTSPage_Note_Start}&nbsp;{!cr.TR1__Week_Start__c}&nbsp;{!$Label.CreateTSPage_Note_End_Sunday}  </p>
+        </apex:outputText> -->
+        <div> &nbsp;&nbsp;&nbsp;</div>
+        <apex:pageBlockButtons >
+            <apex:commandButton value="Create" action="{!createts}" rendered="{!NOT(ISNULL(cr))}"/>
+            <apex:commandbutton value="Cancel" action="{!goBack}"/>
+        </apex:pageBlockButtons>
+        <apex:pageBlockSection columns="1">
+            <apex:pageBlockSectionItem rendered="{!(ISNULL(cr))}" >
+                <apex:outputText escape="false" value="{!msg}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem rendered="{!NOT(ISNULL(cr))}" >
+                <apex:outputLabel for="date1">{!$Label.createtspage_please_select_weekending} </apex:outputLabel>
+                <apex:inputfield required="true" id="date1" Label="Week Ending Date" value="{!tempTimesheet.TR1__Week_Ending__c}"/>
+                <!--onfocus="DatePicker.pickDate(false, this , false);"-->
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+    </apex:form>
+</apex:page>

@@ -1,0 +1,75 @@
+<apex:page sidebar="false" showHeader="false" controller="CallListGenerationController" >
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1"/>
+            <apex:stylesheet value="{!URLFOR($Resource.SLDS092, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+            <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
+            <apex:includeScript value="{!URLFOR($Resource.TB_JS, '/jQuery-1.11.3.min.js')}" />
+    </head>
+    <body>
+        <!-- <div style="height:30px;">&nbsp;</div> -->
+        <div class="slds-all-elements">
+            <div id="content" class="slds-snap-content" style="z-index:100">
+                <div class="slds-content"> 
+                        <div class="slds">
+                            <!-- Start Loading Status -->
+                           <apex:actionStatus id="theStatus" >
+				                <apex:facet name="start">
+				                <div class="waitingSearchDiv" id="el_loading" style="background-color: #fbfbfb;
+				                       height: 100%;opacity:0.65;width:100%;"> 
+				                    <div class="waitingHolder" style="top: 74.2px; width: 91px;">
+				                        <img class="waitingImage" src="/img/loading32.gif" title="Please Wait..." />
+				                        <span class="waitingDescription">Loading...</span>
+				                    </div>
+				                </div>
+				            </apex:facet>
+				                   
+				                </apex:actionStatus>  
+                            <!-- End Loading Status -->
+                            
+                            <apex:form id="formid">  
+                                <apex:pageMessages id="test" />
+                                <apex:outputPanel rendered="{!existingCallList == null && !isError}">
+                                     <apex:outputText value="{!$Label.You_have_not_created_any} {!listType} {!$Label.for_this_Job_Do_you_want_to_Generate_one} " />
+                                     <br/><br/>
+                                     <div align="center">
+                                         <apex:inputText html-placeholder="Call List Name" size="20" value="{!callListName}" styleClass="inputCallListNameClass" id="inputCallListName" style="margin-left: -50px;margin-right: 10px; height: 35px;padding-left: 10px;"/> 
+                                         <apex:commandButton styleclass="slds-button slds-button--neutral commandButtonClass"  value="Generate Call List"  status="theStatus"  rerender="formid" action="{!generateCallList}"/>
+                                     </div>   
+                                </apex:outputPanel>
+                                
+                                <apex:outputPanel rendered="{!existingCallList != null}" id="callList">
+                                    <apex:outputText value="{!existingCallListMessage}" />
+                                     <br/><br/>
+                                    <a href="#" style="margin-right: 10px; height: 35px;padding-left: 10px;" onclick="redirectAction();" >{!existingCallList.Name} </a> 
+                                    <apex:commandButton styleclass="slds-button slds-button--neutral"  value="Update"  status="theStatus"  rerender="formid" action="{!updateCallList}" disabled="{!isError}"/>
+                                    <!--<script>
+                                        window.top.location.href="/{!existingCallList.id}";
+                                    </script>-->
+                                </apex:outputPanel>
+                                <script>
+                                    
+                                    function redirectAction(){
+                                        var existingCallList = '{!existingCallList}';
+                                        window.top.location.href="/{!existingCallList.id}";
+                                    }
+                                    
+                                    $(document).ready(function() {
+									     $('.commandButtonClass').prop('disabled', true);
+									     $('.inputCallListNameClass').keyup(function() {
+									        if($(this).val() != '') {
+									            $('.commandButtonClass').prop('disabled', false);
+									        }else{
+									        	$('.commandButtonClass').prop('disabled', true);
+									        }
+									     });
+									 });
+                                </script> 
+                           </apex:form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+</apex:page>

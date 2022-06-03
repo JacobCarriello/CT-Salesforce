@@ -1,0 +1,163 @@
+<apex:page controller="RC_RegisterOrApplyToJob" showHeader="false" standardStylesheets="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false" action="{!redirectUnAuthenticatedUser}">
+
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <head>
+            <c:RC_JSnCSS />
+            <apex:stylesheet value="{!URLFOR($Resource.SLDS092, '/assets/styles/salesforce-lightning-design-system-vf.css')}" />
+            <apex:includeScript value="{!URLFOR($Resource.TB_JS, '/jQuery-1.11.3.min.js')}" />
+            <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
+            <apex:includeScript value="{!URLFOR($Resource.TB_JS, '/jquery-ui-1.11.3.js')}" />
+            <style>
+                 #outPopUp{
+                 position:absolute;
+                 z-index:9999999;
+                 top:47%;
+                 left:47%;
+                } 
+                .slds-table {
+                    border: 1px solid #d8dde6;
+                }
+                .customBox{
+                    border: 1px solid #d8dde6;
+                    
+                   /* text-align: center;*/
+                }
+                .greenBtn{
+                    border-color:transparent !important;;
+                    background: #6BC56B !important;
+                }
+                .titleBox{
+                    text-align:center;
+                    border-radius: 6px 6px 0 0;
+                    background: #f4f6f9;
+                    border: 1px solid lightgrey;
+                    border-bottom: 0;
+                }
+                /*.jobDetails .slds-table td {
+                    padding: 4px !important;
+                }*/
+                
+            </style>
+        </head>
+        <apex:composition template="RC_CommunityTemplate">
+            <apex:define name="body">
+                <body>
+                    <div class = "slds">
+        
+                        <div id="outPopUp" style="display:none;"> 
+                            <div class="slds-spinner--medium" >
+                                <img src="{!URLFOR($Resource.SLDS092, 'assets/images/spinners/slds_spinner_inverse.gif')}">  
+                                    <span class="slds-m-right--medium" style="color: #081BDE; font-weight:bolder;">Loading...</span>
+                                </img>
+                            </div>
+                        </div> 
+                        <div class="slds-modal-backdrop slds-modal-backdrop--close"  id="idBackDrop"></div>
+                        
+                        <div class="slds-grid slds-wrap slds-grid--align-spread slds-col--padded-large slds-m-top--medium">
+                            <div class="slds-col  slds-col--padded-large slds-size--1-of-1 slds-medium-size--4-of-6 slds-large-size--9-of-12">
+                                <c:ArticleDetail artId="a3C11000000IDu7" order="0" />
+                            </div>
+                            
+                            <div class="slds-col  slds-col--padded-large slds-size--1-of-1 slds-medium-size--2-of-6 slds-large-size--3-of-12">
+                        
+                                <apex:form >
+                                    <!--<apex:actionFunction name="apply" action="{!applyToJob}" rerender="wholepage" />-->
+                                    <apex:actionFunction name="updateCandidate" action="{!updateCandidateStatus}" rerender="wholepage" />
+                                </apex:form> 
+                
+                                <apex:outputPanel id="wholepage" styleClass="jobDetails">
+                                    <apex:outputPanel rendered="{!objJobDetail.Id !=''}">
+                                        <div class="titleBox slds-p-around--x-small slds-align-middle">
+                                            <b>{!objJobDetail.Job_Title__c}</b>
+                                        </div>
+                                        <table class="slds-table slds-no-row-hover">
+                                            <apex:repeat value="{!$ObjectType.TR1__Job__c.Fieldsets.RC_RegisterOrApplyToJob}" var="field">
+                                                <tr>
+                                                    <td style="font-weight: bolder;">{!field.label}</td>                                                    
+                                                    <td class="slds-float--left" ><apex:outputField value="{!objJobDetail[field]}"/></td>
+                                                
+                                                </tr>
+                                            </apex:repeat>
+                                        </table> 
+                                        <!--Apply button or msg block-->
+                                        <apex:outputPanel rendered="{!!notLoggedIn && applicationId =='' && strMsg ==''}"  layout="block" styleClass="customBox slds-p-around--small"> 
+                                            <center><a href="{!$Site.Prefix}/JobDetail?Id={!jobId}&apply=1" class="slds-button slds-button--brand">Apply for this position</a></center>
+                                        </apex:outputPanel>
+                                        
+                                    </apex:outputPanel>
+                                    
+                                    <apex:outputPanel rendered="{!OR(applicationId != '',strMsg !='')}" layout="none">
+                                        <div id = "message" class="slds-notify slds-notify--alert slds-theme--alert-texture" role="alert">
+                                            <center  class="slds-text-heading--small "> 
+                                                {!IF(strMsg !='', strMsg, 'You already have applied to this Job.')}
+                                            </center> 
+                                        </div>  
+                                         
+                                    </apex:outputPanel>
+                                    <br/>
+                                    <br/>
+                                    <apex:outputPanel rendered="{!notLoggedIn && objJobDetail.Id !=''}"  layout="block" > 
+                                        <div class="titleBox slds-p-around--x-small slds-align-middle">
+                                            <b>Existing User?</b>
+                                        </div>
+                                        <table class="slds-table slds-no-row-hover">
+                                            <tr>
+                                                <td style="white-space: normal;">
+                                                    If you are an existing user, please login to apply
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <center>
+                                                        <a href="{!$Site.Prefix}/SignIn?jobId={!jobId}" class="slds-button slds-button--brand slds-m-bottom--x-small greenBtn">Login &amp; Apply</a>
+                                                    </center>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <br/>    
+                                        <div class="titleBox slds-p-around--x-small slds-align-middle">
+                                            <b>New User?</b>
+                                        </div>
+                                        <table class="slds-table slds-no-row-hover">
+                                            <tr>
+                                                <td style="white-space: normal;">
+                                                     If you are a new user, please click below to apply
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <center>
+                                                        <a class="slds-button slds-button--brand slds-m-bottom--x-small" href="{!$Site.Prefix}/CandidateRegistration?jobId={!jobId}">Register &amp; Apply</a>
+                                                    </center>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <br/>
+                                        
+                                    </apex:outputPanel>
+                                </apex:outputPanel>
+                            </div>
+                        </div>
+                    </div>
+                </body>
+            </apex:define>
+        </apex:composition>
+        <script>
+           
+            function showLoading()
+            {
+                document.getElementById("idBackDrop").className = document.getElementById("idBackDrop").className.replace( /(?:^|\s)slds-modal-backdrop--close(?!\S)/g , ' slds-modal-backdrop--open');
+                document.getElementById("outPopUp").style.display = '';
+            }
+            
+            function closeLoading()
+            {
+                document.getElementById("outPopUp").style.display = 'none';
+                document.getElementById("idBackDrop").className = document.getElementById("idBackDrop").className.replace( /(?:^|\s)slds-modal-backdrop--open(?!\S)/g , ' slds-modal-backdrop--close');
+            }
+
+        </script>
+            
+    </html>
+    
+</apex:page>

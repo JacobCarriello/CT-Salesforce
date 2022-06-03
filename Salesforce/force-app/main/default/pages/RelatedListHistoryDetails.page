@@ -1,0 +1,261 @@
+<apex:page id="idMyPage" standardStyleSheets="false" showHeader="false" sidebar="false"  controller="RC_RelatedListHistoryDetails" action="{!redirectUnAuthenticatedUser}" >
+    
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1"/>
+            <apex:stylesheet value="{!URLFOR($Resource.SLDS092, 'assets/styles/salesforce-lightning-design-system-vf.css')}" /> 
+            <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
+            <apex:includeScript value="{!URLFOR($Resource.TB_JS, '/jQuery-1.11.3.min.js')}" />
+            <apex:includeScript value="{!URLFOR($Resource.TB_JS, '/jquery-ui-1.11.3.js')}" /> 
+        </head>
+    
+        <apex:composition template="RC_CommunityTemplate">
+            
+            <apex:define name="body">
+                <style>
+                    .errorMsg{
+                        color:red;
+                    }
+                    
+                     #outPopUp{
+                         position:absolute;
+                         z-index:9999999;
+                         top:50%;
+                         left:47%;
+                    }
+                    
+                    .contactTextarea {
+                        padding-left: 20px; 
+                        padding-right: 20px;
+                        padding-top: 9px;
+                        padding-bottom: 9px;
+                        font: 12px Arial; 
+                        color: #666666; 
+                        margin-bottom: 0; 
+                        height: 45px; 
+                    }
+                </style> 
+                
+                <script>
+                    function closeBanner() 
+                    {
+                       document.getElementById('messageBanner').style.display = 'none';   
+                    }
+                    
+                    function convertUTCDateToLocalDate(date) 
+                    {
+                       var newDate = new Date(date.getTime()+date.getTimezoneOffset()*60*1000);
+                
+                       var offset = date.getTimezoneOffset() / 60;
+                       var hours = date.getHours();
+                
+                       newDate.setHours(hours - offset);
+                
+                       return newDate;   
+                    }
+                </script>
+                
+                <div style="height:60px;">&nbsp;</div>
+                    <div class="slds-all-elements">
+                        <div id="content" class="slds-snap-content" style="z-index:100">
+                            <div class="slds-content" style="min-height:500px;">   
+                                <apex:form id="idForm" styleClass="slds">
+                                    <apex:actionFunction action="{!deleteRelatedListRecord}" name="deleteRelatedListRecord" reRender="idFormPanel" immediate="true"/>
+                                        <div aria-hidden="false" role="dialog" class="slds-modal slds-fade-in-close" id="idDialog">
+                                        <div class="slds-modal__container" style="width:25%">
+                                          <div class="slds-modal__content">
+                                            <div>
+                                                <div class="slds-grid slds-wrap slds-grid--align-spread" >
+                                                   Are you sure to delete this record?
+                                                </div> 
+                                            </div>
+                                          </div>
+                                          <div class="slds-modal__footer">
+                                            <div class="slds-button-group slds-float--right" role="group">
+                                                <input type="button" class="slds-button slds-button--neutral cancel" onclick="closeWindow();" value="Cancel" />
+                                                <input type="button" class="slds-button slds-button--brand save" onclick="deleteRelatedListRecord();" value="Confirm"  />
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="slds-modal-backdrop slds-modal-backdrop--close"  id="idBackDrop"></div>
+                                        
+                                    <apex:outputPanel rendered="{!!isSuccess}">
+                                         <div class="slds-notify slds-notify--alert slds-theme--{!IF(isSuccess, 'success','error')} slds-theme--alert-texture" role="alert" id="messageBanner" >
+                                            <div class="slds-notify__close" id="idClose"  onClick="closeBanner();" style="cursor:pointer; display:{!IF(isSuccess, '','none')}"> 
+                                                    <span class="closeButton">x</span> 
+                                            </div> 
+                                            <div class="notify__content slds-grid">                         
+                                                <apex:outputPanel styleClass="slds-col slds-align-middle" id="idMsg">
+                                                     <h2 class="slds-text-heading--small ">  
+                                                         <span>{!strMessage}</span>      
+                                                     </h2>
+                                                </apex:outputPanel>
+                                            </div>
+                                        </div>
+                                    </apex:outputPanel>
+                                        
+                                    <apex:outputPanel id="idFormPanel" layout="block" styleClass="" rendered="{!isPageLoad}"> 
+                                        <div class="slds-page-header" role="banner">
+                                            <div class="slds-grid slds-wrap slds-grid--align-spread">
+                                                <div class="slds-col">
+                                                    <div class="slds-media">
+                                                        <div class="slds-media__figure">
+                                                            <span class="slds-avatar slds-avatar--medium">
+                                                             <img src="{!smallPhotoUrl}" alt="company name" />
+                                                            </span>
+                                                        </div> 
+                                                        
+                                                        <div class="slds-media__body">
+                                                          <p class="slds-text-heading--label">{!$User.FirstName} {!$User.LastName}</p>
+                                                            <div class="slds-grid">
+                                                                <apex:outputPanel rendered="{!strRelatedList == 'Education'}">
+                                                                    <h1 class="slds-text-heading--medium slds-m-right--small slds-truncate slds-align-middle" title="Education History Detail">Education History Detail</h1>
+                                                                </apex:outputPanel>
+                                                                <apex:outputPanel rendered="{!strRelatedList != 'Education'}">
+                                                                    <h1 class="slds-text-heading--medium slds-m-right--small slds-truncate slds-align-middle" title="Employment History Detail">Employment History Detail</h1>
+                                                                </apex:outputPanel>
+                                                            </div>
+                                                         </div>
+                                                    </div>
+                                                </div>
+                                                <div class="slds-col">
+                                                    <div class="slds-button-group slds-m-top--medium" role="group">
+                                                        <input type="button" class="slds-button slds-button--neutral cancel" value="Cancel" onclick="location.href = '{!$Site.Prefix}/MyAccount_v1';" />
+                                                        <apex:commandButton styleClass="slds-button slds-button--neutral delete"  value="Delete" action="{!null}"  rendered="{!strId != ''}" onClick="openDeleteConfirm();" reRender="dummy" />
+                                                        <apex:commandButton styleClass="slds-button slds-button--brand save" value="Save" action="{!UpdateOrSaveRelatedListRecord}" rendered="{!strId == ''}" reRender="idFormPanel" />
+                                                        <apex:commandButton styleClass="slds-button slds-button--brand save"  value="Update" action="{!UpdateOrSaveRelatedListRecord}"  rendered="{!strId != ''}" reRender="idFormPanel" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="slds-grid slds-wrap slds-grid--align-spread slds-page-header__detail-row">
+                                                <apex:repeat value="{!$ObjectType.Contact.Fieldsets.RC_My_Profile_Header}" var="field">
+                                                    <div class="slds-col--padded slds-size--2-of-6 slds-medium-size--2-of-6 slds-large-size--1-of-6">
+                                                      <dl>
+                                                        <dt>
+                                                          <p class="slds-text-heading--label slds-truncate" title="{!field.label}">{!field.label}</p>
+                                                        </dt>
+                                                        <dd>
+                                                          <p class="slds-text-body--regular slds-truncate" title="{!objContact[field]}"><apex:outputField value="{!objContact[field]}"/></p>
+                                                        </dd>
+                                                      </dl>
+                                                    </div>
+                                                </apex:repeat>
+                                             </div>
+                                        </div>
+                                        
+                                        
+                                        <apex:outputPanel id="idContactInfo" layout="block" styleClass="slds-m-top--medium slds-m-left--medium">
+                                               <div class="slds-grid slds-wrap slds-grid--align-spread" >
+                                                   <apex:variable var="varDate" value="{!0}" />
+                                                    <apex:repeat value="{!$ObjectType.TR1__EmploymentHistory__c.fieldsets['RC_EmploymentDetails']}" var="field" rendered="{!IF(strRelatedList != 'Education', true, false)}">
+                                                        <apex:outputPanel styleClass="slds-col  slds-col--padded slds-size--1-of-1 slds-medium-size--3-of-6 slds-large-size--6-of-12 slds-m-bottom--medium" layout="block" rendered="{!field.FieldPath != 'TR1__Description__c'}">
+                                                            <label class="slds-form-element__label" for="input{!field}">{!field.label}</label>  
+                                                             <div class="slds-form-element__control slds-m-top--xx-small" layout="block">
+                                                                <apex:inputField styleClass="slds-input " value="{!objEmploymentDetail[field.FieldPath]}" required="{!field.Required}" style="border-left:{!IF(field.Required == true, '4px solid red', '' )}" rendered="{!field.Type != 'date'}" />
+                                                                <apex:inputField styleClass="slds-input clsdateTime clsDynamicD{!varDate} {!IF(field.Required == true, 'requiredField', '')}" value="{!objEmploymentDetail[field.FieldPath]}" showDatePicker="false" style="border-left:{!IF(field.Required == true, '4px solid red', '' )}" rendered="{!field.Type == 'date'}" />
+                                                                <apex:variable var="varDate" value="{!varDate+1}" rendered="{!field.Type == 'date'}" />
+                                                                 <script>
+                                                                    if('{!objEmploymentDetail[field]}' != '')
+                                                                    {
+                                                                        var DateConverts = convertUTCDateToLocalDate(new Date('{!objEmploymentDetail[field.FieldPath]}'));
+                                                                            
+                                                                        DateConverts = DateConverts.getMonth()+1+'/'+DateConverts.getDate()+'/'+DateConverts.getFullYear();                                 
+                                                                        document.getElementsByClassName("clsDynamicD{!varDate}")[0].value = DateConverts;
+                                                                    } 
+                                                                </script>
+                                                            </div>
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel styleClass="slds-col  slds-size--1-of-1 slds-m-left--small slds-m-bottom--medium" layout="block" rendered="{!field.FieldPath == 'TR1__Description__c'}" style="border-left:{!IF(field.Required == true, '4px solid red', '' )}">
+                                                            <label class="slds-form-element__label" for="input{!field}">{!field.label}</label>  
+                                                             <div class="slds-form-element__control slds-m-top--xx-small" layout="block">
+                                                                <apex:inputField styleClass="slds-input" value="{!objEmploymentDetail[field.FieldPath]}" required="{!field.Required}" style="width:99%; height:100px; resize: none; border-left:{!IF(field.Required == true, '4px solid red', '' )}" />
+                                                            </div>
+                                                        </apex:outputPanel>
+                                                    </apex:repeat>
+                                                     <apex:repeat value="{!$ObjectType.TR1__EducationHistory__c.fieldsets['RC_EducationDetails']}" var="field" rendered="{!IF(strRelatedList == 'Education', true, false)}" >
+                                                        <apex:outputPanel styleClass="slds-col  slds-col--padded slds-size--1-of-1 slds-medium-size--3-of-6 slds-large-size--6-of-12 slds-m-bottom--medium" rendered="{!field.FieldPath != 'TR1__Comments__c'}">
+                                                            <label class="slds-form-element__label" for="input{!field}">{!field.label}</label>  
+                                                             <div class="slds-form-element__control slds-m-top--xx-small">
+                                                                <apex:inputField styleClass="slds-input " value="{!objEducationDetail[field.FieldPath]}" required="{!field.Required}" style="border-left:{!IF(field.Required == true, '4px solid red', '' )}" rendered="{!field.Type != 'date'}"/> 
+                                                                <apex:inputField styleClass="slds-input clsdateTime clsDynamicD{!varDate}" value="{!objEducationDetail[field.FieldPath]}" required="{!field.Required}" style="border-left:{!IF(field.Required == true, '4px solid red', '' )}" showDatePicker="false" rendered="{!field.Type == 'date'}"/>
+                                                                <apex:variable var="varDate" value="{!varDate+1}" rendered="{!field.Type == 'date'}" />
+                                                                <script>
+                                                                    if('{!objEducationDetail[field]}' != '')
+                                                                    {
+                                                                        var DateConverts = convertUTCDateToLocalDate(new Date('{!objEducationDetail[field.FieldPath]}'));
+                                                                            
+                                                                        DateConverts = DateConverts.getMonth()+1+'/'+DateConverts.getDate()+'/'+DateConverts.getFullYear();                                 
+                                                                        document.getElementsByClassName("clsDynamicD{!varDate}")[0].value = DateConverts;
+                                                                    } 
+                                                                </script>
+                                                            </div>
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel styleClass="slds-col slds-size--1-of-1 slds-m-left--small slds-m-bottom--medium" layout="block" rendered="{!field.FieldPath == 'TR1__Comments__c'}">
+                                                            <label class="slds-form-element__label" for="input{!field}">{!field.label}</label>  
+                                                             <div class="slds-form-element__control slds-m-top--xx-small">
+                                                                <apex:inputField styleClass="slds-input" value="{!objEducationDetail[field.FieldPath]}" required="{!field.Required}"  style="width:99%; height:100px; resize: none; border-left:{!IF(field.Required == true, '4px solid red', '' )}"  />
+                                                            </div>
+                                                        </apex:outputPanel>
+                                                    </apex:repeat>
+                                                    
+                                                </div>
+                                                
+                                        </apex:outputPanel>
+                                    </apex:outputPanel>
+                                    <script>
+                                        $( ".clsdateTime" ).datepicker({dateFormat: "{!strDateFormat}"});
+                                    </script>
+                                    <script>
+                                        function updatePanelCss(SuccessAlert, Message)
+                                        {
+                                            if(Message != '')
+                                            {
+                                                //document.getElementById("idBan").style.display = 'none';
+                                                //document.getElementById("idNotification").style.display = 'none';
+                                                document.getElementById('messageBanner').style.display = ''; 
+                                                if(SuccessAlert == 'false')
+                                                {
+                                                    document.getElementById("messageBanner").className = document.getElementById("messageBanner").className.replace( /(?:^|\s)slds-theme--success(?!\S)/g , ' slds-theme--error' );
+                                                //  document.getElementById("idBan").style.display = '';
+                                                }
+                                                else
+                                                {
+                                                    document.getElementById("messageBanner").className = document.getElementById("messageBanner").className.replace( /(?:^|\s)slds-theme--error(?!\S)/g , ' slds-theme--success' );
+                                                //  document.getElementById("idNotification").style.display = '';
+                                                }
+                                            }
+                                        }
+                                        
+                                        function openDeleteConfirm()
+                                        {
+                                                document.getElementById("idDialog").className = document.getElementById("idDialog").className.replace( /(?:^|\s)slds-fade-in-close(?!\S)/g , ' slds-fade-in-open');
+                                                document.getElementById("idBackDrop").className = document.getElementById("idBackDrop").className.replace( /(?:^|\s)slds-modal-backdrop--close(?!\S)/g , ' slds-modal-backdrop--open');
+                                        }
+                                        
+                                        function closeWindow()
+                                        {
+                                                document.getElementById("idDialog").className = document.getElementById("idDialog").className.replace( /(?:^|\s)slds-fade-in-open(?!\S)/g , ' slds-fade-in-close');
+                                                document.getElementById("idBackDrop").className = document.getElementById("idBackDrop").className.replace( /(?:^|\s)slds-modal-backdrop--open(?!\S)/g , ' slds-modal-backdrop--close');
+                                        }
+                                            
+                                   </script>
+                            </apex:form>
+                        </div>     
+                        <br/><br/>
+                         <!-- Page Footer-->
+                        <span class="nonslds">
+                            <div class="footer">
+                                <div class="footer-socials half-bottom">
+                                    <a href="#" class="footer-share show-share-bottom"><i class="fa fa-share-alt"></i></a>
+                                    <a href="#" class="footer-up"><i class="fa fa-angle-up"></i></a>
+                                </div>
+                                <p class="center-text">&copy; 2015 Talent Rover. All rights reserved.</p>
+                            </div>   
+                        </span>  
+                    </div>
+                </div>
+            </apex:define> 
+        </apex:composition>
+  </html>    
+</apex:page>

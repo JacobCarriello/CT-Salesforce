@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fieldUpdates>
+        <fullName>Check_Behavioral_Health_Dentistry</fullName>
+        <description>Check the box for Behavioral Health &amp; Dentistry</description>
+        <field>Behavioral_Health_Dentistry__c</field>
+        <literalValue>1</literalValue>
+        <name>Check Behavioral Health &amp; Dentistry</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Hospital_Based_Specialty_Group</fullName>
+        <description>Check the Box for Hospital Based if the account meets the parameters to be identified as a client or prospect for that group.</description>
+        <field>Hospital_Based__c</field>
+        <literalValue>1</literalValue>
+        <name>Hospital Based Specialty Group</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Primary_Urgent_Care_Specialty_Group</fullName>
+        <description>Check the Box for Primary &amp; Urgent Care if the account meets the parameters to be identified as a client or prospect for that group.</description>
+        <field>Primary_Urgent_Care__c</field>
+        <literalValue>1</literalValue>
+        <name>Primary &amp; Urgent Care Specialty Group</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Sub_IM_Surgical_Specialty_Group</fullName>
+        <description>Check the Box for Sub IM &amp; Surgical if the account meets the parameters to be identified as a client or prospect for that group</description>
+        <field>Sub_IM_Surgical__c</field>
+        <literalValue>1</literalValue>
+        <name>Sub IM &amp; Surgical Specialty Group</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>TR1__Update_All_Related_Jobs</fullName>
+        <field>TR1__Update_Related_Jobs__c</field>
+        <literalValue>1</literalValue>
+        <name>Update All Related Jobs</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>true</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>TRSCHED__Update_Billing_GeoLocation_Longitude</fullName>
+        <field>TRSCHED__Billing_Geolocation__Longitude__s</field>
+        <formula>BillingLongitude</formula>
+        <name>Update Billing GeoLocation Longitude</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>TRSCHED__Update_Billing_Geolocation_Latitude</fullName>
+        <field>TRSCHED__Billing_Geolocation__Latitude__s</field>
+        <formula>BillingLatitude</formula>
+        <name>Update Billing GeoLocation Latitude</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Update_Medestar_Client_Status</fullName>
+        <field>Medestar_Client_Status__c</field>
+        <literalValue>Expired</literalValue>
+        <name>Update Medestar Client Status</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Update_Medestar_Traveler_Status</fullName>
+        <description>Updates to &quot;Expired&quot; when date lapses</description>
+        <field>Travelers_Client_Status__c</field>
+        <literalValue>Expired</literalValue>
+        <name>Update Medestar Traveler Status</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Update_Target_Marked_By</fullName>
+        <description>Updates Medestar Target Marked By field with the user that changed the Medestar Client status</description>
+        <field>Target_Marked_By__c</field>
+        <formula>$User.FirstName&amp;&quot; &quot;&amp; $User.LastName</formula>
+        <name>Update Target Marked By</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <rules>
+        <fullName>Behavioral Health %26 DDS Specialty Group</fullName>
+        <actions>
+            <name>Check_Behavioral_Health_Dentistry</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <booleanFilter>1 OR 2 OR 3 OR 4</booleanFilter>
+        <criteriaItems>
+            <field>Account.texcellency__DefHC_Hospital_Type__c</field>
+            <operation>equals</operation>
+            <value>Psychiatric Hospital</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Account.Name</field>
+            <operation>contains</operation>
+            <value>Psych,Behavioral,Mental,Psychiatric,Dentistry,Dentist,DDS,Smiles,Dental</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Account.Specialties_ULT__c</field>
+            <operation>includes</operation>
+            <value>Dentist,Psychiatry,Child and Adolescent Psychiatry,Addiction Medicine</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Account.Company_Sub_Type__c</field>
+            <operation>contains</operation>
+            <value>Dental,Psychiatric Hospital</value>
+        </criteriaItems>
+        <description>Check the Box for Behavioral Health &amp; Dentistry if the account meets the parameters to be identified as a client or prospect for that group.</description>
+        <triggerType>onAllChanges</triggerType>
+    </rules>
+    <rules>
+        <fullName>Hospital Based Specialty Group</fullName>
+        <actions>
+            <name>Hospital_Based_Specialty_Group</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <booleanFilter>1 AND (2 OR 3 OR 4 OR 5)</booleanFilter>
+        <criteriaItems>
+            <field>Account.Hospital_Based__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Account.Name</field>
+            <operation>contains</operation>
+            <value>Anesthesia,Emergency,Hospitalist,Radiology,Infectious Disease</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Account.Specialties_ULT__c</field>
+            <operation>includes</operation>
+            <value>Hospitalist,Emergency Medicine,Radiology,Neonatology,Obstetrics,Pulmonary Critical Care Medicine,CRNA,Critical Care Medicine,Infectious Disease</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Account.Company_Sub_Type__c</field>
+            <operation>contains</operation>
+            <value>ANES</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Account.DHC_Main_Specialty__c</field>
+            <operation>contains</operation>
+            <value>Hospitalist,Radiology,Anesthesiology</value>
+        </criteriaItems>
+        <description>Check the Box for Hospital Based if the account meets the parameters to be identified as a client or prospect for that group.</description>
+        <triggerType>onAllChanges</triggerType>
+    </rules>
+    <rules>
+        <fullName>Medestar Client Status Update On Expiration</fullName>
+        <actions>
+            <name>Update_Medestar_Client_Status</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>false</active>
+        <criteriaItems>
+            <field>Account.Medestar_Contract_Expiration__c</field>
+            <operation>notEqual</operation>
+        </criteriaItems>
+        <description>Updates the status of Medestar Client Status upon expiration of contract (as determined by expiration date field).</description>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+        <workflowTimeTriggers>
+            <offsetFromField>Account.Medestar_Contract_Expiration__c</offsetFromField>
+            <timeLength>0</timeLength>
+            <workflowTimeTriggerUnit>Hours</workflowTimeTriggerUnit>
+        </workflowTimeTriggers>
+    </rules>
+    <rules>
+        <fullName>Medestar Travelers Status Update on Expiration</fullName>
+        <actions>
+            <name>Update_Medestar_Traveler_Status</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>false</active>
+        <criteriaItems>
+            <field>Account.Travelers_Contract_Expiration__c</field>
+            <operation>notEqual</operation>
+        </criteriaItems>
+        <description>Updates the value in the Medestar Traveler field when the Medestar Traveler contract expiration date passes.</description>
+        <triggerType>onCreateOrTriggeringUpdate</triggerType>
+        <workflowTimeTriggers>
+            <offsetFromField>Account.Travelers_Contract_Expiration__c</offsetFromField>
+            <timeLength>0</timeLength>
+            <workflowTimeTriggerUnit>Hours</workflowTimeTriggerUnit>
+        </workflowTimeTriggers>
+    </rules>
+    <rules>
+        <fullName>Primary Care Specialty Group</fullName>
+        <actions>
+            <name>Primary_Urgent_Care_Specialty_Group</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <booleanFilter>1 AND (2 OR 3 OR 4 OR 5)</booleanFilter>
+        <criteriaItems>
+            <field>Account.Primary_Urgent_Care__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Account.Name</field>
+            <operation>contains</operation>
+            <value>Urgent Care,Family Practice,Family Medicine,Dermatology,Pediatrics,Pain,Wound Care</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Account.Specialties_ULT__c</field>
+            <operation>includes</operation>
+            <value>Family Practice,Urgent Care,Dermatology,Pediatrics,Physical Medicine &amp; Rehabilitation,Wound Care</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Account.Company_Sub_Type__c</field>
+            <operation>contains</operation>
+            <value>Correctional Facility,FQHC,Urgent Care</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Account.DHC_Main_Specialty__c</field>
+            <operation>contains</operation>
+            <value>Family Practice,Pediatrics,Internal Medicine,Wound Care</value>
+        </criteriaItems>
+        <description>Check the Box for Primary &amp; Urgent Care if the account meets the parameters to be identified as a client or prospect for that group.</description>
+        <triggerType>onAllChanges</triggerType>
+    </rules>
+    <rules>
+        <fullName>Sub IM %26 Surgical Specialty Group</fullName>
+        <actions>
+            <name>Sub_IM_Surgical_Specialty_Group</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <booleanFilter>1 AND (2 OR 3 OR 4)</booleanFilter>
+        <criteriaItems>
+            <field>Account.Sub_IM_Surgical__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Account.Name</field>
+            <operation>contains</operation>
+            <value>Cancer,Oncology,Surgery,neurology,Cardiology,Urology</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Account.Specialties_ULT__c</field>
+            <operation>includes</operation>
+            <value>General Surgery,Cardiothoracic Surgery,Oncology,Cardiology,Neurology,Urology,Gastroenterology</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Account.DHC_Main_Specialty__c</field>
+            <operation>contains</operation>
+            <value>General Surgery,Oncology,Neurology,Cardiothoracic Surgery,Gastroenterology</value>
+        </criteriaItems>
+        <description>Check the Box for Sub IM &amp; Surgical if the account meets the parameters to be identified as a client or prospect for that group.</description>
+        <triggerType>onAllChanges</triggerType>
+    </rules>
+    <rules>
+        <fullName>TR1__Update Account Billing Geolocation To All Related Jobs</fullName>
+        <actions>
+            <name>TR1__Update_All_Related_Jobs</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <formula>OR(ISCHANGED(BillingLatitude),ISCHANGED(BillingLongitude))</formula>
+        <triggerType>onAllChanges</triggerType>
+    </rules>
+    <rules>
+        <fullName>TRSCHED__Update Account Billing Geolocation</fullName>
+        <actions>
+            <name>TRSCHED__Update_Billing_GeoLocation_Longitude</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <actions>
+            <name>TRSCHED__Update_Billing_Geolocation_Latitude</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>Account.BillingLatitude</field>
+            <operation>notEqual</operation>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Account.BillingLongitude</field>
+            <operation>notEqual</operation>
+        </criteriaItems>
+        <triggerType>onAllChanges</triggerType>
+    </rules>
+</Workflow>

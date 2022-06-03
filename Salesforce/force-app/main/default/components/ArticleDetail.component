@@ -1,0 +1,19 @@
+<apex:component controller="RC_ArticleDetail" >
+    <style>
+         .Rt_Area ul{list-style: disc!important; margin:14px;padding-left: 15px;}
+         .Rt_Area ol{list-style: decimal!important;  margin:14px;padding-left: 15px;}
+    </style>
+    <apex:attribute name="artId" assignTo="{!articleIds}" required="true" 
+        description="Article Id for content" type="string"/> 
+    <apex:attribute name="order" assignTo="{!index}" required="true" 
+        description="Index for Id" type="integer"/>    
+        
+        <apex:outputPanel rendered="{!artId != ''}" layout="block" styleClass="slds">
+            <div class="slds-text-align--center Rt_Area" >
+            <apex:repeat value="{!Articles}" var="article">
+                <apex:outputField value="{!article.TR1__Content__c}" />
+            </apex:repeat>
+            </div>
+        </apex:outputPanel>
+   
+</apex:component>

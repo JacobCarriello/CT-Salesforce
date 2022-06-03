@@ -1,0 +1,2 @@
+<!-- <?xml version="1.0" encoding="UTF-8"?> -->
+<apex:page controller="jobsfeedcontroller" sidebar="false" cache="false" showHeader="false" contenttype="application/xml">{!w.XmlString}</apex:page>

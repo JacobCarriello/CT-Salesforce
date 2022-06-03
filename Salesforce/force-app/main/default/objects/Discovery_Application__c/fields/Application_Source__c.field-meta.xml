@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Application_Source__c</fullName>
+    <externalId>false</externalId>
+    <label>Application Source</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>true</sorted>
+            <value>
+                <fullName>All Physician Jobs</fullName>
+                <default>false</default>
+                <label>All Physician Jobs</label>
+            </value>
+            <value>
+                <fullName>Candidate Referral</fullName>
+                <default>false</default>
+                <label>Candidate Referral</label>
+            </value>
+            <value>
+                <fullName>CareerMD</fullName>
+                <default>false</default>
+                <label>CareerMD</label>
+            </value>
+            <value>
+                <fullName>CINDI email</fullName>
+                <default>false</default>
+                <label>CINDI email</label>
+            </value>
+            <value>
+                <fullName>CINDI phone call</fullName>
+                <default>false</default>
+                <label>CINDI phone call</label>
+            </value>
+            <value>
+                <fullName>Client Referral</fullName>
+                <default>false</default>
+                <label>Client Referral</label>
+            </value>
+            <value>
+                <fullName>Cold Call</fullName>
+                <default>false</default>
+                <label>Cold Call</label>
+            </value>
+            <value>
+                <fullName>Cold Email</fullName>
+                <default>false</default>
+                <label>Cold Email</label>
+            </value>
+            <value>
+                <fullName>Curative Digest</fullName>
+                <default>false</default>
+                <label>Curative Digest</label>
+            </value>
+            <value>
+                <fullName>Curative Website</fullName>
+                <default>false</default>
+                <label>Curative Website</label>
+            </value>
+            <value>
+                <fullName>CVC Website</fullName>
+                <default>false</default>
+                <label>CVC Website</label>
+            </value>
+            <value>
+                <fullName>DentistJobCafe</fullName>
+                <default>false</default>
+                <label>DentistJobCafe</label>
+            </value>
+            <value>
+                <fullName>Direct Mail</fullName>
+                <default>false</default>
+                <label>Direct Mail</label>
+            </value>
+            <value>
+                <fullName>DocCafe</fullName>
+                <default>false</default>
+                <label>DocCafe</label>
+            </value>
+            <value>
+                <fullName>Doximity</fullName>
+                <default>false</default>
+                <label>Doximity</label>
+            </value>
+            <value>
+                <fullName>ED Physician</fullName>
+                <default>false</default>
+                <label>ED Physician</label>
+            </value>
+            <value>
+                <fullName>Email Blast Response</fullName>
+                <default>false</default>
+                <label>Email Blast Response</label>
+            </value>
+            <value>
+                <fullName>ENP Network</fullName>
+                <default>false</default>
+                <label>ENP Network</label>
+            </value>
+            <value>
+                <fullName>Facebook</fullName>
+                <default>false</default>
+                <label>Facebook</label>
+            </value>
+            <value>
+                <fullName>Fidelis Website</fullName>
+                <default>false</default>
+                <label>Fidelis Website</label>
+            </value>
+            <value>
+                <fullName>Glassdoor</fullName>
+                <default>false</default>
+                <label>Glassdoor</label>
+            </value>
+            <value>
+                <fullName>Google for jobs</fullName>
+                <default>false</default>
+                <label>Google for jobs</label>
+            </value>
+            <value>
+                <fullName>Healthecareers</fullName>
+                <default>false</default>
+                <label>Healthecareers</label>
+            </value>
+            <value>
+                <fullName>Hired Nurses</fullName>
+                <default>false</default>
+                <label>Hired Nurses</label>
+            </value>
+            <value>
+                <fullName>Indeed</fullName>
+                <default>false</default>
+                <label>Indeed</label>
+            </value>
+            <value>
+                <fullName>Jobvertise</fullName>
+                <default>false</default>
+                <label>Jobvertise</label>
+            </value>
+            <value>
+                <fullName>LinkedIn</fullName>
+                <default>false</default>
+                <label>LinkedIn</label>
+            </value>
+            <value>
+                <fullName>Locumtenens.com</fullName>
+                <default>false</default>
+                <label>Locumtenens.com</label>
+            </value>
+            <value>
+                <fullName>MDJobSite</fullName>
+                <default>false</default>
+                <label>MDJobSite</label>
+            </value>
+            <value>
+                <fullName>Medestar Website</fullName>
+                <default>false</default>
+                <label>Medestar Website</label>
+            </value>
+            <value>
+                <fullName>National Registry of Certified Medical Examiners</fullName>
+                <default>false</default>
+                <label>National Registry of Certified Medical Examiners</label>
+            </value>
+            <value>
+                <fullName>Paid Email/MMS Blast Response</fullName>
+                <default>false</default>
+                <label>Paid Email/MMS Blast Response</label>
+            </value>
+            <value>
+                <fullName>PAJobSite</fullName>
+                <default>false</default>
+                <label>PAJobSite</label>
+            </value>
+            <value>
+                <fullName>Pediatric Endocrine Society</fullName>
+                <default>false</default>
+                <label>Pediatric Endocrine Society</label>
+            </value>
+            <value>
+                <fullName>PhysEmp</fullName>
+                <default>false</default>
+                <label>PhysEmp</label>
+            </value>
+            <value>
+                <fullName>Practicelink</fullName>
+                <default>false</default>
+                <label>Practicelink</label>
+            </value>
+            <value>
+                <fullName>PracticeMatch</fullName>
+                <default>false</default>
+                <label>PracticeMatch</label>
+            </value>
+            <value>
+                <fullName>Profiles Database</fullName>
+                <default>false</default>
+                <label>Profiles Database</label>
+            </value>
+            <value>
+                <fullName>Society Website Posting</fullName>
+                <default>false</default>
+                <label>Society Website Posting</label>
+            </value>
+            <value>
+                <fullName>TES Website</fullName>
+                <default>false</default>
+                <label>TES Website</label>
+            </value>
+            <value>
+                <fullName>TPJBS</fullName>
+                <default>false</default>
+                <label>TPJBS</label>
+            </value>
+            <value>
+                <fullName>ZipRecruiter</fullName>
+                <default>false</default>
+                <label>ZipRecruiter</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

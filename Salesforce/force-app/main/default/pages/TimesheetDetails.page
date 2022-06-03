@@ -1,0 +1,584 @@
+<apex:page controller="RC_TimesheetDetails" showHeader="false" standardStylesheets="true" sidebar="false" applyHtmlTag="false" applyBodyTag="false" action="{!redirectUnAuthenticatedUser}" docType="html-5.0">
+
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <head>
+          <script>
+          function openLookupPopup(name,id,conId,crid)
+          {
+            console.log('name>>'+name);
+            console.log('id>>>'+id);
+            console.log('conId>>>>'+conId); 
+             //idMyPage:j_id6:formid:expRec:0:expRecFlds:1:inputname
+              //var inid1=$("[id='{!$Component.idMyPage.j_id6.formid.expRec.expRecFlds.inputid}']").val();//document.getElementById("{!$Component.idMyPage.j_id6.formid.expRec.expRecFlds.inputid}").value;
+              //var inname=$("[id='{!$Component.idMyPage.j_id6.formid.expRec.expRecFlds.inputname}']").val();//document.getElementById("{!$Component.idMyPage.j_id6.formid.expRec.expRecFlds.inputname}").value;
+              
+            console.log('crid>>>>'+crid);
+              var url="/hctecpartners/AccountAddressLookupPage?namefield=" + name + "&idfield=" +id + "&contId=" + conId + "&crid="+crid;
+              newWin=window.open(url, 'Popup','height=500,width=600,left=100,top=100,resizable=no,scrollbars=yes,toolbar=no,status=no');
+              if (window.focus)
+              {
+                  newWin.focus();
+              }
+              return false;
+          }
+          function closeLookupPopup()
+            {
+                    if (null!=newWin)
+                    {
+                        newWin.close();
+                    }
+            }
+         </script>
+            <apex:stylesheet value="{!URLFOR($Resource.SLDS092, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+            <apex:includeScript value="{!URLFOR($Resource.TB_JS, '/jQuery-1.11.3.min.js')}" />
+            <apex:includeScript value="{!URLFOR($Resource.TB_JS, '/jquery-ui-1.11.3.js')}" />
+            <style>
+            .slds .slds-table--bordered {
+    border-top: 0.5px solid #d8dde6 !important;
+    border-bottom: 1px solid #d8dde6;
+}
+            
+            .slds .slds-table--bordered td, .slds .slds-table--bordered th {
+    border-top: 0.1px solid #d8dde6;
+}
+           .slds .slds-table--bordered {
+    border-top: 1px solid #d8dde6;
+    border-bottom: 1px solid #d8dde6;
+} 
+            
+                .slds table {
+    border-collapse: inherit;
+    border-spacing: 0;
+}
+                #outPopUp{
+                 position:absolute;
+                 z-index:9999999;
+                 top:50%;
+                 left:47%;
+                }
+
+                .closeButton{
+                    font-size: 18px;
+                    FONT-WEIGHT: 600;
+                }
+                 .slds-table--bordered{
+                    border-left: 1px solid #d8dde6;
+                    border-right: 1px solid #d8dde6;
+                }
+                .slds:not(html), .slds body {
+    font-size: 12px;
+    background: transparent;
+}
+
+               .lookupInput a {
+                      /* width: 25px !important;
+                       margin-left: -5%;
+                       padding: 0px 0px 0px 0px !important;*/
+                       background:transparent;
+
+                    }
+            </style>
+        </head>
+
+        <apex:composition template="RC_CommunityTemplate">
+
+        <apex:define name="body">
+            <style>
+
+                .leaveAfter{
+                    width: 23%;
+                }
+                .slds .slds-badge{
+                    text-transform: none;
+                    font-size: 11px;
+                }
+                .saveClass{
+                    -webkit-border-bottom-right-radius: 5px !important;
+                    -webkit-border-top-right-radius: 5px !important;
+                }
+
+            </style>
+
+            <div style="height:60px;">&nbsp;</div>
+            <div class="slds-all-elements">
+                <div id="content" class="slds-snap-content" style="z-index:100">
+                    <div class="slds-content" style="min-height:500px;">
+                        <div class="slds">
+                            <apex:form >
+                                <div id ="deleteIt" style="display:none;">
+                                    <div id = "exceptionMsg" class="slds-m-top--small slds-notify slds-notify--alert slds-theme--error slds-theme--alert-texture" role="alert">
+                                        <!--<a class="slds-button slds-notify__close" onclick="CloseBanner()">
+                                            <svg aria-hidden="true" class="slds-button__icon slds-button__icon--inverse">
+                                                <use xlink:href="{!URLFOR($Resource.SLDS092, '/assets/icons/action-sprite/svg/symbols.svg#close')}"></use>
+                                            </svg>
+                                            <span class="slds-assistive-text">Close</span>
+                                        </a>-->
+                                        <div >
+                                            <!--<svg aria-hidden="true" class="slds-icon icon-text-email slds-icon--small slds-m-right--x-small">
+                                                <use xlink:href="{!URLFOR($Resource.SLDS092, '/assets/icons/utility-sprite/svg/symbols.svg#ban')}"></use>
+                                            </svg>-->
+                                            <div class="slds-col slds-align-middle">
+                                                <h2 id = "msgId" class="slds-text-heading--small ">
+                                                    <apex:pageMessages id="errors"/>
+                                                </h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <apex:outputPanel id="exceptionBlock" >
+                                        <script>
+                                            if($('[id$=errors]').children().length == 0)
+                                              $('#deleteIt').hide();
+                                            else
+                                              $('#deleteIt').show();
+
+                                        </script>
+                                    </apex:outputPanel>
+                                </div>
+                                <apex:actionStatus id="myStatus">
+                                    <apex:facet name="start">
+                                        <div class="waitingSearchDiv" id="outPopUp" style="">
+                                            <div class="slds-spinner--small" >
+                                                <img src="{!URLFOR($Resource.SLDS092, 'assets/images/spinners/slds_spinner.gif')}" />
+                                            </div>
+                                        </div>
+                                    </apex:facet>
+                                </apex:actionStatus>
+
+
+                               <apex:outputPanel id="timesheetDetails" rendered="{!!noParameter}">
+
+                                   <div class="slds-page-header" role="banner">
+                                        <div class="slds-grid slds-wrap slds-grid--align-spread">
+                                            <div class="slds-col">
+                                                <div class="slds-media">
+                                                    <div class="slds-media__figure">
+                                                        <span class="slds-avatar slds-avatar--medium">
+                                                           <img src="{!URLFOR($Resource.SLDS092, '/assets/icons/custom/custom25_60.png')}" style="background-color: #b19f1b;" />
+                                                        </span>
+                                                    </div>
+
+                                                    <div class="slds-media__body">
+                                                      <p class="slds-text-heading--label">{!$User.FirstName} {!$User.LastName}</p>
+                                                      <h1 class="slds-text-heading--medium">Timesheet Details</h1>
+
+                                                     </div>
+                                                </div>
+                                            </div>
+                                            <div class="slds-col slds-no-flex slds-align-bottom">
+                                              <div class="slds-button-group" role="group">
+                                                  <apex:commandButton action="/apex/TimesheetListing" styleClass="slds-button slds-button--neutral " value="Back"/>
+                                                 <apex:outputPanel rendered="{!!isClient}" layout="none">
+                                                    <apex:commandButton styleClass="slds-button slds-button--brand" action="{!saveTimesheetDetails}" rerender="exceptionBlock,errors" value="Save"/>
+                                                    <apex:commandButton styleClass="slds-button slds-button--brand" rendered="{!OR(objTS.TR1__Status__c == 'Rejected', objTS.TR1__Status__c == 'Unsubmitted')}" action="{!saveNSubmitTimesheetDetails}" rerender="timesheetDetails, errors, exceptionBlock" value="Save and Submit" style="border-left: 1px solid white;"/>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel rendered="{!AND(isClient, objTS.TR1__Status__c != 'Approved')}" layout="none">
+                                                    <apex:commandButton styleClass="slds-button slds-button--neutral" action="{!rejectTimesheet}" value="Reject" rerender="tsFooter, tsAddInfo, errors, exceptionBlock"/>
+                                                    <apex:commandButton styleClass="slds-button slds-button--brand slds-m-left--large" action="{!approveTimesheet}" rerender="tsFooter, tsAddInfo, errors, exceptionBlock" value="Approve"/>
+                                                </apex:outputPanel>
+                                              </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="slds-grid slds-wrap slds-grid--align-spread slds-page-header__detail-row">
+                                           <apex:repeat value="{!$ObjectType.Contact.Fieldsets.RC_My_Profile_Header}" var="field">
+                                                <div class="slds-col--padded slds-size--2-of-6 slds-medium-size--2-of-6 slds-large-size--1-of-6">
+                                                  <dl>
+                                                    <dt>
+                                                      <p class="slds-text-heading--label slds-truncate" title="{!field.label}">{!field.label}</p>
+                                                    </dt>
+                                                    <dd>
+                                                      <p class="slds-text-body--regular slds-truncate" title="{!objContact[field]}"><apex:outputField value="{!objContact[field]}"/></p>
+                                                    </dd>
+                                                  </dl>
+                                                </div>
+                                            </apex:repeat>
+                                         </div>
+
+                                    </div>
+
+                                    <div class="slds-col--padded-large slds-m-top--medium" style="overflow-x: scroll;">
+                                        <!--Timesheet Header -->
+                                        <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal slds-no-row-hover">
+                                            <tbody>
+                                                <apex:repeat value="{!fieldSetTimesheetHeader}" var="field">
+                                                    <tr class="slds-hint-parent">
+                                                        <td class="slds-size--1-of-5"><b>{!field.Label}</b></td>
+                                                        <td class="slds-size--4-of-5"><apex:outputField value="{!objTS[field.FieldPath]}"/></td>
+                                                    </tr>
+                                                </apex:repeat>
+                                            </tbody>
+                                        </table>
+                                        <!--END ---Timesheet Header -->
+                                        <br/>
+                                        <!--Timesheet Detail -->
+                                        <apex:variable value="{!fieldSetTimesheetDetail.size + 4}" var="columnCount" />
+                                        <table id ="sum_table" class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal ">
+                                            <thead>
+                                                <tr class = "titlerow">
+                                                  <!--  <th class="slds-text-heading--x-small slds-size--1-of-{!columnCount+6}" scope="col"><b>Day</b></th>
+                                                    <th class="slds-text-heading--x-small slds-size--1-of-{!columnCount+6}" scope="col"><b>Date</b></th>
+                                                    <th class="slds-text-heading--x-small slds-size--1-of-{!columnCount+6}" scope="col"><b>Total Hours</b></th>
+                                                    <th class="slds-text-heading--x-small slds-size--1-of-{!columnCount+6}" scope="col"><b>Total Shift Units</b></th>
+                                                    <th class="slds-text-heading--x-small slds-size--1-of-{!columnCount+6}" scope="col"><b>Work Location</b></th>
+                                                    <th class="slds-text-heading--x-small slds-size--1-of-{!columnCount+6}" scope="col"><b>Remote</b></th>
+                                                    <th class="slds-text-heading--x-small slds-size--1-of-{!columnCount+6}" scope="col"><b>Note</b></th>
+                                                    <th class="slds-text-heading--x-small slds-size--1-of-{!columnCount+6}" scope="col" style="float: right;display:{!IF(objTS.TR1__Status__c =='Submitted', 'none', '')}"><b>Action</b></th>
+                                                    th class="slds-text-heading--x-small slds-size--1-of-{!columnCount+5}" scope="col"><b>Action</b></th-->
+
+
+                                                     <!--apex:outputPanel rendered="{!AND(!isClient, OR(objTS.TR1__Status__c == 'Rejected', objTS.TR1__Status__c == 'Unsubmitted'))}">
+                                                    <th class="slds-text-heading--x-small slds-size--1-of-{!columnCount}" scope="col"><b>Time Detail</b></th>
+                                                    <th class="slds-text-heading--x-small slds-size--1-of-{!columnCount}" scope="col"><b>Add Time</b></th>
+                                                   </apex:outputpanel-->
+                                                    <apex:repeat value="{!fieldSetTimesheetDetail}" var="field" >
+                                                        <th class="slds-text-heading--x-small slds-size--1-of-{!columnCount}" scope="col"><b>{!field.Label}</b></th>
+                                                    </apex:repeat>
+                                                    	<th class="slds-text-heading--x-small slds-size--1-of-{!columnCount}" scope="col"><b>Start Time</b></th>
+                                                    	<th class="slds-text-heading--x-small slds-size--1-of-{!columnCount}" scope="col"><b>End Time</b></th>
+                                                    </tr>
+
+                                            </thead>
+                                            <tbody>
+
+                                                <apex:outputPanel rendered="{!OR(isClient, !OR(objTS.TR1__Status__c == 'Rejected', objTS.TR1__Status__c == 'Unsubmitted'))}">
+                                                    <apex:repeat value="{!lstTimesheetDetailRecords}" var="objTSD">
+                                                        <tr class="slds-hint-parent">
+                                                          <!--  <td class="slds-size--1-of-{!columnCount+6}" data-label="Day">{!objTSD.TR1__Day__c}</td>
+                                                            <td class="slds-size--1-of-{!columnCount+6}" data-label="Date"><apex:outputField value="{!objTSD.TR1__Date__c}"/></td>
+                                                            <td><apex:outputField value="{!objTSD.Total_Shift_Hours__c}"/></td>
+                                                            <td><apex:outputField value="{!objTSD.Total_Shift_Units__c}"/></td>  -->
+                                                            <apex:repeat value="{!fieldSetTimesheetDetail}" var="field">
+                                                                <td class="slds-size--1-of-{!columnCount}" data-label="{!field.Label}">
+                                                                    
+                                                                    <apex:outputField styleClass="slds-input" value="{!objTSD[field.FieldPath]}"/>
+
+                                                                <!-- Account Address and Remote  
+                                                                    <apex:outputPanel rendered="{!CONTAINS(field.FieldPath,'Account_Address__c')}">
+                                                                        <apex:outputPanel rendered="{!!ISBLANK(objTSD[field.FieldPath])}" >
+                                                                             {!objTSD.Account_Address__r.Name}
+                                                                        </apex:outputPanel>
+                                                                    </apex:outputPanel>
+                                                                    <apex:outputPanel rendered="{!CONTAINS(field.FieldPath,'Remote1__c')}">
+                                                                        <apex:outputPanel rendered="{!!ISBLANK(objTSD[field.FieldPath])}" >
+                                                                             {!objTSD[field.FieldPath]}
+                                                                        </apex:outputPanel>
+                                                                    </apex:outputPanel>
+                                                                    <apex:outputPanel rendered="{!CONTAINS(field.FieldPath,'Notes__c')}">
+                                                                        <span>{!objTSD[field.FieldPath]}</span>
+                                                                    </apex:outputPanel> -->
+                                                                <!-- *****END****  -->
+                                                                    <!--apex:outputPanel rendered="{!!OR(CONTAINS(field.FieldPath,'Total_Hours__c'), CONTAINS(field.FieldPath,'Remote1__c'), CONTAINS(field.FieldPath,'Account_Address__c'),CONTAINS(field.FieldPath,'Notes__c'))}">
+                                                                        <apex:outputPanel rendered="{!!ISBLANK(objTSD[field.FieldPath])}" >
+                                                                             {!objTSD[field.FieldPath]} hr
+                                                                        </apex:outputPanel>
+                                                                        <apex:outputPanel rendered="{!ISBLANK(objTSD[field.FieldPath])}" >
+                                                                            0.00 hr
+                                                                        </apex:outputPanel>
+                                                                    </apex:outputPanel>
+
+
+
+                                                                    <apex:outputPanel rendered="{!CONTAINS(field.FieldPath,'Total_Hours__c')}">
+                                                                        <span class="leaveAfter totalTd"><b>{!objTSD[field.FieldPath]} hours</b></span>
+                                                                    </apex:outputPanel-->
+                                                                </td>
+                                                            </apex:repeat>
+                                                            <apex:outputPanel rendered="{!AND(objTSD.TR1__Shift_Works__r != null, objTSD.TR1__Shift_Works__r.size > 0)}">
+                                                        			<td class="slds-size--1-of-{!columnCount}" data-label="Start Time">
+                                                        				<apex:outputField styleClass="slds-input" value="{!objTSD.TR1__Shift_Works__r[0].TR1__Start_Time__c}"/>
+                                                        			</td>
+                                                        			<td class="slds-size--1-of-{!columnCount}" data-label="End Time">
+                                                        				<apex:outputField styleClass="slds-input" value="{!objTSD.TR1__Shift_Works__r[0].TR1__End_Time__c}"/>
+                                                        			</td>
+                                                        	</apex:outputPanel>
+                                                        	<apex:outputPanel rendered="{!objTSD.TR1__Shift_Works__r.size == 0}">
+                                                        			<td class="slds-size--1-of-{!columnCount}" data-label="Start Time">
+                                                        				<apex:outputText value=""/>
+                                                        			</td>
+                                                        			<td class="slds-size--1-of-{!columnCount}" data-label="End Time">
+                                                        				<apex:outputText value=""/>
+                                                        			</td>
+                                                        	</apex:outputPanel>
+                                                             &nbsp;&nbsp;&nbsp;&nbsp;
+                                                            <td >
+                                                                <apex:outputPanel rendered="{!objContact.Community_Contact_Type__c = 'Client'}" >
+                                                                   <a href="{!$Site.Prefix}/RC_TimesheetDetailsbutton?tsId={!objTSD.Id}" class="slds-button slds-button--brand" style="background-color:#0070d2;border:-2px solid #0070d2 !important;color:White;float: right;">View Detail</a>
+                                                                </apex:outputPanel>
+                                                            </td>
+                                                            <td ></td>
+                                                        </tr>
+                                                        <apex:outputPanel rendered="{!objTSD.TR1__Shift_Works__r.size > 1}">
+                                                        	 <apex:variable value="{!0}" var="shiftWorkRow1" />
+                                                        	 <apex:repeat value="{!objTSD.TR1__Shift_Works__r}" var="shiftWork">
+	                                                        	 <apex:outputPanel rendered="{!shiftWorkRow1 != 0}">
+	                                                        	 <tr class="slds-hint-parent">
+	                                                        	 	<apex:repeat value="{!fieldSetTimesheetDetail}" var="field">
+	                                                        	 		<td class="slds-size--1-of-{!columnCount}" data-label="{!field.Label}">
+	                                                        	 			<apex:outputText value=""/>
+	                                                        	 		</td>
+	                                                        	 	</apex:repeat>
+	                                                        			<td class="slds-size--1-of-{!columnCount}" data-label="Start Time">
+	                                                        				<apex:outputField styleClass="slds-output" value="{!shiftWork.TR1__Start_Time__c}"/>
+	                                                        			</td>
+	                                                        			<td class="slds-size--1-of-{!columnCount}" data-label="End Time" colspan="3">
+	                                                        				<apex:outputField styleClass="slds-output" value="{!shiftWork.TR1__End_Time__c}"/>
+	                                                        			</td>
+	                                                        	 </tr>
+	                                                        	 </apex:outputPanel>
+	                                                        	 <apex:variable var="shiftWorkRow1" value="{!shiftWorkRow1+1}"/>
+                                                        	 </apex:repeat>
+                                                        </apex:outputPanel>
+                                                    </apex:repeat>
+                                                </apex:outputPanel>
+
+                                                <!-- for Candidate only with status =Rejected/Unsubmitted -->
+                                                <apex:outputPanel rendered="{!AND(!isClient, OR(objTS.TR1__Status__c == 'Rejected', objTS.TR1__Status__c == 'Unsubmitted'))}">
+                                                    <apex:repeat value="{!lstTimesheetDetailRecords}" var="objTSD">
+                                                        <tr class="slds-hint-parent">
+                                                            
+                                                          <!--  <td class="slds-size--1-of-{!columnCount+6}" data-label="Day">{!objTSD.TR1__Day__c}</td>
+                                                            <td class="slds-size--1-of-{!columnCount+6}" data-label="Date"><apex:outputField value="{!objTSD.TR1__Date__c}"/></td>
+                                                            <td><apex:outputField value="{!objTSD.Total_Shift_Hours__c}"/></td>
+                                                            <td><apex:outputField value="{!objTSD.Total_Shift_Units__c}"/></td> -->
+                                                            <apex:repeat value="{!fieldSetTimesheetDetail}" var="field">
+                                                                <td class="slds-size--1-of-{!columnCount}" data-label="{!field.Label}">
+                                                                    
+                                                                  <apex:outputField styleClass="slds-input" value="{!objTSD[field.FieldPath]}"/>
+                                                                <!--  <apex:outputPanel rendered="{!CONTAINS(field.FieldPath,'Account_Address__c')}">
+                                                                        <apex:inputHidden value="{!objTSD[field.FieldPath]}" id="inputid" />
+                                                                        <apex:inputText size="20" value="{!objTSD.Account_Address__r.Name__c}" id="inputname" />
+                                                                        <apex:outputLink onclick="openLookupPopup('{!$Component.inputname}', '{!$Component.inputid}','{!strContactId1}','{!strClosingReport}');return false ">
+                                                                          Find Locations
+                                                                        </apex:outputLink>
+                                                                  </apex:outputPanel>
+                                                                  <apex:outputPanel rendered="{!CONTAINS(field.FieldPath,'Remote1__c')}" >
+                                                                        <apex:inputField value="{!objTSD[field.FieldPath]}" rendered="{!field.FieldPath == 'Remote1__c'}" />
+                                                                        
+                                                                  </apex:outputPanel>
+                                                                  <apex:outputPanel rendered="{!CONTAINS(field.FieldPath,'Notes__c')}">
+                                                                        <apex:inputField styleClass="slds-input" value="{!objTSD[field.FieldPath]}" rendered="{!field.FieldPath == 'Notes__c'}" />
+                                                                  </apex:outputPanel> -->
+                                                                </td>
+                                                            </apex:repeat>
+															<apex:outputPanel rendered="{!AND(objTSD.TR1__Shift_Works__r != null, objTSD.TR1__Shift_Works__r.size > 0)}">
+                                                        			<td class="slds-size--1-of-{!columnCount}" data-label="Start Time">
+                                                        				<apex:outputField styleClass="slds-input" value="{!objTSD.TR1__Shift_Works__r[0].TR1__Start_Time__c}"/>
+                                                        			</td>
+                                                        			<td class="slds-size--1-of-{!columnCount}" data-label="End Time">
+                                                        				<apex:outputField styleClass="slds-input" value="{!objTSD.TR1__Shift_Works__r[0].TR1__End_Time__c}"/>
+                                                        			</td>
+                                                        	</apex:outputPanel>
+                                                        	<apex:outputPanel rendered="{!objTSD.TR1__Shift_Works__r.size == 0}">
+                                                        			<td class="slds-size--1-of-{!columnCount}" data-label="Start Time">
+                                                        				<apex:outputText value=""/>
+                                                        			</td>
+                                                        			<td class="slds-size--1-of-{!columnCount}" data-label="End Time">
+                                                        				<apex:outputText value=""/>
+                                                        			</td>
+                                                        	</apex:outputPanel>
+                                                            <apex:outputPanel rendered="{!AND(!isClient, OR(objTS.TR1__Status__c == 'Rejected', objTS.TR1__Status__c == 'Unsubmitted',objTS.TR1__Status__c == 'Submitted'))}">
+                                                             <td > <a href="{!$Site.Prefix}/RC_TimesheetDetailsbutton?tsId={!objTSD.Id}" class="slds-button slds-button--brand">View Detail</a> </td>
+                                                             <td> <a href="{!$Site.Prefix}/Shiftwork?rTsId={!tsId}&tsId={!objTSD.Id}&retURL={!$Site.Prefix}/TimesheetDetails?tsId={!objTS.Id}" class="slds-button slds-button--brand">Add Time</a> </td>
+                                                            </apex:outputPanel>
+                                                        </tr>
+                                                        <apex:outputPanel rendered="{!objTSD.TR1__Shift_Works__r.size > 1}">
+                                                        	 <apex:variable value="{!0}" var="shiftWorkRow" />
+                                                        	 <apex:repeat value="{!objTSD.TR1__Shift_Works__r}" var="shiftWork">
+	                                                        	 <apex:outputPanel rendered="{!shiftWorkRow != 0}">
+	                                                        	 <tr class="slds-hint-parent">
+	                                                        	 	<apex:repeat value="{!fieldSetTimesheetDetail}" var="field">
+	                                                        	 		<td class="slds-size--1-of-{!columnCount}" data-label="{!field.Label}">
+	                                                        	 			<apex:outputText value=""/>
+	                                                        	 		</td>
+	                                                        	 	</apex:repeat>
+	                                                        			<td class="slds-size--1-of-{!columnCount}" data-label="Start Time">
+	                                                        				<apex:outputField styleClass="slds-output" value="{!shiftWork.TR1__Start_Time__c}"/>
+	                                                        			</td>
+	                                                        			<td class="slds-size--1-of-{!columnCount}" data-label="End Time" colspan="3">
+	                                                        				<apex:outputField styleClass="slds-output" value="{!shiftWork.TR1__End_Time__c}"/>
+	                                                        			</td>
+	                                                        	 </tr>
+	                                                        	 </apex:outputPanel>
+	                                                        	 <apex:variable var="shiftWorkRow" value="{!shiftWorkRow+1}"/>
+                                                        	 </apex:repeat>
+                                                        </apex:outputPanel>
+                                                    </apex:repeat>
+                                                </apex:outputPanel>
+                                            </tbody>
+                                            
+                                            <!-- Timesheet Footer -->
+                                            <apex:outputPanel id="tsFooter">
+                                                <tfoot>
+                                                    <tr class="slds-hint-parent totalColumn">
+                                                        <td class="slds-size--1-of-{!columnCount}"><b>Totals</b></td>
+                                                        <td class="slds-size--1-of-{!columnCount}"></td>
+                                                        <apex:repeat value="{!fieldSetTimesheetFooter}" var="field" first="0">
+                                                            <td data-label="{!field.Label}" class="slds-size--1-of-{!columnCount} totalCol">
+                                                                <span><b>{!objTS[field.FieldPath]}</b></span>
+                                                            </td>
+                                                        </apex:repeat>
+                                                        <td class="slds-size--1-of-{!columnCount}"></td>
+                                                        <td class="slds-size--1-of-{!columnCount}" colspan="6"></td>
+                                                      <!--  <apex:repeat value="{!fieldSetTimesheetFooter}" var="field" first="1">
+                                                            <td data-label="Total Hours" class="slds-size--1-of-{!columnCount} totalCol">
+                                                                <span class="slds-badge slds-theme--inverse"><b>{!objTS[field.FieldPath]} hours</b></span>
+                                                            </td>
+                                                        </apex:repeat> -->
+                                                    </tr>
+                                                    
+                                                </tfoot>
+                                            </apex:outputPanel>
+                                            <!-- END --Timesheet Footer rows="1"-->
+                                            
+                                        </table>
+
+                                        <!-- END --Timesheet Detail -->
+                                        <br/>
+
+
+                                    </div>
+
+                                    <!-- Timesheet Additional Info -->
+                                    <div class="slds-col--padded-large slds-tabs--scoped">
+                                        <ul class="slds-tabs--scoped__nav" role="tablist">
+                                            <li class="slds-tabs__item slds-text-heading--label slds-active " title="Item One" role="presentation">
+                                                <a role="tab" tabindex="0" aria-selected="true" aria-controls="tab-default-1" >Additional Details</a>
+                                            </li>
+                                        </ul>
+                                        <div id="tab-default-1" class="slds-tabs__content slds-show" role="tabpanel">
+                                            <apex:outputPanel id="tsAddInfo" >
+                                                <apex:outputPanel rendered="{!!isClient}">
+                                                    <apex:repeat value="{!fieldSetTimesheetAdditionalInfo}" var="field">
+                                                        <div class="slds-form-element">
+                                                            <apex:outputLabel styleClass="slds-form-element__label"  value="{!field.Label}"/>
+                                                            <div class="slds-form-element__control">
+                                                                <apex:inputField value="{!objTS[field.FieldPath]}" styleClass="slds-input"/>
+                                                            </div>
+                                                        </div>
+                                                    </apex:repeat>
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__label" for="approverNotes">Approver Notes</label>
+                                                        <div class="slds-form-element__control">
+                                                            <input type="textarea" value="{!objTS.TR1__Approvers_Notes__c}" id="approverNotes" class="slds-textarea" disabled = "true"/>
+                                                        </div>
+                                                    </div>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel rendered="{!isClient}">
+                                                    <apex:repeat value="{!fieldSetTimesheetAdditionalInfo}" var="field">
+                                                        <div class="slds-form-element">
+                                                            <apex:outputLabel styleClass="slds-form-element__label"  value="{!field.Label}"/>
+                                                            <div class="slds-form-element__control">
+                                                                <input type="slds-input" value="{!objTS[field.FieldPath]}" id="{!field.FieldPath}" class="slds-{!field.Type}" disabled = "true"/>
+                                                            </div>
+                                                        </div>
+                                                    </apex:repeat>
+                                                    <div class="slds-form-element">
+                                                        <apex:outputLabel styleClass="slds-form-element__label" for="approverNotesCand" value="Approver Notes"/>
+                                                        <div class="slds-form-element__control">
+                                                            <apex:inputField value="{!objTS.TR1__Approvers_Notes__c}" id="approverNotesCand" styleClass="slds-textarea"/>
+                                                        </div>
+                                                    </div>
+                                                </apex:outputPanel>
+                                            </apex:outputPanel>
+                                        </div>
+                                    </div>
+                                    <!-- Timesheet Additional Info -->
+                                </apex:outputPanel>
+                                <script>
+                                    if($('.errorMsg').length != 0){
+                                        $('.errorMsg').remove();
+                                    }
+                                </script>
+                            </apex:form>
+                        </div>
+                    </div>
+                    <!-- Page Footer-->
+                    <span class="nonslds">
+                        <div class="footer">
+                            <div class="footer-socials half-bottom">
+                                <a href="#" class="footer-share show-share-bottom"><i class="fa fa-share-alt"></i></a>
+                                <a href="#" class="footer-up"><i class="fa fa-angle-up"></i></a>
+                            </div>
+                            <p class="center-text">&copy; 2015 Talent Rover. All rights reserved.</p>
+                        </div>
+                    </span>
+                </div>
+            </div>
+
+
+        </apex:define>
+        </apex:composition>
+
+        <script>
+            $('.rowDataSd').attr('maxlength','7');
+
+            $( ".leaveAfter" ).change(function() {
+                console.log(this.value);
+                console.log(!isNaN(this.value));
+                if(!isNaN(this.value)){
+                    var str = this.value;
+                    var substr = str.split('.');
+                    var strHr = substr[0] != '' ? substr[0]+ 'h ' : '0h ' ;
+                    var strMin = substr[1] !=  undefined ? ' '+(substr[1]*60)/Math.pow(10, substr[1].length)+'m' : '0m';
+                    $(this).siblings().html(strHr + strMin);
+                    var totals=[];
+                    rowTotal = [];
+                    var $dataRows=$("#sum_table tr:not('.totalColumn, .titlerow')");
+
+                    $dataRows.each(function(j) {
+                        var rowSum = 0;
+                        $(this).find('.rowDataSd').each(function(i){
+
+                            if( this.value != '' && this.value != undefined && !isNaN(this.value)){
+                                totals[i] = totals[i] == undefined ? 0 : totals[i];
+                                totals[i]+= parseFloat(this.value);
+                                rowSum +=parseFloat(this.value);
+                            }
+                            else if(this.value == ''){
+                                totals[i] = totals[i] == undefined ? 0 : totals[i];
+                            }
+                        });
+
+                        rowTotal[j] = rowSum;
+                    });
+
+                    totals.push(totals.reduce((a, b) => a + b));
+                        $("#sum_table td.totalCol").each(function(i){
+                            totals[i] = totals[i] == undefined ? 0 : totals[i];
+                            $(this).children().html('<b>'+totals[i].toFixed(2) +' hours</b>');
+                        });
+                        $("#sum_table td .totalTd").each(function(i){
+                            rowTotal[i] = rowTotal[i] == undefined ? 0 : rowTotal[i];
+                            $(this).html('<b>'+rowTotal[i].toFixed(2)+' hours</b>');
+
+                        });
+                }
+            });
+
+            function CloseBanner(){
+                $('#exceptionMsg').hide();
+            }
+
+            $('.slds-tabs__item').on('click', function(){
+             $(this).addClass('slds-active');
+             $(this).find('a').attr('aria-selected', true);
+             var $contentToShow = $('#'+$(this).find('a').attr('aria-controls'));
+             $contentToShow.removeClass('slds-hide');
+             $contentToShow.addClass('slds-show');
+
+             $(this).siblings().removeClass('slds-active');
+             $(this).siblings().find('a').attr('aria-selected', false);
+             $contentToShow.siblings('.slds-tabs__content').removeClass('slds-show');
+             $contentToShow.siblings('.slds-tabs__content').addClass('slds-hide');
+            });
+
+          
+            $( document ).ready(function(){
+            $('.lookupInput').find('input[type=text]').each(function() {
+              $(this).css({"border":"0px solid #d8dde6","width":"90%"});
+              $(this).parent().find("a img").after($(this).detach());
+            });
+          });
+        </script>
+    </html>
+</apex:page>

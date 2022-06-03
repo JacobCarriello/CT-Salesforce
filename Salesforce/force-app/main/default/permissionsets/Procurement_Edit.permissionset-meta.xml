@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Allows assigned users to edit a Procurement, Gross Margin, or Gross Margin record after it has been marked &quot;Won&quot;</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Procurement Edit</label>
+</PermissionSet>

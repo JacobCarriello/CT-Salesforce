@@ -1,0 +1,4 @@
+<apex:page standardController="TR1__Job_Leads__c"
+showHeader="false">
+<taf_listbrowse:ListBrowseClassic />
+</apex:page>

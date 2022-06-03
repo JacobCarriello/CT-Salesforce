@@ -1,0 +1,82 @@
+<apex:page standardStyleSheets="false" showHeader="false" sidebar="false" controller="RC_SigninController" action="{!redirectAuthenticatedUser}">   
+    <!-- To refer the site template for Header and Footer -->
+    <apex:composition template="RC_CommunityTemplate">
+        
+        <!-- Actual body of the content for current page -->
+        <apex:define name="body">
+            <style>
+                .login-logo {
+                    width: 229px;
+                    height: 60px;
+                    background-size: 230px 70px;
+                    margin-left: 26px;
+                    margin-right: 26px;
+                    margin-bottom: 10px; 
+                }
+                
+            </style>
+            <script>
+                var jq=jQuery.noConflict();
+                jq(document).keypress(function(e) {
+                    console.log('-- This --'+e.target.id.indexOf('password'));
+                    if(e.which == 13) {
+                        if(e.target.id.indexOf('password') > 0 ||  e.target.id.indexOf('username'))
+                        {
+                            login();
+                            e.preventDefault();
+                        }
+                    }
+                });
+            </script>
+            <div class="nonslds all-elements">             
+                <!-- Page Content-->
+                <div class="login-page bg1">
+                    <div class="login-page-overlay"></div>
+                    <div class="login-page-wrapper">
+                        <a href="#" class="login-logo"></a>
+                        <p>
+                            Please enter your login credentials below.
+                        </p>
+                        <apex:form id="idForm">
+                            <apex:actionFunction name="login" action="{!login}" reRender="idForm" />
+                            <apex:inputText id="username" value="{!strUsername}" html-placeholder="Username" styleClass="login-username"/>
+                            <apex:inputSecret id="password" value="{!strPassword}" html-placeholder="Password" styleClass="login-password" />
+                            
+                            
+                             <span id="errorSpanCP" class="errorLabel" style="color:white;text-align:center;height:7px;">
+                                    <apex:messages id="error" style="color:white;text-align:center;height:7px;" />
+                             </span> 
+                             
+                                <script type="text/javascript">
+                                    if(document.getElementById("errorSpanCP") != undefined)
+                                    {        
+                                        var nodes = document.getElementById('errorSpanCP').childNodes;
+                                        for(var i=0; i<nodes.length; i++) 
+                                        {
+                                            var liElement = '';
+                                             if(document.getElementById("errorSpanCP").getElementsByTagName('li')[0] != undefined)
+                                                liElement = document.getElementById("errorSpanCP").getElementsByTagName('li')[0].innerHTML.toString();
+                                            
+                                        }
+                                       
+                                        if(liElement.indexOf("Validation") != -1)
+                                            liElement = liElement.slice( liElement.indexOf("Validation"),liElement.lastIndexOf('.'));
+                                      
+                                        document.getElementById("errorSpanCP").innerHTML = liElement;
+                                           
+                                        var errorElement = document.getElementById("errorSpanCP");
+
+                                        var currentErrorMsg = errorElement.innerHTML.toString();
+                                    }
+                                </script>
+                                <input type="button" value="Login" class="button button-green" onClick="login();"/>
+                          
+                            <div class="clear"></div>
+                            <a class="forgot" href="{!$Site.Prefix}/ForgotYourPassword">Forgot Password?</a>
+                        </apex:form>
+                    </div>            
+                </div>
+            </div>
+        </apex:define> 
+    </apex:composition>
+</apex:page>

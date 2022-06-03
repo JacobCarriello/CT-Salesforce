@@ -1,0 +1,90 @@
+<apex:component >
+
+  <!--<apex:stylesheet value="{!URLFOR($Resource.RC_Resources, 'styles/style.css')}"/>
+  <apex:stylesheet value="{!URLFOR($Resource.RC_Resources, 'styles/framework.css')}"/>-->
+  <apex:stylesheet value="{!URLFOR($Resource.RC_Resources, 'styles/style-nonslds.css')}"/> <!--non slds conflict-->
+  <apex:stylesheet value="{!URLFOR($Resource.RC_Resources, 'styles/framework-nonslds.css')}"/> <!--non slds conflict-->
+  <apex:stylesheet value="{!URLFOR($Resource.RC_Resources, 'styles/owl.theme.css')}"/>
+  <apex:stylesheet value="{!URLFOR($Resource.RC_Resources, 'styles/swipebox.css')}"/>
+  <apex:stylesheet value="{!URLFOR($Resource.RC_Resources, 'styles/font-awesome.css')}"/>
+  <apex:stylesheet value="{!URLFOR($Resource.RC_Resources, 'styles/animate.css')}"/>
+  <apex:includeScript value="{!URLFOR($Resource.RC_Resources, 'scripts/jquery.js')}"/>
+  <apex:includeScript value="{!URLFOR($Resource.RC_Resources, 'scripts/jqueryui.js')}"/>
+  <apex:includeScript value="{!URLFOR($Resource.RC_Resources, 'scripts/framework.plugins.js')}"/>
+  <apex:includeScript value="{!URLFOR($Resource.RC_Resources, 'scripts/custom.js')}"/>
+  <style>
+  
+  /*SignIn page CSS*/
+    .button{background-image:none; font:normal 12px museo_sans300; font-weight:900!important; display:inline-block; height:40px; line-height:20px; border:0px;}
+    ul li, ol li{margin-left:0px;}
+    h1, h2, h3, h4, h5, h6{display:block;}  
+  /*End with SignIn page CSS */
+  
+  /*Home page CSS */
+      .button{background-image:none; font:normal 12px museo_sans300; font-weight:900!important; display:inline-block; height:40px; line-height:20px; border:0px;}
+      ul li, ol li{margin-left:0px;}
+      h1, h2, h3, h4, h5, h6{display:block;}
+      @media screen and (orientation: landscape)
+        .prev-dbsection {
+            margin-top: 15%;
+            background:gold;
+        }
+        
+  
+  /*End with home page CSS */
+  .slds-content {
+     margin-left: 0px; 
+     margin-right: 0px; 
+    }
+    
+    @media (min-width:768px){
+    
+    	.slds-content{
+    		margin-left:0px; 
+    		margin-right:0px; 
+    	}
+    }
+    
+    .sidebar-logo{
+        margin-top:-1px;
+    }
+    
+    
+  
+  
+ /*Cursor pointer CSS*/
+       .button-green{
+           cursor:pointer;
+       }
+       
+       .button-blue{
+           cursor:pointer;
+       }               
+        
+  /*End cursor pointer CSS*/
+  
+  /* Side bar and Home Page */
+  
+      .nonslds .button-book {
+    	background-color: #4fc0a7;
+        font-weight: 900;
+        color: #FFFFFF;
+    }
+    
+    .nonslds .dbsection-book .dbsection-item i{
+    	height: 100px;
+        text-align: center;
+        font-size: 120px!important;
+        margin-left: auto;
+        margin-right: auto;
+        transition: all 500ms ease;
+        margin-top: 10px;
+        color: #4fc0a7;
+    }
+
+ /* End*/
+        
+  
+  </style>
+  
+</apex:component>

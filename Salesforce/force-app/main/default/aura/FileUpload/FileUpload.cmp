@@ -1,0 +1,14 @@
+<aura:component implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,force:hasRecordId" access="global" controller="CommunityUserController" >
+    <aura:attribute name="accept" type="List" default="['.doc', '.docx', '.pdf', '.jpg', '.jpeg', '.png']"/>
+    <aura:attribute name="multiple" type="Boolean" default="false"/>
+    <aura:attribute name="disabled" type="Boolean" default="false"/>
+    <aura:attribute name="contactId" type="String" />
+    
+    <aura:handler name="init" value="{! this }" action="{! c.init }"></aura:handler>
+    
+    <lightning:fileUpload label="Add document" multiple="{!v.multiple}" 
+                          accept="{!v.accept}" recordId="{!v.recordId}" 
+                          disabled="{!v.disabled}"
+                          onuploadfinished="{!c.handleUploadFinished}" />
+    
+</aura:component>

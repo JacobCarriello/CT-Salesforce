@@ -1,0 +1,61 @@
+<apex:page showHeader="false" cache="false" standardStylesheets="false" sidebar="false" applyHtmlTag="false"  applyBodyTag="false" docType="html-5.0" controller="NG_TokenController">
+  <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" lang="en">
+    <head>
+      <meta charset="utf-8" />
+        <meta http-equiv="x-ua-compatible" content="ie=edge" />
+        <title>SLDS LatestAccounts Visualforce Page in Salesforce Mobile</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <!-- Import the Design System style sheet -->
+      <apex:slds />
+    </head>     
+    <body>
+      <!-- REQUIRED SLDS WRAPPER -->
+      <div class="slds-scope">
+         <!-- PRIMARY CONTENT WRAPPER -->
+         <!-- PRIMARY CONTENT WRAPPER -->
+<div class="myapp">
+  <!-- Verify Token -->
+  <div aria-labelledby="verifyTokenForm">
+    <!-- Verify Token Form -->
+    <form class="slds-form_stacked" id="verify-token-form">
+      <!-- BOXED AREA -->
+      <fieldset class="slds-box slds-theme_default slds-container_large slds-container_center">
+        <legend id="verifyTokenForm" class="slds-text-heading_medium slds-p-vertical_medium">Token Verification</legend>
+          <apex:form >
+        <div class="slds-form-element">
+          <label class="slds-form-element__label" for="tokenNumber">Name</label>
+          <div class="slds-form-element__control">
+            <!--<apex:input id="tokenNumber" styleClass="slds-input" type="text" label="Enter Token" accesskey=""/>-->
+            <apex:inputField id="tokenNumber" styleClass="slds-input" ignoreEditPermissionForRendering="true" type="text" label="Enter Token" value="{!timeSheet.NG_UUID__c}"/>
+            
+          </div>
+        </div>
+              <apex:commandButton id="submitButton"  action="{!verifyToken}" styleClass="slds-button slds-button_brand slds-m-top_medium" value="Verify Token" ></apex:commandButton>
+          <!--message-->
+          <div class="slds-form-element slds-form-element_stacked slds-m-top_medium">
+              <apex:pageBlock rendered="{!message!=''}">
+                  <div class="slds-text-color_error slds-text-title_bold"><apex:outputText value="{!message}"></apex:outputText></div>
+              </apex:pageBlock>
+          </div>
+          <!--message-->
+          </apex:form>
+          
+      </fieldset>
+          
+      <!-- / BOXED AREA -->
+    </form>
+    <!-- Verify Token Form -->
+  </div>
+  <!-- / Verify Token  -->
+</div>
+<!-- / PRIMARY CONTENT WRAPPER -->
+
+         <!-- / PRIMARY CONTENT WRAPPER -->
+      </div>
+      <!-- / REQUIRED SLDS WRAPPER -->
+      <!-- JAVASCRIPT -->
+       
+      <!-- / JAVASCRIPT -->
+    </body>
+  </html>
+</apex:page>

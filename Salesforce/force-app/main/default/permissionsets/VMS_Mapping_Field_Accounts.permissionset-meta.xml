@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Allows users to view and edit the field VMS Job Account Mapping field on accounts.</description>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.VMS_Job_Account_Mapping__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>VMS Mapping Field - Accounts</label>
+    <license>Salesforce Platform</license>
+</PermissionSet>

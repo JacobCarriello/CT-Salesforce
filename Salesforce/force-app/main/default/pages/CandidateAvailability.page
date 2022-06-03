@@ -1,0 +1,91 @@
+<apex:page standardStyleSheets="false" showHeader="false" sidebar="false" action="{!redirectUnAuthenticatedUser}" controller="RC_MyAccount_v1">
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+       <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1"/>
+            <apex:stylesheet value="{!URLFOR($Resource.SLDS092, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+            <apex:includeScript value="{!URLFOR($Resource.TB_JS, '/jQuery-1.11.3.min.js')}" />
+            <apex:includeScript value="{!URLFOR($Resource.TB_JS, '/jquery-ui-1.11.3.js')}" />
+        </head>
+    <apex:composition template="RC_CommunityTemplate">
+
+        <apex:define name="body">
+
+            <style>
+               .slds-table--bordered{
+                    border-left: 1px solid #d8dde6;
+                    border-right: 1px solid #d8dde6;
+                    }
+            </style>
+
+
+            <div style="height:60px;">&nbsp;</div>
+            <div class="slds-all-elements">
+            <!-- Page Content-->
+                <div id="content" class="slds-snap-content" style="z-index:100">
+                    <div class="slds-content" style="min-height:500px;">
+                        <div class="slds"  >
+                            <!-- Content Heading -->
+                            <div class="slds-page-header" role="banner">
+                                <div class="slds-grid slds-wrap slds-grid--align-spread">
+                                    <div class="slds-col">
+                                        <div class="slds-media">
+                                            <div class="slds-media__figure">
+                                                <span class="slds-avatar slds-avatar--medium">
+                                                <img src="{!URLFOR($Resource.SLDS092, '/assets/icons/standard/case_60.png')}" style="background-color: #43b4e7;" />
+                                                </span>
+                                            </div>
+                                            <div class="slds-media__body">
+                                                <p class="slds-text-heading--label">{!$User.FirstName} {!$User.LastName}</p>
+                                                <div class="slds-grid">
+                                                    <h1 class="slds-text-heading--medium slds-m-right--small slds-truncate slds-align-middle">Availability</h1>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-col">
+                                    </div>
+                                </div>
+
+                                 <div class="slds-grid slds-wrap slds-grid--align-spread slds-page-header__detail-row">
+                                    <apex:repeat value="{!$ObjectType.Contact.Fieldsets.RC_My_Profile_Header}" var="field">
+                                        <div class="slds-col--padded slds-size--2-of-6 slds-medium-size--2-of-6 slds-large-size--1-of-6">
+                                          <dl>
+                                            <dt>
+                                              <p class="slds-text-heading--label slds-truncate" title="{!field.label}">{!field.label}</p>
+                                            </dt>
+                                            <dd>
+                                              <p class="slds-text-body--regular slds-truncate" title="{!objContact[field]}">
+                                                  <apex:outputField value="{!objContact[field]}" /></p>
+                                            </dd>
+                                          </dl>
+                                        </div>
+                                    </apex:repeat>
+                                 </div>
+
+                            </div>
+
+                            <apex:outputPanel layout="block" styleClass="slds-m-bottom--medium">
+                            <iframe height="750px" scrolling="yes" frameborder="0" src="{!$Site.Prefix}/TRSCHED__TRS_CandidateCalendar?contactid={!objContact.id}" width="100%">
+                            </iframe>
+              </apex:outputPanel>
+                        </div>
+                    <!-- Page Content-->
+                </div>
+                <br/><br/>
+                <!-- Page Footer-->
+                <span class="nonslds">
+                    <div class="footer">
+                        <div class="footer-socials half-bottom">
+                            <a href="#" class="footer-share show-share-bottom"><i class="fa fa-share-alt"></i></a>
+                            <a href="#" class="footer-up"><i class="fa fa-angle-up"></i></a>
+                             <a style="color:blue;width:108px;left:-10px;transform: scale(1.15, 1.15 )" href="http://www.josssearch.com/privacy-policy/" target="_blank">Privacy policy</a>
+                        </div>
+                        <p class="center-text">&copy; 2015 Talent Rover. All rights reserved.</p>
+                    </div>
+                </span>
+                </div>
+            </div>
+        </apex:define>
+    </apex:composition>
+    </html>
+</apex:page>

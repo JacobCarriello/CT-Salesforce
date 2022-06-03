@@ -1,0 +1,544 @@
+<apex:page controller="RC_TimesheetListing" showHeader="false" action="{!redirectUnAuthenticatedUser}" standardStylesheets="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false" docType="html-5.0">
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1"/>
+            <apex:stylesheet value="{!URLFOR($Resource.SLDS092, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+            <apex:includeScript value="{!URLFOR($Resource.TB_JS, '/jQuery-1.11.3.min.js')}" />
+            <apex:includeScript value="{!URLFOR($Resource.TB_JS, '/jquery-ui-1.11.3.js')}" />
+            <style>
+            
+                #outPopUp{
+                position:absolute;
+                z-index:9999999;
+                top:50%;
+                left:47%;
+                }
+                .slds-table--bordered{
+                border-left: 1px solid #d8dde6;
+                border-right: 1px solid #d8dde6;
+                }
+                
+            </style>
+        </head>
+        <apex:composition template="RC_CommunityTemplate">
+            <apex:define name="body">
+    
+                <script>
+                    function closeBanner(idToClose) 
+                    {
+                       document.getElementById(idToClose).style.display = 'none';    
+                    }
+                    
+                    function checkError()
+                    {
+                        //alert(document.getElementsByClassName('errorMsg').innerHTML);
+                        //$(document).scrollTo('.errorMsg');
+                        
+                        var jq=jQuery.noConflict();
+                        
+                        if(jq(document).find('.errorMsg').length > 0)
+                        {
+                            var container = jq('div'),
+                                scrollTo = jq('.errorMsg');
+                            
+                            document.getElementById('idSuccess').style.display = 'none';
+                            
+                            container.animate({
+                                scrollTop: scrollTo.offset().top - container.offset().top + container.scrollTop()
+                            });
+                        }
+                        else
+                        {
+                            var container = jq('div'),
+                                scrollTo = jq('#idSuccess');
+                            
+                            document.getElementById('idSuccess').style.display = '';
+                            
+                            
+                                container.animate({
+                                    scrollTop: scrollTo.offset().top - container.offset().top + container.scrollTop()
+                                });
+                            
+                        }       
+                        
+                    }
+                </script>
+                <div style="height:60px;">&nbsp;</div>
+                <div class="slds-all-elements">
+                    <div id="content" class="slds-snap-content" style="z-index:100">
+                        <div class="slds-content">
+                            <div class = "slds" style="min-height:500px;">
+                                
+                                <apex:outputPanel rendered="{!returnPage}">
+                                    <div id="dmlMsg" class="slds-notify slds-notify--alert slds-theme--{!if(returnPage, 'success', IF(lstTimesheet.size==0,'alert-texture','error' ))} slds-theme--alert-texture" role="alert">
+                                        <apex:outputPanel layout="none" rendered="{!lstTimesheet.size!=0}">
+                                            <button class="slds-button slds-notify__close" onClick="closeBanner('dmlMsg')">
+                                                <svg aria-hidden="true" class="slds-button__icon slds-button__icon--inverse">
+                                                    <use xlink:href="{!URLFOR($Resource.SLDS092, '/assets/icons/action-sprite/svg/symbols.svg#close')}"></use>
+                                                </svg>
+                                                <span class="slds-assistive-text">Close</span>
+                                            </button>
+                                        </apex:outputPanel>
+                                        <div class="notify__content slds-grid">
+                                            <div class="slds-col slds-align-middle">
+                                                <h2 id = "msgId" class="slds-text-heading--small msgStyle">
+                                                    {!strReturnMsg}
+                                                </h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </apex:outputPanel>
+                                
+                                <div class="slds-page-header" role="banner">
+                                    <div class="slds-grid slds-wrap slds-grid--align-spread">
+                                        <div class="slds-col">
+                                            <div class="slds-media">
+                                                <div class="slds-media__figure">
+                                                    <span class="slds-avatar slds-avatar--medium">
+                                                    <img src="{!URLFOR($Resource.SLDS092, '/assets/icons/custom/custom25_60.png')}" style="background-color: #b19f1b;" />
+                                                    </span>
+                                                </div>
+                                                <div class="slds-media__body">
+                                                    <p class="slds-text-heading--label">{!$User.FirstName} {!$User.LastName}</p>
+                                                    <h1 class="slds-text-heading--medium">Available Timesheets</h1>
+                                                </div>
+                                            </div>
+                                        </div>
+                                     <!--   <div class="slds-col slds-no-flex">
+                                            <h3 class="slds-text-heading--small">Total Holiday Accrual: {!CEILING(objContactPage.Holiday_Accrued__c/8)} days</h3>
+                                        </div>  -->
+                                    </div>
+                                    <div class="slds-grid slds-wrap slds-grid--align-spread slds-page-header__detail-row">
+                                        <apex:repeat value="{!$ObjectType.Contact.Fieldsets.RC_My_Profile_Header}" var="fieldval">
+                                            <div class="slds-col--padded slds-size--2-of-6 slds-medium-size--2-of-6 slds-large-size--1-of-6">
+                                                <dl>
+                                                    <dt>
+                                                        <p class="slds-text-heading--label slds-truncate" title="{!fieldval.label}">{!fieldval.label}</p>
+                                                    </dt>
+                                                    <dd>
+                                                        <p class="slds-text-body--regular slds-truncate" title="{!objContact[fieldval]}">
+                                                            <apex:outputField value="{!objContact[fieldval]}"/>
+                                                        </p>
+                                                    </dd>
+                                                </dl>
+                                            </div>
+                                        </apex:repeat>
+                                    </div>
+                                </div>
+                                    <apex:outputPanel id="errors">
+                                        <apex:outputPanel rendered="{!!returnPage}">
+                                            <div id = "exceptionMsg" class="slds-notify slds-notify--alert slds-theme--{!if(returnPage, 'success', IF(lstTimesheet.size==0,'alert-texture','error' ))} slds-theme--alert-texture" role="alert">
+                                                 <div class="notify__content slds-grid">
+                                                    <div class="slds-col slds-align-middle">
+                                                        <h2 id = "msgId" class="slds-text-heading--small msgStyle">
+                                                            <apex:messages />
+                                                        </h2>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--Script to be used when there is no Notification msg, so remove the whole html-->
+                                            <script>
+                                                if($('#msgId').children().length == 0)
+                                                   $('#exceptionMsg').remove();
+                                            </script>
+                                        </apex:outputPanel>
+                                    </apex:outputPanel>
+                                
+                                <apex:variable value="{!lstFieldsTimesheetDetail.size}" var="columnCount" />
+                                <apex:outputPanel rendered="{!(lstTimesheet.size != 0)}" >
+                                    
+                                    <apex:outputPanel rendered="{!objContactPage.Community_Contact_Type__c == 'C and C'}" layout="block">
+                                        <!-- Client Timesheets-->
+                                            <div class="slds-m-top--medium slds-col--padded-large">
+                                                <h2 class="slds-section-title slds-truncate slds-m-bottom--xx-small">Client Timesheets </h2>
+                                                <apex:outputPanel rendered="{!ClientTSSize != 0}">
+                                                    <div class="slds-tabs--scoped">
+                                                            <ul class="slds-tabs--scoped__nav" role="tablist">
+                                                                <li class="slds-tabs__item slds-text-heading--label slds-active widthClass" title="Active Timesheets" role="presentation">
+                                                                    <a href="#" role="tab" tabindex="0" aria-selected="true" aria-controls="Client-tab-scoped-1">Active Timesheets</a>
+                                                                </li>
+                                                                <li class="slds-tabs__item slds-text-heading--label widthClass" title="Historical Timesheets" role="presentation">
+                                                                    <a href="#" role="tab" tabindex="-1" aria-selected="false" aria-controls="Client-tab-scoped-2">Historical Timesheets</a>
+                                                                </li>
+                                                            </ul>
+                                                            <!--Active Client Timesheets-->
+                                                            <div id="Client-tab-scoped-1" class="slds-tabs__content slds-show" role="tabpanel">
+                                                                <apex:variable var="C_C_Client_activeTSCount" value="{!0}" />
+                                                                <div class="slds-scrollable--y" style="max-height:200px" id = "Client_ActiveTS">
+                                                                    
+                                                                    <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal slds-no-row-hover">
+                                                                        <thead>
+                                                                            <tr class="slds-text-heading--label">
+                                                                                <apex:repeat value="{!lstFieldsTimesheetDetail}" var="field">
+                                                                                    <th data-label="{!field.Label}" class="slds-text-heading--label slds-size--1-of-{!columnCount}" scope="col">{!field.Label}</th>
+                                                                                </apex:repeat>
+                                                                                <th scope="col"></th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            
+                                                                            <apex:repeat value="{!mapTypeTolstTimesheet['Client']}" var="objTS">
+                                                                                <apex:outputPanel rendered="{!OR(objTS.TR1__Status__c == 'Submitted',!CONTAINS(strHistoricalStatusTS+','+strClientRestrictStage,objTS.TR1__Status__c))}" layout="none">
+                                                                                    <apex:variable var="C_C_Client_activeTSCount" value="{!C_C_Client_activeTSCount + 1}" />
+                                                                                    <tr class="slds-hint-parent">
+                                                                                        <apex:repeat value="{!lstFieldsTimesheetDetail}" var="field">
+                                                                                            <td data-label="{!field.Label}" class="slds-size--1-of-{!columnCount}" >
+                                                                                                <apex:outputField value="{!objTS[field.FieldPath]}"/>
+                                                                                            </td>
+                                                                                        </apex:repeat>
+                                                                                        <td ><a href="{!$Site.Prefix}/TimesheetDetails?tsId={!objTS.Id}" class="slds-button slds-button--neutral">Review</a></td>
+                                                                                    </tr>
+                                                                                </apex:outputPanel> 
+                                                                            </apex:repeat>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                                
+                                                                <script>
+                                                                    if('{!C_C_Client_activeTSCount}' == 0){
+                                                                        $('#Client_ActiveTS').remove();
+                                                                    }
+                                                                </script>
+                                                                <apex:outputPanel layout="block" rendered="{!C_C_Client_activeTSCount == 0}" styleClass="slds-m-top--xx-medium" >
+                                                                    <div class="slds-notify slds-notify--alert slds-theme--alert-texture" role="alert">
+                                                                        <div class="notify__content slds-grid" id="tab1IdNotification">
+                                                                            <apex:outputPanel styleClass="slds-col slds-align-middle">
+                                                                                <h2 class="slds-text-heading--small ">  
+                                                                                    <span>No Active Timesheets</span>        
+                                                                                </h2>
+                                                                            </apex:outputPanel>
+                                                                        </div>
+                                                                    </div>
+                                                                </apex:outputPanel>
+                                                            </div>
+                                                            <!--Historical Client Timesheets-->
+                                                            <div id="Client-tab-scoped-2" class="slds-tabs__content slds-hide" role="tabpanel">
+                                                                <apex:variable var="C_C_Client_HistoryTSCount" value="{!0}" />
+                                                                <div class="slds-scrollable--y" style="max-height:200px" id="Client_HistoryTS">
+                                                                    <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal slds-no-row-hover">
+                                                                        <thead>
+                                                                            <tr class="slds-text-heading--label">
+                                                                                <apex:repeat value="{!lstFieldsTimesheetDetail}" var="field">
+                                                                                    <th data-label="{!field.Label}" class="slds-text-heading--label slds-size--1-of-{!columnCount}" scope="col">{!field.Label}</th>
+                                                                                </apex:repeat>
+                                                                                <th scope="col"></th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <apex:repeat value="{!mapTypeTolstTimesheet['Client']}" var="objTS">
+                                                                                <apex:outputPanel rendered="{!CONTAINS(strHistoricalStatusTS,objTS.TR1__Status__c)}" layout="none">
+                                                                                    <apex:variable var="C_C_Client_HistoryTSCount" value="{!C_C_Client_HistoryTSCount + 1}" />
+                                                                                    <tr class="slds-hint-parent">
+                                                                                        <apex:repeat value="{!lstFieldsTimesheetDetail}" var="field">
+                                                                                            <td data-label="{!field.Label}" class="slds-size--1-of-{!columnCount}" >
+                                                                                                <apex:outputField value="{!objTS[field.FieldPath]}"/>
+                                                                                            </td>
+                                                                                        </apex:repeat>
+                                                                                        <td ><a href="{!$Site.Prefix}/TimesheetDetails?tsId={!objTS.Id}" class="slds-button slds-button--neutral">View</a></td>
+                                                                                    </tr>
+                                                                                </apex:outputPanel> 
+                                                                            </apex:repeat>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                                <script>
+                                                                    if('{!C_C_Client_HistoryTSCount}' == 0){
+                                                                        $('#Client_HistoryTS').remove();
+                                                                    }
+                                                                </script>
+                                                                <apex:outputPanel layout="block" rendered="{!C_C_Client_HistoryTSCount == 0}" styleClass="slds-m-top--xx-medium" >
+                                                                    <div class="slds-notify slds-notify--alert slds-theme--alert-texture" role="alert">
+                                                                        <div class="notify__content slds-grid" id="tab1IdNotification">
+                                                                            <apex:outputPanel styleClass="slds-col slds-align-middle">
+                                                                                <h2 class="slds-text-heading--small ">  
+                                                                                    <span>No Historical Timesheets</span>        
+                                                                                </h2>
+                                                                            </apex:outputPanel>
+                                                                        </div>
+                                                                    </div>
+                                                                </apex:outputPanel>
+                                                            </div>
+                                                        </div>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel layout="block" rendered="{!ClientTSSize == 0}" styleClass="slds-m-top--xx-medium" >
+                                                    <div class="slds-notify slds-notify--alert slds-theme--alert-texture" role="alert" id="messageBannerTab1">
+                                                        <div class="notify__content slds-grid" id="tab1IdNotification">
+                                                            <apex:outputPanel styleClass="slds-col slds-align-middle">
+                                                                <h2 class="slds-text-heading--small ">  
+                                                                    <span>No Client Timesheets</span>        
+                                                                </h2>
+                                                            </apex:outputPanel>
+                                                        </div>
+                                                    </div>
+                                                </apex:outputPanel>
+                                            </div>
+                                        
+                                        
+                                        <!--Candidate Timesheets-->
+                                        <div class="slds-m-top--medium slds-col--padded-large">
+                                            <h2 class="slds-section-title slds-truncate slds-m-bottom--xx-small">Candidate Timesheets</h2>
+                                            <apex:outputPanel rendered="{!CandidateTSSize != 0}">
+                                                    <div class="slds-tabs--scoped">
+                                                        <ul class="slds-tabs--scoped__nav" role="tablist">
+                                                            <li class="slds-tabs__item slds-text-heading--label slds-active widthClass" title="Active Timesheets" role="presentation">
+                                                                <a href="#" role="tab" tabindex="0" aria-selected="true" aria-controls="Candidate-tab-scoped-1">Active Timesheets</a>
+                                                            </li>
+                                                            <li class="slds-tabs__item slds-text-heading--label widthClass" title="Historical Timesheets" role="presentation">
+                                                                <a href="#" role="tab" tabindex="-1" aria-selected="false" aria-controls="Candidate-tab-scoped-2">Historical Timesheets</a>
+                                                            </li>
+                                                        </ul>
+                                                        <!--Active Candidate Timesheets-->
+                                                        <div id="Candidate-tab-scoped-1" class="slds-tabs__content slds-show" role="tabpanel">
+                                                            <apex:variable var="C_C_Candidate_activeTSCount" value="{!0}" />
+                                                            <div class="slds-scrollable--y"  style="max-height:200px" id = "Candidate_ActiveTS">
+                                                                <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal">
+                                                                    <thead>
+                                                                        <tr class="slds-text-heading--label">
+                                                                            <apex:repeat value="{!lstFieldsTimesheetDetail}" var="field">
+                                                                                <th data-label="{!field.Label}" class="slds-text-heading--label slds-size--1-of-{!columnCount}" scope="col">{!field.Label}</th>
+                                                                            </apex:repeat>
+                                                                            <th scope="col"></th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <apex:repeat value="{!mapTypeTolstTimesheet['Candidate']}" var="objTS">
+                                                                            <apex:outputPanel rendered="{!!CONTAINS(strHistoricalStatusTS,objTS.TR1__Status__c)}" layout="none">
+                                                                                <apex:variable var="C_C_Candidate_activeTSCount" value="{!C_C_Candidate_activeTSCount + 1}" />
+                                                                                <tr class="slds-hint-parent">
+                                                                                    <apex:repeat value="{!lstFieldsTimesheetDetail}" var="field">
+                                                                                        <td data-label="{!field.Label}" class="slds-size--1-of-{!columnCount}" >
+                                                                                            <apex:outputField value="{!objTS[field.FieldPath]}"/>
+                                                                                        </td>
+                                                                                    </apex:repeat>
+                                                                                    <td ><a href="{!$Site.Prefix}/TimesheetDetails?tsId={!objTS.Id}" class="slds-button slds-button--neutral">Review</a></td>
+                                                                                </tr>
+                                                                            </apex:outputPanel>
+                                                                        </apex:repeat>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            
+                                                            <script>
+                                                                if('{!C_C_Candidate_activeTSCount}' == 0){
+                                                                    $('#Candidate_ActiveTS').remove();
+                                                                }
+                                                            </script>
+                                                            <apex:outputPanel layout="block" rendered="{!C_C_Candidate_activeTSCount == 0}" styleClass="slds-m-top--xx-medium" >
+                                                                <div class="slds-notify slds-notify--alert slds-theme--alert-texture" role="alert">
+                                                                    <div class="notify__content slds-grid" id="tab1IdNotification">
+                                                                        <apex:outputPanel styleClass="slds-col slds-align-middle">
+                                                                            <h2 class="slds-text-heading--small ">  
+                                                                                <span>No Active Timesheets</span>        
+                                                                            </h2>
+                                                                        </apex:outputPanel>
+                                                                    </div>
+                                                                </div>
+                                                            </apex:outputPanel>
+                                                        </div>
+                                                        
+                                                        <!--Historical Candidate Timesheets-->
+                                                        <div id="Candidate-tab-scoped-2" class="slds-tabs__content slds-hide" role="tabpanel">
+                                                            <apex:variable var="C_C_Candidate_HistoryTSCount" value="{!0}" />
+                                                            <div class="slds-scrollable--y"  style="max-height:200px" id = "Candidate_HistoryTS">
+                                                                <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal">
+                                                                    <thead>
+                                                                        <tr class="slds-text-heading--label">
+                                                                            <apex:repeat value="{!lstFieldsTimesheetDetail}" var="field">
+                                                                                <th data-label="{!field.Label}" class="slds-text-heading--label slds-size--1-of-{!columnCount}" scope="col">{!field.Label}</th>
+                                                                            </apex:repeat>
+                                                                            <th scope="col"></th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <apex:repeat value="{!mapTypeTolstTimesheet['Candidate']}" var="objTS">
+                                                                            <apex:outputPanel rendered="{!CONTAINS(strHistoricalStatusTS,objTS.TR1__Status__c)}" layout="none">
+                                                                                <apex:variable var="C_C_Candidate_HistoryTSCount" value="{!C_C_Candidate_activeTSCount + 1}" />
+                                                                                <tr class="slds-hint-parent">
+                                                                                    <apex:repeat value="{!lstFieldsTimesheetDetail}" var="field">
+                                                                                        <td data-label="{!field.Label}" class="slds-size--1-of-{!columnCount}" >
+                                                                                            <apex:outputField value="{!objTS[field.FieldPath]}"/>
+                                                                                        </td>
+                                                                                    </apex:repeat>
+                                                                                    <td ><a href="{!$Site.Prefix}/TimesheetDetails?tsId={!objTS.Id}" class="slds-button slds-button--neutral">View</a></td>
+                                                                                </tr>
+                                                                            </apex:outputPanel>
+                                                                        </apex:repeat>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            
+                                                            <script>
+                                                                if('{!C_C_Candidate_HistoryTSCount}' == 0){
+                                                                    $('#Candidate_HistoryTS').remove();
+                                                                }
+                                                            </script>
+                                                            <apex:outputPanel layout="block" rendered="{!C_C_Candidate_HistoryTSCount == 0}" styleClass="slds-m-top--xx-medium" >
+                                                                <div class="slds-notify slds-notify--alert slds-theme--alert-texture" role="alert">
+                                                                    <div class="notify__content slds-grid" id="tab1IdNotification">
+                                                                        <apex:outputPanel styleClass="slds-col slds-align-middle">
+                                                                            <h2 class="slds-text-heading--small ">  
+                                                                                <span>No Historical Timesheets</span>        
+                                                                            </h2>
+                                                                        </apex:outputPanel>
+                                                                    </div>
+                                                                </div>
+                                                            </apex:outputPanel>
+                                                        </div>
+                                                    </div>
+                                            </apex:outputPanel>
+                                            <apex:outputPanel layout="block" rendered="{!CandidateTSSize == 0}" styleClass="slds-m-top--xx-medium" >
+                                                <div class="slds-notify slds-notify--alert slds-theme--alert-texture" role="alert" id="messageBannerTab1">
+                                                    <div class="notify__content slds-grid" id="tab1IdNotification">
+                                                        <apex:outputPanel styleClass="slds-col slds-align-middle">
+                                                            <h2 class="slds-text-heading--small ">  
+                                                                <span>No Candidate Timesheets</span>        
+                                                            </h2>
+                                                        </apex:outputPanel>
+                                                    </div>
+                                                </div>
+                                            </apex:outputPanel>
+                                        </div>
+                                    </apex:outputPanel>
+                                    
+                                    <apex:outputPanel rendered="{!objContactPage.Community_Contact_Type__c != 'C and C'}" layout="block" styleClass="Not_C_C slds-m-top--medium slds-col--padded-large">
+                                        <div class="slds-tabs--scoped">
+                                            <ul class="slds-tabs--scoped__nav" role="tablist">
+                                                <li class="slds-tabs__item slds-text-heading--label slds-active widthClass" title="Active Timesheets" role="presentation">
+                                                    <a href="#" role="tab" tabindex="0" aria-selected="true" aria-controls="tab-scoped-1">Active Timesheets</a>
+                                                </li>
+                                                <li class="slds-tabs__item slds-text-heading--label widthClass" title="Historical Timesheets" role="presentation">
+                                                    <a href="#" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-scoped-2">Historical Timesheets</a>
+                                                </li>
+                                            </ul>
+                                            
+                                            <!--Active Timesheets -->
+                                            <div id="tab-scoped-1" class="slds-tabs__content slds-show" role="tabpanel">
+                                                <apex:variable var="NonC_C_activeTSCount" value="{!0}" />
+                                                <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal" id = "NonC_C_activeTSTable">
+                                                    <thead>
+                                                        <tr class="slds-text-heading--label">
+                                                            <apex:repeat value="{!lstFieldsTimesheetDetail}" var="field">
+                                                                <th data-label="{!field.Label}" class="slds-text-heading--label slds-size--1-of-{!columnCount}" scope="col">{!field.Label}</th>
+                                                            </apex:repeat>
+                                                            <th scope="col"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <apex:repeat value="{!mapTypeTolstTimesheet[objContactPage.Community_Contact_Type__c]}" var="objTS">
+                                                            <apex:outputPanel rendered="{!!CONTAINS(strHistoricalStatusTS,objTS.TR1__Status__c)}" layout="none">
+                                                                <apex:variable var="NonC_C_activeTSCount" value="{!NonC_C_activeTSCount + 1}" />
+                                                                <tr class="slds-hint-parent">
+                                                                    <apex:repeat value="{!lstFieldsTimesheetDetail}" var="field">
+                                                                        <td data-label="{!field.Label}" class="slds-size--1-of-{!columnCount}" >
+                                                                            <apex:outputField value="{!objTS[field.FieldPath]}"/>
+                                                                        </td>
+                                                                    </apex:repeat>
+                                                                    <td ><a href="{!$Site.Prefix}/TimesheetDetails?tsId={!objTS.Id}" class="slds-button slds-button--neutral">Review</a></td>
+                                                                </tr>
+                                                            </apex:outputPanel>
+                                                        </apex:repeat>
+                                                    </tbody>
+                                                </table>
+                                                <script>
+                                                    if('{!NonC_C_activeTSCount}' == 0){
+                                                        console.log(':::::::: {!NonC_C_activeTSCount}');  
+                                                        $('#NonC_C_activeTSTable').remove();
+                                                    }
+                                                </script>
+                                                <apex:outputPanel layout="block" rendered="{!NonC_C_activeTSCount == 0}" styleClass="slds-m-top--xx-medium" >
+                                                    <div class="slds-notify slds-notify--alert slds-theme--alert-texture" role="alert">
+                                                        <div class="notify__content slds-grid" id="tab1IdNotification">
+                                                            <apex:outputPanel styleClass="slds-col slds-align-middle">
+                                                                <h2 class="slds-text-heading--small ">  
+                                                                    <span>No Active Timesheets</span>        
+                                                                </h2>
+                                                            </apex:outputPanel>
+                                                        </div>
+                                                    </div>
+                                                </apex:outputPanel>
+                                            </div>
+                                            
+                                            <!--Historical Timesheets -->
+                                            <div id="tab-scoped-2" class="slds-tabs__content slds-hide" role="tabpanel">
+                                                <apex:variable var="NonC_C_HistoryTSCount" value="{!0}" />
+                                                <table class="slds-table slds-table--bordered slds-max-medium-table--stacked-horizontal " id="NonC_C_HistoryTSTable">
+                                                    <thead>
+                                                        <tr class="slds-text-heading--label">
+                                                            <apex:repeat value="{!lstFieldsTimesheetDetail}" var="field">
+                                                                <th data-label="{!field.Label}" class="slds-text-heading--label slds-size--1-of-{!columnCount}" scope="col">{!field.Label}</th>
+                                                            </apex:repeat>
+                                                            <th scope="col"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <apex:repeat value="{!mapTypeTolstTimesheet[objContactPage.Community_Contact_Type__c]}" var="objTS">
+                                                            <apex:outputPanel rendered="{!CONTAINS(strHistoricalStatusTS,objTS.TR1__Status__c)}" layout="none">
+                                                                <apex:variable var="NonC_C_HistoryTSCount" value="{!NonC_C_HistoryTSCount + 1}" />
+                                                                <tr class="slds-hint-parent">
+                                                                    <apex:repeat value="{!lstFieldsTimesheetDetail}" var="field">
+                                                                        <td data-label="{!field.Label}" class="slds-size--1-of-{!columnCount}" >
+                                                                            <apex:outputField value="{!objTS[field.FieldPath]}"/>
+                                                                        </td>
+                                                                    </apex:repeat>
+                                                                    <td ><a href="{!$Site.Prefix}/TimesheetDetails?tsId={!objTS.Id}" class="slds-button slds-button--neutral">View</a></td>
+                                                                </tr>
+                                                            </apex:outputPanel>
+                                                        </apex:repeat>
+                                                    </tbody>
+                                                </table>
+                                                <script>
+                                                    if('{!NonC_C_HistoryTSCount}' == 0){
+                                                        $('#NonC_C_HistoryTSTable').remove();
+                                                    }
+                                                </script>
+                                                <apex:outputPanel layout="block" rendered="{!NonC_C_HistoryTSCount == 0}" styleClass="slds-m-top--xx-medium" >
+                                                    <div class="slds-notify slds-notify--alert slds-theme--alert-texture" role="alert">
+                                                        <div class="notify__content slds-grid" id="tab1IdNotification">
+                                                            <apex:outputPanel styleClass="slds-col slds-align-middle">
+                                                                <h2 class="slds-text-heading--small ">  
+                                                                    <span>No Historical Timesheets</span>        
+                                                                </h2>
+                                                            </apex:outputPanel>
+                                                        </div>
+                                                    </div>
+                                                </apex:outputPanel>
+                                            </div>
+                                        </div>
+                                    </apex:outputPanel>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!(lstTimesheet.size == 0)}" layout="block" styleClass="slds-text-align--center slds-m-top--large">
+                                    <a href="{!$Site.Prefix}/Home_v2" class="slds-button slds-button--neutral">Back</a>
+                                </apex:outputPanel>
+                            </div>
+                        </div>
+                        <!-- Page Footer-->
+                        <span class="nonslds">
+                            <div class="footer">
+                                <div class="footer-socials half-bottom">
+                                    <a href="#" class="footer-share show-share-bottom"><i class="fa fa-share-alt"></i></a>
+                                    <a href="#" class="footer-up"><i class="fa fa-angle-up"></i></a>
+                                </div>
+                                <p class="center-text">&copy; 2015 Talent Rover. All rights reserved.</p>
+                            </div>
+                        </span>
+                    </div>
+                </div>
+            </apex:define>
+        </apex:composition>
+        <script>
+            $('.slds-tabs__item').on('click', function(){
+             $(this).addClass('slds-active');
+             $(this).find('a').attr('aria-selected', true);
+             var $contentToShow = $('#'+$(this).find('a').attr('aria-controls'));
+             $contentToShow.removeClass('slds-hide');
+             $contentToShow.addClass('slds-show');
+            
+             $(this).siblings().removeClass('slds-active');
+             $(this).siblings().find('a').attr('aria-selected', false);
+             $contentToShow.siblings('.slds-tabs__content').removeClass('slds-show');
+             $contentToShow.siblings('.slds-tabs__content').addClass('slds-hide');
+            });
+            
+        </script>
+    </html>
+</apex:page>
